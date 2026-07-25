@@ -3,6 +3,8 @@ import BaseLayout from '../../components/Layout/BaseLayout.astro';
 import ExperienceCard from '../../components/Cards/ExperienceCard.astro';
 import { getEntry } from 'astro:content';
 
+export const prerender = true;
+
 const academicEntry = await getEntry('academicExperience', 'data');
 const professionalEntry = await getEntry('professionalExperience', 'data');
 

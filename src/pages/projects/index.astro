@@ -3,6 +3,8 @@ import BaseLayout from '../../components/Layout/BaseLayout.astro';
 import ProjectCard from '../../components/Cards/ProjectCard.astro';
 import { getCollection } from 'astro:content';
 
+export const prerender = true;
+
 const research = (await getCollection('projectsResearch', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.year - a.data.year
 );

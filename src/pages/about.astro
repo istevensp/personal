@@ -2,6 +2,8 @@
 import BaseLayout from '../components/Layout/BaseLayout.astro';
 import { getEntry } from 'astro:content';
 
+export const prerender = true;
+
 const personalEntry = await getEntry('personal', 'data');
 const educationEntry = await getEntry('education', 'data');
 const interestsEntry = await getEntry('interests', 'data');

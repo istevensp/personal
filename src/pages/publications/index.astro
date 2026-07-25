@@ -3,6 +3,8 @@ import BaseLayout from '../../components/Layout/BaseLayout.astro';
 import PublicationCard from '../../components/Cards/PublicationCard.astro';
 import { getEntry } from 'astro:content';
 
+export const prerender = true;
+
 const publishedEntry = await getEntry('publicationsPublished', 'data');
 const acceptedEntry = await getEntry('publicationsAccepted', 'data');
 const underReviewEntry = await getEntry('publicationsUnderReview', 'data');

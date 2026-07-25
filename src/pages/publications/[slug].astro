@@ -2,6 +2,22 @@
 import BaseLayout from '../../components/Layout/BaseLayout.astro';
 import { getEntry } from 'astro:content';
 
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const publishedEntry = await getEntry('publicationsPublished', 'data');
+  const acceptedEntry = await getEntry('publicationsAccepted', 'data');
+  const underReviewEntry = await getEntry('publicationsUnderReview', 'data');
+
+  const ids = [
+    ...publishedEntry.data.published.map((p) => p.id),
+    ...acceptedEntry.data.accepted.map((p) => p.id),
+    ...underReviewEntry.data.underReview.map((p) => p.id),
+  ];
+
+  return ids.map((id) => ({ params: { slug: id } }));
+}
+
 const { slug } = Astro.params;
 
 const publishedEntry = await getEntry('publicationsPublished', 'data');

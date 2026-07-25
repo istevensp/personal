@@ -4,6 +4,8 @@ import NewsCard from '../../components/Cards/NewsCard.astro';
 import NewsFilter from '../../components/Common/NewsFilter.jsx';
 import { getCollection } from 'astro:content';
 
+export const prerender = true;
+
 const items = (await getCollection('news', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
