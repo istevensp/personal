@@ -59,7 +59,7 @@ const years = Array.from(
 
   {
     hasRepo && (
-      <a href={repositoryUrl} target="_blank" rel="noopener noreferrer" class="link w-fit text-sm">
+      <a href={repositoryUrl} target="_blank" rel="noopener noreferrer" class="link inline-flex min-h-[44px] w-fit items-center text-sm">
         Course repository
       </a>
     )
@@ -93,7 +93,7 @@ const years = Array.from(
                   href={s.evaluationUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="link flex items-center justify-between gap-2 text-sm"
+                  class="link flex min-h-[44px] items-center justify-between gap-2 text-sm"
                 >
                   <span>
                     {s.semester} &middot; Parallel {s.parallel}
@@ -102,7 +102,7 @@ const years = Array.from(
                 </a>
               </li>
             ) : (
-              <li class="flex items-center justify-between gap-2 text-sm text-[var(--text-secondary)]">
+              <li class="flex min-h-[44px] items-center justify-between gap-2 text-sm text-[var(--text-secondary)]">
                 <span>
                   {s.semester} &middot; Parallel {s.parallel}
                 </span>

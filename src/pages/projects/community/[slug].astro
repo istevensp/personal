@@ -35,7 +35,7 @@ function formatMonth(value: string | null) {
     project ? (
       <article class="px-4 py-2xl md:px-6 lg:px-12">
         <div class="mx-auto flex max-w-3xl flex-col gap-6">
-          <a href="/projects" class="link w-fit text-sm">&larr; Back to Projects</a>
+          <a href="/projects" class="link inline-flex min-h-[44px] w-fit items-center text-sm">&larr; Back to Projects</a>
 
           <div class="flex flex-wrap items-center gap-2">
             <span class="badge">Community</span>
@@ -57,7 +57,7 @@ function formatMonth(value: string | null) {
           {project.links && Object.keys(project.links).length > 0 && (
             <div class="flex flex-wrap gap-3">
               {Object.entries(project.links).map(([label, url]) => (
-                <a href={url as string} target="_blank" rel="noopener noreferrer" class="link text-sm capitalize">
+                <a href={url as string} target="_blank" rel="noopener noreferrer" class="link inline-flex min-h-[44px] items-center text-sm capitalize">
                   {label}
                 </a>
               ))}

@@ -59,7 +59,7 @@ const jsonLd = publication
     publication ? (
       <article class="px-4 py-2xl md:px-6 lg:px-12">
         <div class="mx-auto flex max-w-3xl flex-col gap-6">
-          <a href="/publications" class="link w-fit text-sm">&larr; Back to Publications</a>
+          <a href="/publications" class="link inline-flex min-h-[44px] w-fit items-center text-sm">&larr; Back to Publications</a>
 
           <div class="flex flex-wrap items-center gap-2">
             <span class="badge badge-success">{publication.status}</span>
@@ -73,7 +73,7 @@ const jsonLd = publication
           </p>
 
           {publication.doi && (
-            <a href={publication.doi} target="_blank" rel="noopener noreferrer" class="link w-fit text-sm">
+            <a href={publication.doi} target="_blank" rel="noopener noreferrer" class="link inline-flex min-h-[44px] w-fit items-center text-sm">
               DOI: {publication.doi}
             </a>
           )}
@@ -94,7 +94,7 @@ const jsonLd = publication
           {Object.keys(publication.links).length > 0 && (
             <div class="flex flex-wrap gap-3 border-t border-[var(--border)] pt-4">
               {Object.entries(publication.links).map(([label, url]) => (
-                <a href={url} target="_blank" rel="noopener noreferrer" class="link text-sm capitalize">
+                <a href={url} target="_blank" rel="noopener noreferrer" class="link inline-flex min-h-[44px] items-center text-sm capitalize">
                   {label}
                 </a>
               ))}
