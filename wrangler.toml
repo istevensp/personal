@@ -11,9 +11,5 @@ binding = "ASSETS"
 directory = "./dist"
 
 [[routes]]
-pattern = "stevensantillan.com/*"
-zone_name = "stevensantillan.com"
+pattern = "stevensantillan.com"
 custom_domain = true
-
-[build]
-command = "npm run build"

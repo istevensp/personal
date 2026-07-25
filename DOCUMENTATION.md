@@ -354,8 +354,8 @@ fabricated content:
   deploy successfully.
 - **`wrangler.toml`**: `account_id` is intentionally omitted (see the comment
   in the file) — set via `CLOUDFLARE_ACCOUNT_ID` env/secret, never committed.
-  The `zone_name`/custom domain routing assumes `stevensantillan.com` is
-  already added to the same Cloudflare account.
+  The custom domain route assumes `stevensantillan.com` is already an
+  **Active** zone in that same Cloudflare account (verified 2026-07-25).
 
 ---
 
@@ -380,6 +380,31 @@ back to the original spec by mistake:
   (`[assets]` binding + `main` pointing at the built worker entry). The
   original doc's `type = "javascript"` + `mode = "directory"` adapter option
   are from an older, now-unsupported Wrangler/adapter generation.
+- `wrangler.toml` route — **Custom Domains do not accept a path/wildcard.**
+  The first deploy failed with `Wildcard operators (*) are not allowed in
+  Custom Domains` / `Paths are not allowed in Custom Domains` because the
+  route was `pattern = "stevensantillan.com/*"` with `zone_name` set. Fixed
+  to a bare-hostname pattern (`pattern = "stevensantillan.com"`,
+  `custom_domain = true`, no `zone_name`, no `/*`). Verified with
+  `npx wrangler deploy --dry-run` before pushing again.
+- `wrangler.toml` also had a `[build]` section (`command = "npm run build"`),
+  which made `wrangler deploy` silently re-run the entire Astro build a
+  second time on top of the one the GitHub Actions workflow already runs
+  explicitly. Removed — harmless but pure wasted CI time.
+- **All pages needed `export const prerender = true`** (plus
+  `getStaticPaths()` on the four `[slug]` routes). With `output: 'server'`
+  and nothing prerendered, `astro build` produced **zero** `.html` files —
+  everything would have rendered per-request instead. That's what actually
+  broke Pagefind (see the `search:build` fix below), and it also means the
+  original `output: 'server'` choice was doing all downside (a Worker
+  invocation per request) for no upside, since nothing on this site needs
+  per-request logic. Every page listed in §6 is now static output; `output:
+  'server'` is kept at the project level only so a genuinely dynamic route
+  could be added later without re-plumbing the adapter.
+- `package.json`'s `search:build` script pointed at `pagefind --site
+  dist/client` — that directory never existed for this adapter; the actual
+  static output root is `dist/` itself (with `dist/_worker.js` holding the
+  server bundle alongside it). Fixed to `pagefind --site dist`.
 - `src/styles/tailwind.css` — `@import` statements must come before
   `@tailwind base/components/utilities` (plain CSS rule: `@import` must
   precede all other statements). Get this order backwards and the Vite build
