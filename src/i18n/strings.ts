@@ -1,0 +1,52 @@
+// Chrome-level UI strings only. All data-driven content (bio, courses,
+// publications, project descriptions) exists in English only in the source
+// YAML/MDX files, so it is not translated by this dictionary.
+export const strings = {
+  en: {
+    'nav.home': 'Home',
+    'nav.about': 'About',
+    'nav.teaching': 'Teaching',
+    'nav.projects': 'Projects',
+    'nav.publications': 'Publications',
+    'nav.experience': 'Experience',
+    'nav.news': 'News',
+    'nav.contact': 'Contact Me',
+    'common.viewAllProjects': 'View all projects',
+    'common.viewAllPublications': 'View all publications',
+    'common.viewAllNews': 'View all news',
+    'common.getInTouch': 'Get in touch',
+    'common.downloadIndustryCv': 'Download Industry CV',
+    'common.downloadAcademicCv': 'Download Academic CV',
+    'common.email': 'Email',
+    'common.linkedin': 'LinkedIn',
+    'common.viewEvaluations': 'View evaluations',
+    'common.readMore': 'Read more',
+    'footer.rights': 'All rights reserved.',
+    'search.placeholder': 'Search the site…',
+  },
+  es: {
+    'nav.home': 'Inicio',
+    'nav.about': 'Acerca de',
+    'nav.teaching': 'Docencia',
+    'nav.projects': 'Proyectos',
+    'nav.publications': 'Publicaciones',
+    'nav.experience': 'Experiencia',
+    'nav.news': 'Noticias',
+    'nav.contact': 'Contáctame',
+    'common.viewAllProjects': 'Ver todos los proyectos',
+    'common.viewAllPublications': 'Ver todas las publicaciones',
+    'common.viewAllNews': 'Ver todas las noticias',
+    'common.getInTouch': 'Ponte en contacto',
+    'common.downloadIndustryCv': 'Descargar CV de Industria',
+    'common.downloadAcademicCv': 'Descargar CV Académico',
+    'common.email': 'Correo',
+    'common.linkedin': 'LinkedIn',
+    'common.viewEvaluations': 'Ver evaluaciones',
+    'common.readMore': 'Leer más',
+    'footer.rights': 'Todos los derechos reservados.',
+    'search.placeholder': 'Buscar en el sitio…',
+  },
+} as const;
+
+export type Lang = keyof typeof strings;
+export type StringKey = keyof (typeof strings)['en'];

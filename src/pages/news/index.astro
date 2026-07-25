@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../components/Layout/BaseLayout.astro';
+import NewsCard from '../../components/Cards/NewsCard.astro';
+import NewsFilter from '../../components/Common/NewsFilter.jsx';
+import { getCollection } from 'astro:content';
+
+const items = (await getCollection('news', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<BaseLayout title="News" description="Latest news and announcements.">
+  <section class="px-4 py-2xl md:px-6 lg:px-12">
+    <div class="mx-auto flex max-w-container flex-col gap-6">
+      <h1>News</h1>
+
+      <NewsFilter client:load containerId="news-grid" />
+
+      {
+        items.length > 0 ? (
+          <div id="news-grid" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {items.map((item) => (
+              <div data-category={item.data.category}>
+                <NewsCard
+                  href={`/news/${item.data.slug}`}
+                  title={item.data.title}
+                  date={item.data.date}
+                  category={item.data.category}
+                  featured={item.data.featured}
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p class="p-small text-[var(--text-secondary)]">No news published yet.</p>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

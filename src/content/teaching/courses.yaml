@@ -1,0 +1,47 @@
+courses:
+- courseId: distributed-systems
+  name: Distributed Systems
+  code: '[PROPORCIONAR]'
+  institution: ESPOL
+  level: '[PROPORCIONAR]'
+  description: Course focused on distributed computing and scalable system design.
+  topics: []
+  repositoryUrl: '[PROPORCIONAR]'
+  materialsLink: '[PROPORCIONAR]'
+  semesters:
+  - semester: 2026-1S
+    parallel: '2'
+    evaluationUrl: null
+    status: in-progress
+- courseId: algorithms
+  name: Algorithms
+  code: '[PROPORCIONAR]'
+  institution: ESPOL
+  level: '[PROPORCIONAR]'
+  description: Course focused on algorithmic reasoning and computational thinking.
+  topics: []
+  repositoryUrl: '[PROPORCIONAR]'
+  materialsLink: '[PROPORCIONAR]'
+  semesters:
+  - semester: 2026-2S
+    parallel: '[PROPORCIONAR]'
+    evaluationUrl: null
+    status: upcoming
+- courseId: data-structures
+  name: Data Structures
+  code: '[PROPORCIONAR]'
+  institution: ESPOL
+  level: '[PROPORCIONAR]'
+  description: Course focused on data organization, implementation, and computational thinking.
+  topics: []
+  repositoryUrl: '[PROPORCIONAR]'
+  materialsLink: '[PROPORCIONAR]'
+  semesters:
+  - semester: 2026-1S
+    parallel: '1'
+    evaluationUrl: null
+    status: in-progress
+  - semester: 2026-1S
+    parallel: '2'
+    evaluationUrl: null
+    status: in-progress

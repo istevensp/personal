@@ -1,0 +1,121 @@
+---
+export interface Semester {
+  semester: string;
+  parallel: string;
+  evaluationUrl: string | null;
+  status?: 'completed' | 'in-progress' | 'upcoming';
+}
+
+export interface Props {
+  name: string;
+  code: string;
+  level: string;
+  description: string;
+  topics: string[];
+  repositoryUrl: string;
+  semesters: Semester[];
+}
+
+const { name, code, level, description, topics, repositoryUrl, semesters } = Astro.props;
+const hasCode = code && code !== '[PROPORCIONAR]';
+const hasLevel = level && level !== '[PROPORCIONAR]';
+const hasRepo = repositoryUrl && repositoryUrl !== '[PROPORCIONAR]';
+
+const hasInProgress = semesters.some((s) => s.status === 'in-progress');
+const hasUpcoming = semesters.some((s) => s.status === 'upcoming');
+
+const years = Array.from(
+  new Set(
+    semesters
+      .map((s) => parseInt(s.semester.split('-')[0], 10))
+      .filter((y) => !Number.isNaN(y))
+  )
+).sort((a, b) => b - a);
+---
+
+<div class="card flex flex-col gap-3">
+  <div class="flex flex-wrap items-center gap-2">
+    {hasCode && <span class="badge">{code}</span>}
+    {years.map((y) => (
+      <span class="badge">{y}</span>
+    ))}
+    {hasLevel && <span class="p-tiny text-[var(--text-secondary)]">{level}</span>}
+    {hasInProgress && <span class="badge badge-warning">In Progress</span>}
+    {!hasInProgress && hasUpcoming && <span class="badge badge-success">Upcoming</span>}
+  </div>
+
+  <h4 class="text-xl font-semibold text-[var(--text-primary)]">{name}</h4>
+  <p class="p-small text-[var(--text-secondary)]">{description}</p>
+
+  {
+    topics.length > 0 && (
+      <div class="flex flex-wrap gap-2">
+        {topics.map((t) => (
+          <span class="badge">{t}</span>
+        ))}
+      </div>
+    )
+  }
+
+  {
+    hasRepo && (
+      <a href={repositoryUrl} target="_blank" rel="noopener noreferrer" class="link w-fit text-sm">
+        Course repository
+      </a>
+    )
+  }
+
+  {
+    semesters.length > 0 ? (
+      <details class="group mt-1 rounded-md border border-[var(--border)]">
+        <summary class="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-2 px-3 py-2 text-sm font-medium text-[var(--text-primary)]">
+          <span data-i18n="common.viewEvaluations">View evaluations</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="shrink-0 transition-transform duration-fast group-open:rotate-180"
+          >
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </summary>
+        <ul class="flex flex-col gap-1 border-t border-[var(--border)] p-3">
+          {semesters.map((s) =>
+            s.evaluationUrl ? (
+              <li>
+                <a
+                  href={s.evaluationUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="link flex items-center justify-between gap-2 text-sm"
+                >
+                  <span>
+                    {s.semester} &middot; Parallel {s.parallel}
+                  </span>
+                  <span aria-hidden="true">&rarr;</span>
+                </a>
+              </li>
+            ) : (
+              <li class="flex items-center justify-between gap-2 text-sm text-[var(--text-secondary)]">
+                <span>
+                  {s.semester} &middot; Parallel {s.parallel}
+                </span>
+                <span class:list={['badge', s.status === 'upcoming' ? 'badge-success' : 'badge-warning']}>
+                  {s.status === 'upcoming' ? 'Upcoming' : 'Pending evaluation'}
+                </span>
+              </li>
+            )
+          )}
+        </ul>
+      </details>
+    ) : (
+      <p class="p-tiny text-[var(--text-secondary)]">No semester evaluations on file yet.</p>
+    )
+  }
+</div>

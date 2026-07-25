@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../../components/Layout/BaseLayout.astro';
+import { getEntry } from 'astro:content';
+
+const { slug } = Astro.params;
+
+const publishedEntry = await getEntry('publicationsPublished', 'data');
+const acceptedEntry = await getEntry('publicationsAccepted', 'data');
+const underReviewEntry = await getEntry('publicationsUnderReview', 'data');
+
+const all = [
+  ...publishedEntry.data.published.map((p) => ({ ...p, venue: p.conference, venueLabel: 'Conference' })),
+  ...acceptedEntry.data.accepted.map((p) => ({ ...p, venue: p.conference, venueLabel: 'Conference' })),
+  ...underReviewEntry.data.underReview.map((p) => ({ ...p, venue: p.journal, venueLabel: 'Journal' })),
+];
+
+const publication = all.find((p) => p.id === slug);
+
+if (!publication) {
+  Astro.response.status = 404;
+}
+
+const jsonLd = publication
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'ScholarlyArticle',
+      headline: publication.title,
+      author: publication.authors.map((name) => ({ '@type': 'Person', name })),
+      datePublished: `${publication.year}`,
+      publisher: { '@type': 'Organization', name: publication.venue },
+      url: new URL(`/publications/${publication.id}`, Astro.site).toString(),
+    }
+  : undefined;
+---
+
+<BaseLayout
+  title={publication?.title ?? 'Publication not found'}
+  description={publication?.abstract ?? 'This publication could not be found.'}
+  type="article"
+  jsonLd={jsonLd}
+>
+  {
+    publication ? (
+      <article class="px-4 py-2xl md:px-6 lg:px-12">
+        <div class="mx-auto flex max-w-3xl flex-col gap-6">
+          <a href="/publications" class="link w-fit text-sm">&larr; Back to Publications</a>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="badge badge-success">{publication.status}</span>
+            <span class="p-tiny text-[var(--text-secondary)]">{publication.year}</span>
+          </div>
+
+          <h1>{publication.title}</h1>
+          <p class="text-[var(--text-secondary)]">{publication.authors.join(', ')}</p>
+          <p class="italic text-[var(--text-secondary)]">
+            {publication.venueLabel}: {publication.venue}
+          </p>
+
+          {publication.doi && (
+            <a href={publication.doi} target="_blank" rel="noopener noreferrer" class="link w-fit text-sm">
+              DOI: {publication.doi}
+            </a>
+          )}
+
+          <div class="flex flex-col gap-2">
+            <h3>Abstract</h3>
+            <p class="text-[var(--text-secondary)]">{publication.abstract}</p>
+          </div>
+
+          {publication.keywords.length > 0 && (
+            <div class="flex flex-wrap gap-2">
+              {publication.keywords.map((k) => (
+                <span class="badge">{k}</span>
+              ))}
+            </div>
+          )}
+
+          {Object.keys(publication.links).length > 0 && (
+            <div class="flex flex-wrap gap-3 border-t border-[var(--border)] pt-4">
+              {Object.entries(publication.links).map(([label, url]) => (
+                <a href={url} target="_blank" rel="noopener noreferrer" class="link text-sm capitalize">
+                  {label}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+      </article>
+    ) : (
+      <div class="flex min-h-[50vh] flex-col items-center justify-center gap-4 px-4 text-center">
+        <h1>Publication not found</h1>
+        <a href="/publications" class="btn-primary">Back to Publications</a>
+      </div>
+    )
+  }
+</BaseLayout>

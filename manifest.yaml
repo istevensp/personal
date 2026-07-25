@@ -1,0 +1,25 @@
+generatedAt: '2026-07-25'
+yamlFiles:
+- src/content/experience/academic.yaml
+- src/content/experience/professional.yaml
+- src/content/profile/awards-honors.yaml
+- src/content/profile/certifications.yaml
+- src/content/profile/education.yaml
+- src/content/profile/interests.yaml
+- src/content/profile/personal.yaml
+- src/content/publications/accepted.yaml
+- src/content/publications/published.yaml
+- src/content/publications/under-review.yaml
+- src/content/teaching/courses.yaml
+projectMdxFiles:
+- src/content/projects/community/2021-explora-5-phase-2.mdx
+- src/content/projects/community/2022-explora-5-learning-pathway.mdx
+- src/content/projects/community/2022-santa-elena-cybersecurity-literacy.mdx
+- src/content/projects/community/2023-manglaralto-coastal-management.mdx
+- src/content/projects/community/2024-energy-efficiency-ict-agroproduction.mdx
+- src/content/projects/community/2025-schooling-platform-sustainability.mdx
+- src/content/projects/community/_drafts/2022-la-union-connectivity.mdx
+- src/content/projects/research/2021-data-center-energy-prediction.mdx
+- src/content/projects/research/2023-iot-software-artifacts.mdx
+- src/content/projects/research/2025-next-generation-cloud-computing.mdx
+- src/content/projects/research/2026-active-learning-cloud-architectures.mdx

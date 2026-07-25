@@ -1,0 +1,47 @@
+---
+export interface Props {
+  title: string;
+  organization: string;
+  location: string;
+  startDate: string;
+  endDate: string | null;
+  current: boolean;
+  description: string;
+  highlights: string[];
+}
+
+const { title, organization, location, startDate, endDate, current, description, highlights } = Astro.props;
+
+function formatMonth(value: string) {
+  const [year, month] = value.split('-').map(Number);
+  return new Date(year, (month ?? 1) - 1).toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+}
+
+const period = `${formatMonth(startDate)} – ${current ? 'Present' : endDate ? formatMonth(endDate) : ''}`;
+---
+
+<div class="card flex flex-col gap-2">
+  <div class="flex flex-wrap items-center justify-between gap-2">
+    <h4 class="text-xl font-semibold text-[var(--text-primary)]">{title}</h4>
+    {current && <span class="badge badge-success">Current</span>}
+  </div>
+
+  <p class="p-small font-medium text-[var(--text-secondary)]">{organization}</p>
+  <p class="p-tiny text-[var(--text-secondary)]">{location} &middot; {period}</p>
+  <p class="p-small text-[var(--text-secondary)]">{description}</p>
+
+  {
+    highlights.length > 0 && (
+      <ul class="mt-2 flex flex-col gap-1">
+        {highlights.map((h) => (
+          <li class="p-small flex gap-2 text-[var(--text-secondary)]">
+            <span class="text-primary" aria-hidden="true">
+              •
+            </span>
+            {h}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</div>

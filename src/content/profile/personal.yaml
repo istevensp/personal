@@ -1,0 +1,28 @@
+firstName: Steven
+lastName: Santillan Padilla
+fullName: Steven Isaac Santillan Padilla
+email:
+  institutional: steisant@espol.edu.ec
+  personal: steven@stevensantillan.com
+phone: null
+location:
+  city: Guayaquil
+  state: Guayas
+  country: Ecuador
+  timezone: America/Guayaquil
+socials:
+  github: https://github.com/istevensp
+  linkedin: https://linkedin.com/in/stevensp1803
+  orcid: 0000-0001-7759-7747
+  googleScholar: https://scholar.google.com/citations?hl=es&user=WL9l7jgAAAAJ&view_op=list_works
+  researchGate: https://www.researchgate.net/profile/Steven-Santillan-Padilla?ev=hdr_xprf
+website: https://stevensantillan.com
+summary: University lecturer, researcher, and technology professional specializing in distributed systems,
+  cloud computing, applied machine learning, IoT, infrastructure, and cybersecurity.
+profile:
+- Research-oriented engineer with experience designing data-driven solutions for IoT and real-time environments
+  under resource and latency constraints.
+- Hands-on experience with AWS, Azure, GCP, networks, scalable infrastructure, time-series analysis, anomaly
+  detection, and real-world machine learning deployment.
+- Lecturer at ESPOL with more than five years of higher-education experience, teaching Distributed Systems,
+  Algorithms, and Data Structures.

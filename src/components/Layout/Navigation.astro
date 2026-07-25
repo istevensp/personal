@@ -1,0 +1,96 @@
+---
+const navItems = [
+  { label: 'Home', href: '/', i18n: 'nav.home' },
+  { label: 'News', href: '/news', i18n: 'nav.news' },
+  { label: 'About', href: '/about', i18n: 'nav.about' },
+  { label: 'Teaching', href: '/teaching', i18n: 'nav.teaching' },
+  { label: 'Projects', href: '/projects', i18n: 'nav.projects' },
+  { label: 'Publications', href: '/publications', i18n: 'nav.publications' },
+  { label: 'Experience', href: '/experience', i18n: 'nav.experience' },
+  { label: 'Contact Me', href: '/contact', i18n: 'nav.contact' },
+];
+
+const currentPath = Astro.url.pathname;
+function isActive(href: string) {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+---
+
+<nav aria-label="Main navigation" class="hidden lg:flex items-center gap-1">
+  {
+    navItems.map((item) => (
+      <a
+        href={item.href}
+        data-i18n={item.i18n}
+        aria-current={isActive(item.href) ? 'page' : undefined}
+        class:list={[
+          'rounded-md px-3 py-2 text-sm font-medium transition duration-fast',
+          isActive(item.href)
+            ? 'text-primary'
+            : 'text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800',
+        ]}
+      >
+        {item.label}
+      </a>
+    ))
+  }
+</nav>
+
+<button
+  id="mobile-nav-toggle"
+  type="button"
+  aria-label="Toggle navigation menu"
+  aria-expanded="false"
+  aria-controls="mobile-nav"
+  class="flex h-11 w-11 items-center justify-center rounded-md text-[var(--text-primary)] hover:bg-gray-100 dark:hover:bg-gray-800 lg:hidden"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="4" y1="6" x2="20" y2="6"></line>
+    <line x1="4" y1="12" x2="20" y2="12"></line>
+    <line x1="4" y1="18" x2="20" y2="18"></line>
+  </svg>
+</button>
+
+<nav
+  id="mobile-nav"
+  aria-label="Mobile navigation"
+  class="fixed inset-x-0 top-[64px] z-40 hidden flex-col gap-1 border-b border-[var(--border)] bg-[var(--bg-primary)] p-4 shadow-lg lg:hidden"
+>
+  {
+    navItems.map((item) => (
+      <a
+        href={item.href}
+        data-i18n={item.i18n}
+        aria-current={isActive(item.href) ? 'page' : undefined}
+        class:list={[
+          'min-h-[44px] rounded-md px-3 py-3 text-base font-medium transition duration-fast flex items-center',
+          isActive(item.href)
+            ? 'text-primary'
+            : 'text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800',
+        ]}
+      >
+        {item.label}
+      </a>
+    ))
+  }
+</nav>
+
+<script>
+  const toggle = document.getElementById('mobile-nav-toggle');
+  const menu = document.getElementById('mobile-nav');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = menu?.classList.toggle('hidden') === false;
+    toggle.setAttribute('aria-expanded', String(isOpen));
+    menu?.classList.toggle('flex', isOpen);
+  });
+
+  menu?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      menu.classList.add('hidden');
+      menu.classList.remove('flex');
+      toggle?.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>

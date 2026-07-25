@@ -1,0 +1,90 @@
+published:
+- id: ic2e-2025-hpc-edge-architectures
+  title: An Analysis of HPC and Edge Architectures in the Cloud
+  authors:
+  - Steven Santillan
+  - Cristina L. Abad
+  conference: 2025 IEEE International Conference on Cloud Engineering (IC2E 2025)
+  year: 2025
+  month: 9
+  status: Published
+  doi: null
+  links:
+    preprint: https://arxiv.org/abs/2508.01494
+    repository: https://github.com/disel-espol/hpc-and-edge-cloud-architectures
+  keywords:
+  - Cloud Computing
+  - High-Performance Computing
+  - Edge Computing
+  - AWS
+  - Cloud Architectures
+  abstract: Empirical characterization of HPC and edge components across a dataset of real-world AWS cloud
+    architectures.
+- id: isgt-la-2025-energy-efficiency
+  title: 'Predictive Monitoring of Energy Efficiency: Supervised Learning Case Study'
+  authors:
+  - Alberto Cruz
+  - Sandra Coello Suárez
+  - Steven Santillan Padilla
+  - Jose Cordova-Garcia
+  conference: 2025 IEEE PES Innovative Smart Grid Technologies Conference — Latin America (ISGT Latin
+    America)
+  year: 2025
+  month: 9
+  status: Published
+  doi: https://doi.org/10.1109/ISGTLA64895.2025.11371217
+  links:
+    doi: https://doi.org/10.1109/ISGTLA64895.2025.11371217
+  keywords:
+  - Energy Efficiency
+  - Machine Learning
+  - Predictive Monitoring
+  - Supervised Learning
+  abstract: '[PROPORCIONAR]'
+- id: sas-2024-hayiot
+  title: 'HayIoT: An IoT Standardization Architecture'
+  authors:
+  - Jocellyn Luna
+  - Steven Santillan Padilla
+  - Jose Zapata
+  - Francheska Iñiguez
+  conference: 2024 IEEE Sensors Applications Symposium (SAS 2024)
+  year: 2024
+  month: 7
+  status: Published
+  doi: https://doi.org/10.1109/SAS60918.2024.10636603
+  links:
+    doi: https://doi.org/10.1109/SAS60918.2024.10636603
+  keywords:
+  - Internet of Things
+  - Standardization
+  - Haystack
+  - Smart Buildings
+  abstract: IoT architecture that applies Haystack-based standardization to organize data from heterogeneous
+    devices in built environments.
+- id: sas-2021-fpga-weather-station
+  title: FPGA Based Meteorological Monitoring Station
+  authors:
+  - Victor Asanza
+  - Rebeca Estrada Pico
+  - Danny Torres
+  - Steven Santillan
+  - Juan Cadena
+  conference: 2021 IEEE Sensors Applications Symposium (SAS 2021)
+  year: 2021
+  month: 8
+  status: Published
+  doi: https://doi.org/10.1109/SAS51076.2021.9530151
+  links:
+    paper: https://ieeexplore.ieee.org/abstract/document/9530151
+    doi: https://doi.org/10.1109/SAS51076.2021.9530151
+    repository: https://github.com/vasanza/Weather-Monitoring-Station
+    dataset: https://doi.org/10.21227/mdfs-ya42
+  keywords:
+  - FPGA
+  - Meteorological Monitoring
+  - Embedded Systems
+  - Environmental Sensors
+  - Real-Time Data Acquisition
+  abstract: Embedded meteorological station using FPGA-based data acquisition and sensors for environmental
+    monitoring, supported by a web interface.

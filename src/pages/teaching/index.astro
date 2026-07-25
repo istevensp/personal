@@ -1,0 +1,187 @@
+---
+import BaseLayout from '../../components/Layout/BaseLayout.astro';
+import CourseCard from '../../components/Cards/CourseCard.astro';
+import { getEntry } from 'astro:content';
+
+const coursesEntry = await getEntry('courses', 'data');
+const evaluacionesEntry = await getEntry('evaluaciones', 'data');
+
+const courses = coursesEntry.data.courses;
+const evaluations = evaluacionesEntry.data.evaluations;
+
+// Historical record grouped straight from the SAAC evaluation export.
+// Kept separate from the curated `courses` list above rather than merged by
+// guessing a courseId/code match — several course names don't correspond
+// 1:1 (e.g. "Algorithms" has no matching SAAC course code in the export).
+const historicalByCode = new Map<string, { courseName: string; courseCode: string; records: typeof evaluations }>();
+for (const evaluation of evaluations) {
+  const key = evaluation.courseCode;
+  if (!historicalByCode.has(key)) {
+    historicalByCode.set(key, {
+      courseName: evaluation.courseName,
+      courseCode: evaluation.courseCode,
+      records: [],
+    });
+  }
+  historicalByCode.get(key)!.records.push(evaluation);
+}
+
+const areaLabels: Record<string, string> = {
+  CCPG: 'Computer Science',
+  TLMG: 'Telematics & Networks',
+};
+
+function areaFor(code: string) {
+  const prefix = code.match(/^[A-Z]+/)?.[0] ?? '';
+  return areaLabels[prefix] ?? 'Other';
+}
+
+const historicalCourses = Array.from(historicalByCode.values())
+  .map((group) => {
+    const records = group.records.sort((a, b) => b.year - a.year || b.term - a.term);
+    const distinctSemesters = new Set(records.map((r) => `${r.year}-${r.academicPeriod}`)).size;
+    const years = Array.from(new Set(records.map((r) => r.year))).sort((a, b) => b - a);
+    return { ...group, area: areaFor(group.courseCode), records, distinctSemesters, years };
+  })
+  .sort((a, b) => b.records[0].year - a.records[0].year);
+
+const areas = ['All', ...Array.from(new Set(historicalCourses.map((g) => g.area))).sort()];
+const years = ['All', ...Array.from(new Set(historicalCourses.flatMap((g) => g.years))).sort((a, b) => b - a)];
+---
+
+<BaseLayout title="Teaching" description="Courses taught and historical student evaluation records at ESPOL.">
+  <section class="px-4 py-2xl md:px-6 lg:px-12">
+    <div class="mx-auto flex max-w-container flex-col gap-3xl">
+      <div class="flex flex-col gap-4">
+        <h1>Teaching</h1>
+        <p class="max-w-2xl text-[var(--text-secondary)]">
+          Current and historical courses, with links to official SAAC student evaluation reports.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-6">
+        <h2>Current Courses</h2>
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {courses.map((course) => (
+            <CourseCard
+              name={course.name}
+              code={course.code}
+              level={course.level}
+              description={course.description}
+              topics={course.topics}
+              repositoryUrl={course.repositoryUrl}
+              semesters={course.semesters}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-6">
+        <h2>Historical Teaching Record</h2>
+        <p class="p-small max-w-2xl text-[var(--text-secondary)]">
+          Derived from {evaluations.length} SAAC evaluation reports (individual parallels/sections taught) across {historicalCourses.length} course codes (2021–2025), sorted by most recent year.
+        </p>
+
+        <div class="flex flex-col gap-3">
+          <div class="flex flex-wrap gap-2" role="group" aria-label="Filter historical courses by area" id="area-filters">
+            {areas.map((area, i) => (
+              <button
+                type="button"
+                data-area-filter={area}
+                aria-pressed={i === 0 ? 'true' : 'false'}
+                class:list={[
+                  'min-h-[44px] rounded-full px-4 py-2 text-sm font-medium transition duration-fast',
+                  i === 0
+                    ? 'bg-primary text-white'
+                    : 'border border-[var(--border)] text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800',
+                ]}
+              >
+                {area}
+              </button>
+            ))}
+          </div>
+
+          <div class="flex flex-wrap gap-2" role="group" aria-label="Filter historical courses by year" id="year-filters">
+            {years.map((year, i) => (
+              <button
+                type="button"
+                data-year-filter={year}
+                aria-pressed={i === 0 ? 'true' : 'false'}
+                class:list={[
+                  'min-h-[44px] rounded-full px-4 py-2 text-sm font-medium transition duration-fast',
+                  i === 0
+                    ? 'bg-secondary text-white'
+                    : 'border border-[var(--border)] text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800',
+                ]}
+              >
+                {year}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div id="historical-grid" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {historicalCourses.map((group) => (
+            <div data-area={group.area} data-years={group.years.join(' ')}>
+              <CourseCard
+                name={group.courseName}
+                code={group.courseCode}
+                level=""
+                description={`${group.records.length} parallel${group.records.length === 1 ? '' : 's'} taught across ${group.distinctSemesters} semester${group.distinctSemesters === 1 ? '' : 's'}.`}
+                topics={[]}
+                repositoryUrl=""
+                semesters={group.records.map((r) => ({
+                  semester: `${r.year}-${r.academicPeriod}`,
+                  parallel: r.parallel,
+                  evaluationUrl: r.evaluationUrl,
+                }))}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const areaFilterGroup = document.getElementById('area-filters');
+    const yearFilterGroup = document.getElementById('year-filters');
+    const grid = document.getElementById('historical-grid');
+
+    let currentArea = 'All';
+    let currentYear = 'All';
+
+    function applyFilters() {
+      grid?.querySelectorAll<HTMLElement>('[data-area]').forEach((card) => {
+        const areaMatch = currentArea === 'All' || card.dataset.area === currentArea;
+        const yearMatch = currentYear === 'All' || (card.dataset.years?.split(' ') ?? []).includes(currentYear);
+        card.classList.toggle('hidden', !(areaMatch && yearMatch));
+      });
+    }
+
+    function wireFilterGroup(
+      group: HTMLElement | null,
+      attr: string,
+      activeClass: string,
+      onSelect: (value: string) => void
+    ) {
+      group?.addEventListener('click', (e) => {
+        const button = (e.target as HTMLElement).closest<HTMLButtonElement>(`[data-${attr}]`);
+        if (!button) return;
+
+        group.querySelectorAll<HTMLButtonElement>(`[data-${attr}]`).forEach((b) => {
+          b.setAttribute('aria-pressed', 'false');
+          b.className = 'min-h-[44px] rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800';
+        });
+        button.setAttribute('aria-pressed', 'true');
+        button.className = `min-h-[44px] rounded-full ${activeClass} px-4 py-2 text-sm font-medium text-white`;
+
+        onSelect(button.dataset[attr === 'area-filter' ? 'areaFilter' : 'yearFilter'] ?? 'All');
+        applyFilters();
+      });
+    }
+
+    wireFilterGroup(areaFilterGroup, 'area-filter', 'bg-primary', (value) => (currentArea = value));
+    wireFilterGroup(yearFilterGroup, 'year-filter', 'bg-secondary', (value) => (currentYear = value));
+  </script>
+</BaseLayout>

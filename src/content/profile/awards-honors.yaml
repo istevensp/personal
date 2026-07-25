@@ -1,0 +1,36 @@
+awards:
+- id: oas-scholar
+  name: OAS Scholar
+  issuer: Organization of American States (OAS)
+  year: null
+  type: Scholarship
+  description: Scholarship awarded through the Organization of American States.
+  amount: null
+- id: funiber-scholar
+  name: FUNIBER Scholar
+  issuer: Iberoamerican University Foundation (FUNIBER)
+  year: null
+  type: Scholarship
+  description: Academic scholarship awarded through FUNIBER.
+  amount: null
+- id: top-graduate-telematics
+  name: Top Graduate in Telematics Engineering
+  issuer: Escuela Superior Politécnica del Litoral (ESPOL)
+  year: 2020
+  type: Honor
+  description: Top graduate of the 33rd Telematics Engineering cohort.
+  amount: null
+- id: philanthropic-medal
+  name: Philanthropic Medal
+  issuer: '[PROPORCIONAR]'
+  year: null
+  type: Award
+  description: Recognition for outstanding academic performance.
+  amount: null
+- id: niot-espol-founder-secretary
+  name: Founder and Former Secretary of the NIoT-ESPOL Technology Club
+  issuer: NIoT-ESPOL Technology Club
+  year: null
+  type: Recognition
+  description: Founding and leadership contribution to the NIoT-ESPOL technology community.
+  amount: null

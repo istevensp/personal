@@ -1,0 +1,27 @@
+---
+import Navigation from './Navigation.astro';
+import ThemeToggle from '../Common/ThemeToggle.jsx';
+import LanguageSwitcher from '../Common/LanguageSwitcher.jsx';
+import SearchBar from '../Common/SearchBar.jsx';
+import { getEntry } from 'astro:content';
+
+const personalEntry = await getEntry('personal', 'data');
+const personal = personalEntry.data;
+const shortName = `${personal.firstName} ${personal.lastName.split(' ')[0]}`;
+---
+
+<header class="sticky top-0 z-30 h-16 border-b border-[var(--border)] bg-[var(--bg-primary)]/95 backdrop-blur">
+  <div class="mx-auto flex h-16 max-w-container items-center justify-between gap-4 px-4 md:px-6 lg:px-12">
+    <a href="/" class="shrink-0 text-lg font-semibold text-[var(--text-primary)] hover:text-primary transition duration-fast">
+      {shortName}
+    </a>
+
+    <Navigation />
+
+    <div class="flex items-center gap-1">
+      <SearchBar client:load />
+      <LanguageSwitcher client:load />
+      <ThemeToggle client:load />
+    </div>
+  </div>
+</header>

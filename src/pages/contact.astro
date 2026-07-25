@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../components/Layout/BaseLayout.astro';
+import { getEntry } from 'astro:content';
+
+const personalEntry = await getEntry('personal', 'data');
+const personal = personalEntry.data;
+---
+
+<BaseLayout title="Contact Me" description="Get in touch via email or LinkedIn, and download the CV.">
+  <section class="px-4 py-3xl md:px-6 lg:px-12">
+    <div class="mx-auto flex max-w-container flex-col items-start gap-4">
+      <h1>Contact Me</h1>
+      <p class="max-w-xl text-[var(--text-secondary)]">
+        Feel free to reach out through email or LinkedIn.
+      </p>
+      <div class="flex flex-wrap gap-3 pt-2">
+        <a href={`mailto:${personal.email.institutional}`} class="btn-primary" data-i18n="common.email">
+          Email
+        </a>
+        <a href={personal.socials.linkedin} target="_blank" rel="noopener noreferrer" class="btn-secondary" data-i18n="common.linkedin">
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="cv" class="px-4 pb-3xl md:px-6 lg:px-12">
+    <div class="mx-auto flex max-w-container flex-col items-start gap-4 border-t border-[var(--border)] pt-2xl">
+      <h2>CV &amp; Resume</h2>
+      <p class="max-w-xl text-[var(--text-secondary)]">
+        Prefer the full picture before reaching out? Download the most recent industry and academic CVs as PDF.
+      </p>
+      <div class="flex flex-wrap gap-3 pt-2">
+        <a
+          href="https://github.com/istevensp/personal/raw/main/docs/cv-industry.pdf"
+          class="btn-primary"
+          data-i18n="common.downloadIndustryCv"
+        >
+          Download Industry CV
+        </a>
+        <a
+          href="https://github.com/istevensp/personal/raw/main/docs/cv-academic.pdf"
+          class="btn-secondary"
+          data-i18n="common.downloadAcademicCv"
+        >
+          Download Academic CV
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,45 @@
+researchInterests:
+- Cloud Computing
+- Distributed Systems
+- Artificial Intelligence
+- Machine Learning
+- Internet of Things
+- Cloud Architecture Education
+- Infrastructure and Cybersecurity
+- High-Performance Computing (HPC)
+- Edge Computing
+- Serverless Architecture
+technicalSkills:
+  cloud:
+  - AWS
+  - Azure
+  - GCP
+  - Serverless Computing
+  - AWS Lambda
+  - IaaS
+  - PaaS
+  - SaaS
+  cloudSecurityAndGRC:
+  - Identity and Access Management (IAM)
+  - AWS CloudTrail
+  - AWS Config
+  - AWS Shield
+  - ISO 27001
+  - ISO 20000
+  infrastructureAndNetworking:
+  - Linux
+  - Virtualization
+  - Docker
+  - Routing and Switching
+  - Software-Defined Networking (SDN)
+  - LPWAN
+  developmentDataAndIoT:
+  - Python
+  - Java
+  - C
+  - C++
+  - JavaScript
+  - SQL
+  - Internet of Things
+  - TensorFlow
+  - PyTorch

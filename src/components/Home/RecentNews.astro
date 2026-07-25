@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content';
+import NewsCard from '../Cards/NewsCard.astro';
+
+const items = await getCollection('news', ({ data }) => !data.draft);
+const recent = items.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 4);
+---
+
+<section class="bg-[var(--bg-secondary)] px-4 py-2xl md:px-6 lg:px-12">
+  <div class="mx-auto flex max-w-container flex-col gap-6">
+    <div class="flex items-center justify-between gap-4">
+      <h2>Recent News</h2>
+      <a href="/news" class="link text-sm" data-i18n="common.viewAllNews">View all news</a>
+    </div>
+
+    {
+      recent.length > 0 ? (
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {recent.map((item) => (
+            <NewsCard
+              href={`/news/${item.data.slug}`}
+              title={item.data.title}
+              date={item.data.date}
+              category={item.data.category}
+              featured={item.data.featured}
+            />
+          ))}
+        </div>
+      ) : (
+        <p class="p-small text-[var(--text-secondary)]">No news published yet.</p>
+      )
+    }
+  </div>
+</section>

@@ -1,0 +1,23 @@
+---
+import { getEntry } from 'astro:content';
+
+const personalEntry = await getEntry('personal', 'data');
+const personal = personalEntry.data;
+---
+
+<section class="px-4 py-2xl md:px-6 lg:px-12">
+  <div class="mx-auto flex max-w-container flex-col items-start gap-4 rounded-xl bg-primary/10 p-xl md:p-2xl">
+    <h2 data-i18n="common.getInTouch">Get in touch</h2>
+    <p class="max-w-xl text-[var(--text-secondary)]">
+      Feel free to reach out through email or LinkedIn.
+    </p>
+    <div class="flex flex-wrap gap-3">
+      <a href={`mailto:${personal.email.institutional}`} class="btn-primary" data-i18n="common.email">
+        Email
+      </a>
+      <a href={personal.socials.linkedin} target="_blank" rel="noopener noreferrer" class="btn-secondary" data-i18n="common.linkedin">
+        LinkedIn
+      </a>
+    </div>
+  </div>
+</section>

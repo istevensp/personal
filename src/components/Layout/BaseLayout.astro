@@ -1,0 +1,104 @@
+---
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import '../../styles/tailwind.css';
+import { strings } from '../../i18n/strings';
+
+export interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article';
+  publishedDate?: string;
+  jsonLd?: Record<string, unknown>;
+}
+
+const {
+  title,
+  description,
+  image = '/favicon.svg',
+  type = 'website',
+  publishedDate,
+  jsonLd,
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+const ogImageUrl = new URL(image, Astro.site);
+const isHome = Astro.url.pathname === '/';
+const pageTitle = isHome ? title : `${title} · Steven Santillan`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:url" content={canonicalUrl} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    {publishedDate && <meta property="article:published_time" content={publishedDate} />}
+
+    {
+      jsonLd && (
+        <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+      )
+    }
+
+    <script type="application/json" id="i18n-dict" set:html={JSON.stringify(strings)} />
+
+    <script is:inline>
+      // Applied before paint to avoid a flash of the wrong theme.
+      (function () {
+        var stored = localStorage.getItem('theme');
+        var theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+        document.documentElement.classList.toggle('light', theme === 'light');
+
+        var lang = localStorage.getItem('lang') || 'en';
+        document.documentElement.lang = lang;
+      })();
+    </script>
+  </head>
+  <body>
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-white">
+      Skip to content
+    </a>
+
+    <Header />
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <script>
+      const dict = JSON.parse(document.getElementById('i18n-dict').textContent);
+
+      function applyTranslations(lang) {
+        const table = dict[lang] ?? dict.en;
+        document.querySelectorAll('[data-i18n]').forEach((el) => {
+          const key = el.getAttribute('data-i18n');
+          if (key && table[key]) el.textContent = table[key];
+        });
+      }
+
+      applyTranslations(localStorage.getItem('lang') || 'en');
+      window.addEventListener('languagechange', (e) => applyTranslations(e.detail));
+    </script>
+  </body>
+</html>

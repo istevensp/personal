@@ -1,0 +1,9 @@
+# PENDING: user must provide thesis advisory records.
+# Structure per entry:
+#   studentName: "[nombre]"
+#   thesisTitle: "[título]"
+#   year: 2024
+#   institution: ESPOL
+#   role: Advisor | Co-Advisor
+#   status: completed | in-progress
+thesisAdvisory: []

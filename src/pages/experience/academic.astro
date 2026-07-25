@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../../components/Layout/BaseLayout.astro';
+import ExperienceCard from '../../components/Cards/ExperienceCard.astro';
+import { getEntry } from 'astro:content';
+
+const academicEntry = await getEntry('academicExperience', 'data');
+const thesisEntry = await getEntry('thesisAdvisory', 'data');
+
+const academic = [...academicEntry.data.academicExperience].sort((a, b) => b.startDate.localeCompare(a.startDate));
+const thesisAdvisory = thesisEntry.data.thesisAdvisory;
+---
+
+<BaseLayout title="Academic Experience" description="Academic experience and thesis advisory record.">
+  <section class="px-4 py-2xl md:px-6 lg:px-12">
+    <div class="mx-auto flex max-w-container flex-col gap-3xl">
+      <div class="flex flex-col gap-4">
+        <a href="/experience" class="link w-fit text-sm">&larr; Back to Experience</a>
+        <h1>Academic Experience</h1>
+      </div>
+
+      <div class="flex flex-col gap-4">
+        {academic.map((exp) => (
+          <ExperienceCard
+            title={exp.title}
+            organization={exp.institution}
+            location={exp.location}
+            startDate={exp.startDate}
+            endDate={exp.endDate}
+            current={exp.current}
+            description={exp.description}
+            highlights={exp.highlights}
+          />
+        ))}
+      </div>
+
+      <div class="flex flex-col gap-6">
+        <h2>Thesis Advisory</h2>
+        {
+          thesisAdvisory.length > 0 ? (
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {thesisAdvisory.map((t) => (
+                <div class="card flex flex-col gap-1">
+                  <span class="badge w-fit">{t.role}</span>
+                  <h4 class="text-lg font-semibold text-[var(--text-primary)]">{t.thesisTitle}</h4>
+                  <p class="p-small text-[var(--text-secondary)]">{t.studentName}</p>
+                  <p class="p-tiny text-[var(--text-secondary)]">{t.institution} &middot; {t.year}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p class="p-small text-[var(--text-secondary)]">No thesis advisory records on file yet.</p>
+          )
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../components/Layout/BaseLayout.astro';
+import HeroSection from '../components/Home/HeroSection.astro';
+import FeaturedProjects from '../components/Home/FeaturedProjects.astro';
+import FeaturedPublications from '../components/Home/FeaturedPublications.astro';
+import FeaturedAwards from '../components/Home/FeaturedAwards.astro';
+import RecentNews from '../components/Home/RecentNews.astro';
+import ContactCTA from '../components/Home/ContactCTA.astro';
+import { getEntry } from 'astro:content';
+
+const personalEntry = await getEntry('personal', 'data');
+const personal = personalEntry.data;
+const shortName = `${personal.firstName} ${personal.lastName.split(' ')[0]}`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: personal.fullName,
+  url: personal.website,
+  email: personal.email.institutional,
+  affiliation: { '@type': 'Organization', name: 'ESPOL' },
+};
+---
+
+<BaseLayout title={shortName} description={personal.summary} jsonLd={jsonLd}>
+  <HeroSection />
+  <FeaturedProjects />
+  <FeaturedPublications />
+  <FeaturedAwards />
+  <RecentNews />
+  <ContactCTA />
+</BaseLayout>

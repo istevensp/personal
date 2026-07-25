@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../../components/Layout/BaseLayout.astro';
+import ExperienceCard from '../../components/Cards/ExperienceCard.astro';
+import { getEntry } from 'astro:content';
+
+const academicEntry = await getEntry('academicExperience', 'data');
+const professionalEntry = await getEntry('professionalExperience', 'data');
+
+const academic = [...academicEntry.data.academicExperience].sort((a, b) => b.startDate.localeCompare(a.startDate));
+const professional = [...professionalEntry.data.professionalExperience].sort((a, b) => b.startDate.localeCompare(a.startDate));
+---
+
+<BaseLayout title="Experience" description="Academic and professional experience.">
+  <section class="px-4 py-2xl md:px-6 lg:px-12">
+    <div class="mx-auto flex max-w-container flex-col gap-6">
+      <h1>Experience</h1>
+
+      <div class="flex gap-2" role="tablist" aria-label="Experience type">
+        <button
+          type="button"
+          role="tab"
+          aria-selected="true"
+          aria-controls="panel-academic"
+          id="tab-academic"
+          data-tab="academic"
+          class="min-h-[44px] rounded-md bg-primary px-4 py-2 text-sm font-medium text-white"
+        >
+          Academic
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-professional"
+          id="tab-professional"
+          data-tab="professional"
+          class="min-h-[44px] rounded-md border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800"
+        >
+          Professional
+        </button>
+      </div>
+
+      <div id="panel-academic" role="tabpanel" aria-labelledby="tab-academic" class="flex flex-col gap-4">
+        {academic.map((exp) => (
+          <ExperienceCard
+            title={exp.title}
+            organization={exp.institution}
+            location={exp.location}
+            startDate={exp.startDate}
+            endDate={exp.endDate}
+            current={exp.current}
+            description={exp.description}
+            highlights={exp.highlights}
+          />
+        ))}
+        <a href="/experience/academic" class="link w-fit text-sm">See full academic breakdown</a>
+      </div>
+
+      <div id="panel-professional" role="tabpanel" aria-labelledby="tab-professional" class="hidden flex-col gap-4">
+        {professional.map((exp) => (
+          <ExperienceCard
+            title={exp.title}
+            organization={exp.organization}
+            location={exp.location}
+            startDate={exp.startDate}
+            endDate={exp.endDate}
+            current={exp.current}
+            description={exp.description}
+            highlights={exp.highlights}
+          />
+        ))}
+        <a href="/experience/professional" class="link w-fit text-sm">See full professional breakdown</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const tabs = document.querySelectorAll<HTMLButtonElement>('[data-tab]');
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((t) => {
+          t.setAttribute('aria-selected', 'false');
+          t.className = 'min-h-[44px] rounded-md border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800';
+        });
+        tab.setAttribute('aria-selected', 'true');
+        tab.className = 'min-h-[44px] rounded-md bg-primary px-4 py-2 text-sm font-medium text-white';
+
+        document.getElementById('panel-academic')?.classList.toggle('hidden', tab.dataset.tab !== 'academic');
+        document.getElementById('panel-academic')?.classList.toggle('flex', tab.dataset.tab === 'academic');
+        document.getElementById('panel-professional')?.classList.toggle('hidden', tab.dataset.tab !== 'professional');
+        document.getElementById('panel-professional')?.classList.toggle('flex', tab.dataset.tab === 'professional');
+      });
+    });
+  </script>
+</BaseLayout>

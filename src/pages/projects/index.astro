@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../../components/Layout/BaseLayout.astro';
+import ProjectCard from '../../components/Cards/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const research = (await getCollection('projectsResearch', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.year - a.data.year
+);
+const community = (await getCollection('projectsCommunity', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.year - a.data.year
+);
+---
+
+<BaseLayout title="Projects" description="Research and community-engagement projects.">
+  <section class="px-4 py-2xl md:px-6 lg:px-12">
+    <div class="mx-auto flex max-w-container flex-col gap-3xl">
+      <h1>Projects</h1>
+
+      <div class="flex flex-col gap-6">
+        <h2>Research</h2>
+        {
+          research.length > 0 ? (
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {research.map((p) => (
+                <ProjectCard
+                  href={`/projects/research/${p.data.projectId}`}
+                  name={p.data.name}
+                  year={p.data.year}
+                  myRole={p.data.myRole}
+                  excerpt={p.data.problem}
+                  type="research"
+                  current={p.data.current}
+                  featured={p.data.featured}
+                />
+              ))}
+            </div>
+          ) : (
+            <p class="p-small text-[var(--text-secondary)]">No research projects published yet.</p>
+          )
+        }
+      </div>
+
+      <div class="flex flex-col gap-6">
+        <h2>Community Engagement</h2>
+        {
+          community.length > 0 ? (
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {community.map((p) => (
+                <ProjectCard
+                  href={`/projects/community/${p.data.projectId}`}
+                  name={p.data.name}
+                  year={p.data.year}
+                  myRole={p.data.myRole}
+                  excerpt={p.data.description}
+                  type="community"
+                  current={p.data.current}
+                  featured={p.data.featured}
+                />
+              ))}
+            </div>
+          ) : (
+            <p class="p-small text-[var(--text-secondary)]">No community projects published yet.</p>
+          )
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,71 @@
+professionalExperience:
+- id: farmagro-it-cybersecurity-consultant
+  title: IT & Cybersecurity Consultant
+  organization: Farmagro S.A.
+  location: '[PROPORCIONAR]'
+  startDate: 2022-09
+  endDate: null
+  current: true
+  description: IT and cybersecurity consulting focused on governance, risk, compliance, and controls.
+  highlights:
+  - Supports initiatives to improve IT infrastructure and services.
+  - Advises on cybersecurity governance, risk, compliance, and controls.
+  - Supports security and operational improvement initiatives.
+- id: registro-civil-national-director
+  title: National Director of IT Infrastructure & Operations
+  organization: General Directorate of Civil Registry, Identification and ID Services
+  location: Ecuador
+  startDate: 2024-02
+  endDate: 2025-02
+  current: false
+  description: Leadership of national IT infrastructure and operations.
+  highlights:
+  - Led service continuity, IT services, servers, and network operations.
+  - Managed modernization and migration initiatives.
+  - Promoted operational efficiency improvements.
+- id: anubis-iot-solutions-architect
+  title: IoT Systems Solutions Architect
+  organization: Anubis S.A.
+  location: '[PROPORCIONAR]'
+  startDate: 2021-11
+  endDate: 2023-04
+  current: false
+  description: Architecture and design of integrated IoT solutions.
+  highlights:
+  - Designed IoT solution architectures.
+  - Integrated sensors, connectivity, and backend components.
+- id: sonda-digital-transformation-project-lead
+  title: 'Project Lead: Digital Transformation for the Municipality of Guayaquil'
+  organization: SONDA
+  location: Guayaquil, Ecuador
+  startDate: 2020-09
+  endDate: 2021-09
+  current: false
+  description: Project leadership for a municipal digital transformation initiative.
+  highlights:
+  - Led project activities and stakeholder coordination.
+  - Tracked deliverables.
+  - Supported operational continuity.
+- id: fict-espol-database-backend
+  title: Database Administrator and Backend Developer
+  organization: FICT-ESPOL
+  location: Guayaquil, Ecuador
+  startDate: 2019-02
+  endDate: 2020-01
+  current: false
+  description: Database administration and backend development.
+  highlights:
+  - Administered databases.
+  - Developed backend components.
+- id: gladwell-it-technician
+  title: IT Technician
+  organization: GLADWELL S.A.
+  location: '[PROPORCIONAR]'
+  startDate: 2015-01
+  endDate: 2019-04
+  current: false
+  description: IT support, infrastructure maintenance, and operational assistance.
+  highlights:
+  - Provided technical support.
+  - Performed corrective and preventive maintenance.
+  - Supported daily IT operations.

@@ -1,0 +1,65 @@
+certifications:
+- id: aws-security-foundations-educator
+  name: AWS Security Foundations — Educator
+  issuer: Amazon Web Services (AWS Academy)
+  issueDate: 2024-12
+  expiryDate: null
+  credentialId: '[PROPORCIONAR]'
+  credentialUrl: '[PROPORCIONAR]'
+  description: AWS Academy educator credential focused on cloud security foundations.
+- id: aws-cloud-architecting-educator
+  name: AWS Cloud Architecting — Educator
+  issuer: Amazon Web Services (AWS Academy)
+  issueDate: 2024-08
+  expiryDate: null
+  credentialId: '[PROPORCIONAR]'
+  credentialUrl: '[PROPORCIONAR]'
+  description: AWS Academy educator credential for cloud architecture instruction.
+- id: aws-cloud-foundations-educator
+  name: AWS Cloud Foundations — Educator
+  issuer: Amazon Web Services (AWS Academy)
+  issueDate: 2024-06
+  expiryDate: null
+  credentialId: '[PROPORCIONAR]'
+  credentialUrl: '[PROPORCIONAR]'
+  description: AWS Academy educator credential for cloud computing foundations.
+- id: aws-data-engineering-educator
+  name: AWS Data Engineering — Educator
+  issuer: Amazon Web Services (AWS Academy)
+  issueDate: 2024-03
+  expiryDate: null
+  credentialId: '[PROPORCIONAR]'
+  credentialUrl: '[PROPORCIONAR]'
+  description: AWS Academy educator credential focused on cloud data engineering.
+- id: aws-academy-educator
+  name: AWS Academy Accredited Educator
+  issuer: Amazon Web Services (AWS Academy)
+  issueDate: 2024-01
+  expiryDate: null
+  credentialId: '[PROPORCIONAR]'
+  credentialUrl: '[PROPORCIONAR]'
+  description: Official accreditation to deliver AWS Academy educational content.
+- id: sdn3x-deployment
+  name: 'SDN3x: SDN Deployment'
+  issuer: Curtin University
+  issueDate: 2022-09
+  expiryDate: null
+  credentialId: '[PROPORCIONAR]'
+  credentialUrl: '[PROPORCIONAR]'
+  description: Specialized training in software-defined networking deployment.
+- id: sdn2x-access-security
+  name: 'SDN2x: SDN Access Security'
+  issuer: Curtin University
+  issueDate: 2022-09
+  expiryDate: null
+  credentialId: '[PROPORCIONAR]'
+  credentialUrl: '[PROPORCIONAR]'
+  description: Specialized training in SDN access security.
+- id: sdn1x-introduction
+  name: 'SDN1x: Introduction to SDN'
+  issuer: Curtin University
+  issueDate: 2022-09
+  expiryDate: null
+  credentialId: '[PROPORCIONAR]'
+  credentialUrl: '[PROPORCIONAR]'
+  description: Foundational training in software-defined networking.

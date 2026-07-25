@@ -1,0 +1,50 @@
+degrees:
+- id: phd-applied-computational-sciences
+  level: PhD Candidate
+  field: Applied Computational Sciences
+  institution: Escuela Superior Politécnica del Litoral (ESPOL)
+  location: Guayaquil, Ecuador
+  startDate: 2024-01
+  endDate: null
+  current: true
+  advisor: Cristina L. Abad
+  description: Doctoral research in applied computational sciences, with emphasis on cloud architecture
+    analysis, reproducibility, and synthetic generation.
+- id: msc-artificial-intelligence
+  level: Master of Science
+  field: Artificial Intelligence
+  institution: Università degli Studi Guglielmo Marconi
+  location: Italy
+  startDate: 2025-01
+  endDate: 2026-12
+  current: false
+  status: Degree registration in progress
+  description: Focus on artificial intelligence, machine learning, deep learning, and reinforcement learning.
+- id: msc-strategic-telecommunications-management
+  level: Master of Science
+  field: Strategic Telecommunications Management
+  institution: Universidad Internacional Iberoamericana
+  location: Mexico
+  startDate: 2022-01
+  endDate: 2024-12
+  current: false
+  description: Focus on strategic management, planning, telecommunications, and IT.
+- id: msc-cybersecurity-management
+  level: Master of Science
+  field: Cybersecurity Management
+  institution: Università degli Studi Guglielmo Marconi
+  location: Italy
+  startDate: 2022-01
+  endDate: 2023-12
+  current: false
+  description: Focus on cybersecurity leadership, cloud security, and risk management.
+- id: beng-telematics-engineering
+  level: Bachelor of Engineering
+  field: Telematics Engineering
+  institution: Escuela Superior Politécnica del Litoral (ESPOL)
+  location: Guayaquil, Ecuador
+  startDate: 2015-01
+  endDate: 2020-12
+  current: false
+  description: Focus on networks, systems, software, and telecommunications. Graduated as the top student
+    of the 33rd cohort.

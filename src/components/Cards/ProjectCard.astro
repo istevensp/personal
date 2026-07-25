@@ -1,0 +1,29 @@
+---
+export interface Props {
+  href: string;
+  name: string;
+  year: number;
+  myRole: string;
+  excerpt: string;
+  type: 'research' | 'community';
+  current: boolean;
+  featured?: boolean;
+}
+
+const { href, name, year, myRole, excerpt, type, current, featured = false } = Astro.props;
+---
+
+<a href={href} class="card animate-fade-in flex flex-col gap-3 no-underline">
+  <div class="flex flex-wrap items-center gap-2">
+    <span class:list={['badge', type === 'research' ? 'badge-success' : '']}>
+      {type === 'research' ? 'Research' : 'Community'}
+    </span>
+    {current && <span class="badge badge-warning">Ongoing</span>}
+    {featured && <span class="badge">Featured</span>}
+    <span class="p-tiny ml-auto text-[var(--text-secondary)]">{year}</span>
+  </div>
+
+  <h4 class="text-xl font-semibold text-[var(--text-primary)]">{name}</h4>
+  <p class="p-small text-[var(--text-secondary)]">{myRole}</p>
+  <p class="p-small line-clamp-3 text-[var(--text-secondary)]">{excerpt}</p>
+</a>

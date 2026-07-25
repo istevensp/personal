@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../components/Layout/BaseLayout.astro';
+import { getEntry } from 'astro:content';
+
+const personalEntry = await getEntry('personal', 'data');
+const educationEntry = await getEntry('education', 'data');
+const interestsEntry = await getEntry('interests', 'data');
+const certificationsEntry = await getEntry('certifications', 'data');
+const awardsEntry = await getEntry('awardsHonors', 'data');
+
+const personal = personalEntry.data;
+const degrees = educationEntry.data.degrees;
+const { researchInterests, technicalSkills } = interestsEntry.data;
+const certifications = certificationsEntry.data.certifications;
+const awards = awardsEntry.data.awards;
+
+function formatMonth(value: string | null) {
+  if (!value) return 'Present';
+  const [year, month] = value.split('-').map(Number);
+  return new Date(year, (month ?? 1) - 1).toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+}
+---
+
+<BaseLayout title="About" description={personal.summary}>
+  <section class="px-4 py-2xl md:px-6 lg:px-12">
+    <div class="mx-auto flex max-w-container flex-col gap-3xl">
+      <div class="flex flex-col gap-4">
+        <h1>About</h1>
+        <p class="max-w-3xl text-lg text-[var(--text-secondary)]">{personal.summary}</p>
+        <ul class="flex flex-col gap-2">
+          {personal.profile.map((line: string) => (
+            <li class="p-small flex gap-2 text-[var(--text-secondary)]">
+              <span class="text-primary" aria-hidden="true">•</span>
+              {line}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="flex flex-col gap-6">
+        <h2>Education</h2>
+        <div class="flex flex-col gap-4">
+          {degrees.map((d) => (
+            <div class="card flex flex-col gap-1">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <h4 class="text-xl font-semibold text-[var(--text-primary)]">{d.level} · {d.field}</h4>
+                {d.current && <span class="badge badge-warning">In progress</span>}
+              </div>
+              <p class="p-small font-medium text-[var(--text-secondary)]">{d.institution}</p>
+              <p class="p-tiny text-[var(--text-secondary)]">
+                {d.location} &middot; {formatMonth(d.startDate)} – {formatMonth(d.endDate)}
+              </p>
+              {d.advisor && <p class="p-tiny text-[var(--text-secondary)]">Advisor: {d.advisor}</p>}
+              {d.status && <p class="p-tiny text-[var(--text-secondary)]">{d.status}</p>}
+              <p class="p-small text-[var(--text-secondary)]">{d.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-6">
+        <h2>Research Interests</h2>
+        <div class="flex flex-wrap gap-2">
+          {researchInterests.map((interest: string) => (
+            <span class="badge">{interest}</span>
+          ))}
+        </div>
+
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {Object.entries(technicalSkills).map(([group, skills]) => (
+            <div class="card">
+              <h4 class="mb-2 text-lg font-semibold capitalize text-[var(--text-primary)]">
+                {group.replace(/([a-z])([A-Z])/g, '$1 $2')}
+              </h4>
+              <div class="flex flex-wrap gap-2">
+                {(skills as string[]).map((skill) => (
+                  <span class="badge">{skill}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-6">
+        <h2>Certifications</h2>
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {certifications.map((cert) => (
+            <div class="card flex flex-col gap-1">
+              <h4 class="text-lg font-semibold text-[var(--text-primary)]">{cert.name}</h4>
+              <p class="p-small text-[var(--text-secondary)]">{cert.issuer}</p>
+              <p class="p-tiny text-[var(--text-secondary)]">{cert.issueDate}</p>
+              <p class="p-small text-[var(--text-secondary)]">{cert.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-6">
+        <h2>Honors &amp; Awards</h2>
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {awards.map((award) => (
+            <div class="card flex flex-col gap-1">
+              <span class="badge w-fit">{award.type}</span>
+              <h4 class="text-lg font-semibold text-[var(--text-primary)]">{award.name}</h4>
+              <p class="p-small text-[var(--text-secondary)]">{award.issuer}</p>
+              <p class="p-small text-[var(--text-secondary)]">{award.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

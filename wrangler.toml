@@ -1,0 +1,19 @@
+name = "istevensp-personal"
+main = "./dist/_worker.js/index.js"
+compatibility_date = "2024-12-19"
+compatibility_flags = ["nodejs_compat"]
+
+# account_id is intentionally omitted — provided via CLOUDFLARE_ACCOUNT_ID
+# in GitHub Actions secrets / local `wrangler login` session, never committed.
+
+[assets]
+binding = "ASSETS"
+directory = "./dist"
+
+[[routes]]
+pattern = "stevensantillan.com/*"
+zone_name = "stevensantillan.com"
+custom_domain = true
+
+[build]
+command = "npm run build"

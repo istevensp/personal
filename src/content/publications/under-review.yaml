@@ -1,0 +1,44 @@
+underReview:
+- id: workload-serverless-hpc-edge-analysis
+  title: 'Workload- and Serverless-Aware Analysis of HPC and Edge Architectures in the Cloud: Empirical
+    Insights and Design Trade-offs'
+  authors:
+  - Steven Santillan Padilla
+  - '[PROPORCIONAR AUTORES RESTANTES]'
+  journal: International Journal of Networked and Distributed Computing
+  year: 2026
+  submittedDate: '[PROPORCIONAR]'
+  status: Under Review
+  expectedPublicationDate: null
+  links:
+    preprint: '[PROPORCIONAR]'
+    repository: https://github.com/disel-espol/hpc-and-edge-cloud-architectures
+  keywords:
+  - Cloud Architecture
+  - High-Performance Computing
+  - Edge Computing
+  - Serverless Computing
+  - Workload Analysis
+  abstract: '[PROPORCIONAR]'
+- id: oceans-2026-artisanal-fishing-iot
+  title: Design and Implementation of a Low-Cost IoT System for Monitoring and Management of Artisanal
+    Fishing Vessels with GPS Tracking, Temperature Sensing, Offline-Capable Mobile Application, and Economic
+    Feasibility Analysis
+  authors:
+  - Steven Santillan Padilla
+  - '[PROPORCIONAR AUTORES RESTANTES]'
+  journal: OCEANS 2026
+  year: 2026
+  submittedDate: '[PROPORCIONAR]'
+  status: Under Review
+  expectedPublicationDate: null
+  links:
+    preprint: '[PROPORCIONAR]'
+    repository: '[PROPORCIONAR]'
+  keywords:
+  - Internet of Things
+  - Artisanal Fishing
+  - GPS Tracking
+  - Temperature Monitoring
+  - Offline Mobile Applications
+  abstract: '[PROPORCIONAR]'

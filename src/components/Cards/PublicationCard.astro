@@ -1,0 +1,37 @@
+---
+export interface Props {
+  href: string;
+  title: string;
+  authors: string[];
+  venue: string;
+  year: number;
+  status: string;
+  keywords: string[];
+}
+
+const { href, title, authors, venue, year, status, keywords } = Astro.props;
+
+const statusBadgeClass =
+  status === 'Published' ? 'badge-success' : status === 'Accepted' ? 'badge-warning' : '';
+---
+
+<a href={href} class="card animate-fade-in flex flex-col gap-3 no-underline">
+  <div class="flex flex-wrap items-center gap-2">
+    <span class:list={['badge', statusBadgeClass]}>{status}</span>
+    <span class="p-tiny ml-auto text-[var(--text-secondary)]">{year}</span>
+  </div>
+
+  <h4 class="text-xl font-semibold text-[var(--text-primary)]">{title}</h4>
+  <p class="p-small text-[var(--text-secondary)]">{authors.join(', ')}</p>
+  <p class="p-small italic text-[var(--text-secondary)]">{venue}</p>
+
+  {
+    keywords.length > 0 && (
+      <div class="flex flex-wrap gap-2">
+        {keywords.slice(0, 4).map((k) => (
+          <span class="badge">{k}</span>
+        ))}
+      </div>
+    )
+  }
+</a>

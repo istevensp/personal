@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../../../components/Layout/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+const { slug } = Astro.params;
+const entries = await getCollection('projectsCommunity', ({ data }) => !data.draft);
+const entry = entries.find((e) => e.data.projectId === slug);
+
+if (!entry) {
+  Astro.response.status = 404;
+}
+
+const Content = entry ? (await render(entry)).Content : null;
+const project = entry?.data;
+
+function formatMonth(value: string | null) {
+  if (!value) return 'Present';
+  const [year, month] = value.split('-').map(Number);
+  return new Date(year, (month ?? 1) - 1).toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+}
+---
+
+<BaseLayout
+  title={project?.name ?? 'Project not found'}
+  description={project?.description ?? 'This project could not be found.'}
+>
+  {
+    project ? (
+      <article class="px-4 py-2xl md:px-6 lg:px-12">
+        <div class="mx-auto flex max-w-3xl flex-col gap-6">
+          <a href="/projects" class="link w-fit text-sm">&larr; Back to Projects</a>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="badge">Community</span>
+            {project.current && <span class="badge badge-warning">Ongoing</span>}
+            <span class="p-tiny text-[var(--text-secondary)]">{project.year}</span>
+          </div>
+
+          <h1>{project.name}</h1>
+
+          <div class="flex flex-wrap gap-4 text-sm text-[var(--text-secondary)]">
+            <span>Role: {project.myRole}</span>
+            <span>{formatMonth(project.startDate)} – {formatMonth(project.endDate)}</span>
+          </div>
+
+          <div class="prose-content flex flex-col gap-4">
+            {Content && <Content />}
+          </div>
+
+          {project.links && Object.keys(project.links).length > 0 && (
+            <div class="flex flex-wrap gap-3">
+              {Object.entries(project.links).map(([label, url]) => (
+                <a href={url as string} target="_blank" rel="noopener noreferrer" class="link text-sm capitalize">
+                  {label}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+      </article>
+    ) : (
+      <div class="flex min-h-[50vh] flex-col items-center justify-center gap-4 px-4 text-center">
+        <h1>Project not found</h1>
+        <a href="/projects" class="btn-primary">Back to Projects</a>
+      </div>
+    )
+  }
+</BaseLayout>

@@ -1,0 +1,27 @@
+---
+export interface Props {
+  href: string;
+  title: string;
+  date: Date;
+  category: string;
+  featured?: boolean;
+}
+
+const { href, title, date, category, featured = false } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<a href={href} class="card animate-fade-in flex flex-col gap-3 no-underline">
+  <div class="flex items-center gap-2">
+    <span class="badge">{category}</span>
+    {featured && <span class="badge badge-success">Featured</span>}
+  </div>
+
+  <h4 class="text-xl font-semibold text-[var(--text-primary)]">{title}</h4>
+  <p class="p-tiny text-[var(--text-secondary)]">{formattedDate}</p>
+</a>

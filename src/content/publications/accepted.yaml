@@ -1,0 +1,45 @@
+accepted:
+- id: edupar-2026-unplugged-cloud-architecting
+  title: An Unplugged Classroom Activity for Teaching Cloud Architecting
+  authors:
+  - Steven Santillan
+  - Cristina Abad
+  conference: 40th IEEE International Parallel and Distributed Processing Symposium — EduPar 2026
+  year: 2026
+  month: 5
+  status: Accepted
+  doi: null
+  links:
+    program: https://tcpp.cs.gsu.edu/curriculum/?q=EduPar-26-technical-program
+    paper: '[PROPORCIONAR]'
+    repository: '[PROPORCIONAR]'
+    slides: '[PROPORCIONAR]'
+  keywords:
+  - Cloud Computing Education
+  - Cloud Architecture
+  - Unplugged Activity
+  - Active Learning
+  abstract: '[PROPORCIONAR]'
+- id: sas-2026-vendor-locked-telemetry
+  title: 'Opening Vendor-Locked Telemetry: Non-Intrusive Decoding of Solar Inverter IoT Communications
+    in Restricted Environments — A Case Study'
+  authors:
+  - Steven Santillan Padilla
+  - '[PROPORCIONAR AUTORES RESTANTES]'
+  conference: IEEE Sensors Applications Symposium (SAS 2026)
+  year: 2026
+  month: 7
+  status: Accepted
+  doi: null
+  links:
+    paper: '[PROPORCIONAR]'
+    repository: '[PROPORCIONAR]'
+    slides: '[PROPORCIONAR]'
+    dataset: '[PROPORCIONAR]'
+  keywords:
+  - Internet of Things
+  - Solar Inverters
+  - Passive Monitoring
+  - Telemetry Decoding
+  - Network Traffic Analysis
+  abstract: '[PROPORCIONAR]'

@@ -1,0 +1,50 @@
+academicExperience:
+- id: espol-lecturer-researcher
+  title: Lecturer — Researcher
+  institution: Escuela Superior Politécnica del Litoral (ESPOL)
+  location: Guayaquil, Ecuador
+  startDate: 2025-02
+  endDate: null
+  current: true
+  department: '[PROPORCIONAR]'
+  description: Teaching and research in computing, infrastructure, cloud computing, distributed systems,
+    and cybersecurity.
+  courses:
+  - Distributed Systems
+  - Algorithms
+  - Data Structures
+  highlights:
+  - Participates in academic and applied research projects.
+  - Teaches courses focused on scalable system design and computational thinking.
+  - Collaborates on next-generation cloud computing research with the University of Würzburg.
+- id: espol-tech-research-project-assistant
+  title: Research Project Assistant
+  institution: ESPOL — TECH E.P.
+  location: Guayaquil, Ecuador
+  startDate: 2023-02
+  endDate: 2024-04
+  current: false
+  department: '[PROPORCIONAR]'
+  description: Research project leadership, coordination, and technical follow-up.
+  courses: []
+  highlights:
+  - Coordinated research project activities.
+  - Performed technical follow-up.
+  - Supported coordination with internal teams.
+- id: espol-lecturer-project-director-lab-head
+  title: Lecturer, Project Director, and Data Networks Laboratory Head
+  institution: Escuela Superior Politécnica del Litoral (ESPOL)
+  location: Guayaquil, Ecuador
+  startDate: 2021-09
+  endDate: 2024-03
+  current: false
+  department: '[PROPORCIONAR]'
+  description: University teaching, project coordination, and management of the Data Networks Laboratory.
+  courses:
+  - Distributed Systems
+  - Algorithms
+  - Data Structures
+  highlights:
+  - Coordinated and managed academic and community-engagement projects.
+  - Managed the Data Networks Laboratory.
+  - Supported hands-on training in networks and systems.

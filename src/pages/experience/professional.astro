@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../components/Layout/BaseLayout.astro';
+import ExperienceCard from '../../components/Cards/ExperienceCard.astro';
+import { getEntry } from 'astro:content';
+
+const professionalEntry = await getEntry('professionalExperience', 'data');
+const professional = [...professionalEntry.data.professionalExperience].sort((a, b) => b.startDate.localeCompare(a.startDate));
+---
+
+<BaseLayout title="Professional Experience" description="Professional experience history.">
+  <section class="px-4 py-2xl md:px-6 lg:px-12">
+    <div class="mx-auto flex max-w-container flex-col gap-4">
+      <a href="/experience" class="link w-fit text-sm">&larr; Back to Experience</a>
+      <h1>Professional Experience</h1>
+
+      <div class="flex flex-col gap-4">
+        {professional.map((exp) => (
+          <ExperienceCard
+            title={exp.title}
+            organization={exp.organization}
+            location={exp.location}
+            startDate={exp.startDate}
+            endDate={exp.endDate}
+            current={exp.current}
+            description={exp.description}
+            highlights={exp.highlights}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

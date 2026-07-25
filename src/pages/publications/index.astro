@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../../components/Layout/BaseLayout.astro';
+import PublicationCard from '../../components/Cards/PublicationCard.astro';
+import { getEntry } from 'astro:content';
+
+const publishedEntry = await getEntry('publicationsPublished', 'data');
+const acceptedEntry = await getEntry('publicationsAccepted', 'data');
+const underReviewEntry = await getEntry('publicationsUnderReview', 'data');
+
+const all = [
+  ...publishedEntry.data.published.map((p) => ({
+    href: `/publications/${p.id}`,
+    title: p.title,
+    authors: p.authors,
+    venue: p.conference,
+    year: p.year,
+    status: p.status,
+    keywords: p.keywords,
+  })),
+  ...acceptedEntry.data.accepted.map((p) => ({
+    href: `/publications/${p.id}`,
+    title: p.title,
+    authors: p.authors,
+    venue: p.conference,
+    year: p.year,
+    status: p.status,
+    keywords: p.keywords,
+  })),
+  ...underReviewEntry.data.underReview.map((p) => ({
+    href: `/publications/${p.id}`,
+    title: p.title,
+    authors: p.authors,
+    venue: p.journal,
+    year: p.year,
+    status: p.status,
+    keywords: p.keywords,
+  })),
+].sort((a, b) => b.year - a.year);
+---
+
+<BaseLayout title="Publications" description="Published, accepted, and under-review research publications.">
+  <section class="px-4 py-2xl md:px-6 lg:px-12">
+    <div class="mx-auto flex max-w-container flex-col gap-6">
+      <h1>Publications</h1>
+
+      <div class="flex flex-wrap gap-2" role="group" aria-label="Filter publications by status" id="pub-filters">
+        <button type="button" data-status-filter="All" aria-pressed="true" class="min-h-[44px] rounded-full bg-primary px-4 py-2 text-sm font-medium text-white">All</button>
+        <button type="button" data-status-filter="Published" aria-pressed="false" class="min-h-[44px] rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800">Published</button>
+        <button type="button" data-status-filter="Accepted" aria-pressed="false" class="min-h-[44px] rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800">Accepted</button>
+        <button type="button" data-status-filter="Under Review" aria-pressed="false" class="min-h-[44px] rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800">Under Review</button>
+      </div>
+
+      <div id="pub-grid" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          all.map((p) => (
+            <div data-status={p.status}>
+              <PublicationCard {...p} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const filterGroup = document.getElementById('pub-filters');
+    const grid = document.getElementById('pub-grid');
+
+    filterGroup?.addEventListener('click', (e) => {
+      const button = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-status-filter]');
+      if (!button) return;
+
+      filterGroup.querySelectorAll('[data-status-filter]').forEach((b) => {
+        b.setAttribute('aria-pressed', 'false');
+        b.className = 'min-h-[44px] rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800';
+      });
+      button.setAttribute('aria-pressed', 'true');
+      button.className = 'min-h-[44px] rounded-full bg-primary px-4 py-2 text-sm font-medium text-white';
+
+      const status = button.dataset.statusFilter;
+      grid?.querySelectorAll<HTMLElement>('[data-status]').forEach((card) => {
+        card.classList.toggle('hidden', status !== 'All' && card.dataset.status !== status);
+      });
+    });
+  </script>
+</BaseLayout>
