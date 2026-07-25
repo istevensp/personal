@@ -13,4 +13,16 @@ export default defineConfig({
     mdx(),
     react(),
   ],
+  vite: {
+    resolve: {
+      // react-dom/server's default "browser" build depends on MessageChannel,
+      // which the Cloudflare Workers runtime doesn't provide. The "edge"
+      // build avoids it and is required for @astrojs/react to run there.
+      alias: import.meta.env.PROD
+        ? {
+            'react-dom/server': 'react-dom/server.edge',
+          }
+        : undefined,
+    },
+  },
 });
