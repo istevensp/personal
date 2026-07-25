@@ -1,4 +1,56 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#3b82f6" />
-  <text x="32" y="42" font-family="-apple-system, Segoe UI, Arial, sans-serif" font-size="26" font-weight="600" fill="#ffffff" text-anchor="middle">SS</text>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>Steven Santillan favicon</title>
+  <desc>Transparent favicon with stylized S, cloud, and circuit motif.</desc>
+
+  <!-- Cloud -->
+  <path d="M143 226
+           C143 185 176 152 217 152
+           C226 120 256 98 291 98
+           C339 98 378 134 383 181
+           L316 181
+           C299 181 285 195 285 212
+           L285 276
+           L208 276
+           C172 276 143 247 143 211
+           Z"
+        fill="#2D8CFF"/>
+
+  <!-- Main S monogram -->
+  <path d="M377 181
+           H231
+           C209 181 191 199 191 221
+           V252
+           C191 265 201 276 214 276
+           H296
+           C302 276 306 281 306 286
+           C306 289 305 292 302 295
+           L268 326
+           H160
+           L136 382
+           H229
+           L322 298
+           C336 285 355 278 374 278
+           C414 278 447 311 447 351
+           C447 391 414 424 374 424
+           H262
+           L300 389
+           H366
+           C387 389 404 372 404 351
+           C404 329 387 312 366 312
+           H248
+           C219 312 196 289 196 260
+           V221
+           C196 174 234 136 281 136
+           H394
+           L377 181 Z"
+        fill="#082E6D"/>
+
+  <!-- Circuit traces -->
+  <path d="M274 373 L338 315" stroke="#2D8CFF" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M308 388 L341 358 H370" stroke="#2D8CFF" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Circuit nodes -->
+  <circle cx="338" cy="315" r="18" fill="#2D8CFF"/>
+  <circle cx="370" cy="358" r="18" fill="#2D8CFF"/>
 </svg>
