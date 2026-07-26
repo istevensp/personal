@@ -4,24 +4,27 @@ export interface Props {
   title: string;
   authors: string[];
   venue: string;
-  year: number;
+  dateLabel: string;
   status: string;
   keywords: string[];
+  externalLink?: { url: string; label: string } | null;
 }
 
-const { href, title, authors, venue, year, status, keywords } = Astro.props;
+const { href, title, authors, venue, dateLabel, status, keywords, externalLink = null } = Astro.props;
 
 const statusBadgeClass =
   status === 'Published' ? 'badge-success' : status === 'Accepted' ? 'badge-warning' : '';
 ---
 
-<a href={href} class="card animate-fade-in flex flex-col gap-3 no-underline">
+<div class="card animate-fade-in flex flex-col gap-3">
   <div class="flex flex-wrap items-center gap-2">
     <span class:list={['badge', statusBadgeClass]}>{status}</span>
-    <span class="p-tiny ml-auto text-[var(--text-secondary)]">{year}</span>
+    <span class="p-tiny ml-auto text-[var(--text-secondary)]">{dateLabel}</span>
   </div>
 
-  <h4 class="text-xl font-semibold text-[var(--text-primary)]">{title}</h4>
+  <a href={href} class="no-underline">
+    <h4 class="text-xl font-semibold text-[var(--text-primary)] hover:text-primary">{title}</h4>
+  </a>
   <p class="p-small text-[var(--text-secondary)]">{authors.join(', ')}</p>
   <p class="p-small italic text-[var(--text-secondary)]">{venue}</p>
 
@@ -34,4 +37,23 @@ const statusBadgeClass =
       </div>
     )
   }
-</a>
+
+  <div class="mt-auto flex items-center justify-between gap-2 pt-1">
+    <a href={href} class="link inline-flex min-h-[44px] items-center text-sm">
+      Details
+    </a>
+    {
+      externalLink && (
+        <a
+          href={externalLink.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="link inline-flex min-h-[44px] items-center gap-1 text-sm"
+        >
+          {externalLink.label}
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      )
+    }
+  </div>
+</div>

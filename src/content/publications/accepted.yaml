@@ -1,9 +1,9 @@
 accepted:
 - id: edupar-2026-unplugged-cloud-architecting
-  title: An Unplugged Classroom Activity for Teaching Cloud Architecting
+  title: A Collaborative Classroom Activity for Teaching Cloud Architecting
   authors:
   - Steven Santillan
-  - Cristina Abad
+  - Cristina L. Abad
   conference: 40th IEEE International Parallel and Distributed Processing Symposium — EduPar 2026
   year: 2026
   month: 5
@@ -17,15 +17,19 @@ accepted:
   keywords:
   - Cloud Computing Education
   - Cloud Architecture
-  - Unplugged Activity
+  - Collaborative Activity
   - Active Learning
-  abstract: '[PROPORCIONAR]'
+  - Education
+  - Cloud Computing
+  - Distributed, Parallel, and Cluster Computing
+  - Software Performance Engineering
+  abstract: We present a collaborative classroom activity aimed at helping students improve their cloud architecting skills. The activity is a collaborative design exercise where students are given a (synthetically generated, realistic) set of cloud components and are asked to think about how they could be integrated into a single architecture while considering possible real-world use cases, how the components could be connected, and whether additional cloud components are missing from the design. The lists of components provided to the students are synthetically generated to mimic real cloud architectures from a recent public dataset. Instructors can seed the generator with specific components to generate a list suitable for a specific type of architecture; e.g., FSx (Lustre) for HPC, Elastic MapReduce (Hadoop/Spark/...) for Big Data, or Lambda@Edge for edge computing. We present observational and questionnaire-based results from two runs across two semesters (18 students in semester 1 and 49 students in semester 2) in an undergraduate Distributed Systems and Cloud Computing class at ESPOL university in Ecuador. Student responses highlighted the positive value of the activity and showed that they were highly engaged and applied critical thinking and teamwork during the exercise. Our synthetic generator tool has been released on GitHub so that others can use it or adapt it.
 - id: sas-2026-vendor-locked-telemetry
   title: 'Opening Vendor-Locked Telemetry: Non-Intrusive Decoding of Solar Inverter IoT Communications
     in Restricted Environments — A Case Study'
   authors:
-  - Steven Santillan Padilla
-  - '[PROPORCIONAR AUTORES RESTANTES]'
+  - Steven Santillan
+  - Jose Cordova-Garcia
   conference: IEEE Sensors Applications Symposium (SAS 2026)
   year: 2026
   month: 7
@@ -42,4 +46,81 @@ accepted:
   - Passive Monitoring
   - Telemetry Decoding
   - Network Traffic Analysis
-  abstract: '[PROPORCIONAR]'
+  abstract: Commercial solar inverter systems rely on vendor-controlled cloud platforms to manage telemetry, data access, and device configuration. In restricted environments, however, a lack of administrative access prevents end users from retrieving operational data, compromising system transparency, trust, and the ability to perform independent monitoring. This paper presents a secure and vendor-independent method for acquiring telemetry from IoT-based solar inverters by intercepting and decoding proprietary communications between inverters, dataloggers, and the cloud. We deploy a Raspberry Pi as a passive network probe connected to the same gateway used by the vendor's dataloggers. Through controlled network sniffing, encrypted frames are captured, reconstructed, and reverse-engineered to extract operational variables without interacting with or disrupting the proprietary platform. The decoded data are forwarded securely via HTTPS to an institutional backend, where they are stored and visualized through a custom telemetry dashboard. Our results demonstrate the feasibility of trusted, transparent, and secure telemetry extraction in IoT energy systems when vendor cloud access is unavailable-offering a practical pathway toward resilience, auditability, and user sovereignty in constrained IoT environments.
+- id: isc2-2026-child-safety-monitoring
+  title: A Real-Time IoT-Based Child Safety and Wellbeing Monitoring System for Smart Childcare Centers
+  authors:
+  - Steven Santillan
+  - Maria Fernanda Panchana Ochoa
+  - Sandra Coello Suárez
+  - Christopher Vaccaro
+  conference: 2026 IEEE International Smart Cities Conference (ISC2)
+  year: 2026
+  month: 10
+  status: Accepted
+  doi: null
+  links:
+    paper: '[PROPORCIONAR]'
+    repository: '[PROPORCIONAR]'
+    slides: '[PROPORCIONAR]'
+  keywords:
+  - Internet of Things
+  - Wearable Devices
+  - Child Safety
+  - Smart Childcare
+  - Physiological Monitoring
+  - Mobile Application
+  - Real-Time Systems
+  abstract: Child safety and wellbeing in childcare centers remain important challenges for smart and inclusive communities, particularly when caregivers must simultaneously supervise multiple young children. This paper presents a real-time Internet of Things (IoT)-based monitoring system designed to support child supervision, physiological monitoring, and communication among authorized users in a childcare center. The proposed prototype integrates a wearable bracelet equipped with an ESP32-C3 microcontroller, a MAX30102 sensor, and a SIM800L EVB cellular communication module. It also includes a Flutter-based mobile application, a Flask REST API, and an SQL database for data processing, storage, visualization, and notification management. The system was evaluated through cellular transmission tests using two mobile network operators, a 15-minute heart-rate sensing trial, backend request optimization, and a usability survey involving 31 participants, including parents, educators, and childcare coordinators. Communication tests produced average transmission times of approximately 3.5 and 6 seconds, depending on the network operator. The wearable prototype successfully captured heart-rate readings when properly fastened, although interruptions caused by device movement highlighted the need for an improved attachment mechanism. Backend optimization reduced application request time from approximately 3 seconds to 1 second. Participants also reported a generally positive perception of the system's usability and usefulness. These preliminary results demonstrate the technical feasibility of integrating wearable IoT devices and mobile applications to support safer and more responsive childcare services. Nevertheless, longer-term evaluations, stronger privacy safeguards, improved wearable ergonomics, and validation across additional childcare environments are required before operational deployment.
+- id: isc2-2026-brick-semantic-architecture
+  title: 'Towards Urban Data Interoperability: A Brick-Based Semantic Architecture for Smart Building Data Spaces'
+  authors:
+  - Steven Santillan
+  - Kevin Vargas Benavides
+  - Pier Colina Arteaga
+  - Jose Cordova-Garcia
+  conference: 2026 IEEE International Smart Cities Conference (ISC2)
+  year: 2026
+  month: 10
+  status: Accepted
+  doi: null
+  links:
+    paper: '[PROPORCIONAR]'
+    repository: '[PROPORCIONAR]'
+    slides: '[PROPORCIONAR]'
+  keywords:
+  - Smart Cities
+  - Semantic Interoperability
+  - Brick Schema
+  - Internet of Things
+  - Smart Buildings
+  - RDF
+  - Data Spaces
+  abstract: Smart city ecosystems increasingly depend on heterogeneous data generated by buildings, sensors, and urban infrastructures. However, the lack of common semantic models limits interoperability, data reuse, and the integration of smart building information into broader urban data spaces. This paper proposes a Brick-based semantic architecture for smart building data spaces, aimed at enabling standardized representation, integration, and querying of IoT-generated data. The proposed approach models the physical and logical infrastructure of Building 11C at Escuela Superior Politecnica del Litoral (ESPOL), including laboratories, outdoor areas, zones, equipment, and sensors, using Brick Schema and RDF-based representations. The architecture integrates IoT data acquisition, semantic modeling, operational storage, and interactive visualization. Sensor data are collected through MQTT and Node-RED workflows, stored in MongoDB, and semantically linked to a Brick-based RDF graph managed through Apache Jena Fuseki. Custom semantic properties are introduced to connect Brick entities with operational sensor records, enabling traceability between data points, physical locations, and building assets. A Django backend and ReactFlow-based interface support data access, management, and visualization of the semantic graph. The case study demonstrates that Brick can provide a consistent semantic layer for reducing ambiguity, improving interoperability, and supporting the integration of smart building data into future smart city data spaces.
+- id: oceans-2026-artisanal-fishing-iot
+  title: Prototype of a System for the Management and Monitoring of Vessels in Artisan Fishing
+  authors:
+  - Sandra Coello Suárez
+  - Angelo Yagual
+  - Steven Santillan
+  - Vladimir Sanchez Padilla
+  - Albert Espinal
+  conference: OCEANS 2026 (Monterey, CA)
+  year: 2026
+  month: 9
+  status: Accepted
+  doi: null
+  links:
+    paper: '[PROPORCIONAR]'
+    repository: '[PROPORCIONAR]'
+    slides: '[PROPORCIONAR]'
+  keywords:
+  - Artisanal Fishing
+  - Internet of Things (IoT)
+  - Low-Cost Technology
+  - Electronic Log
+  - Social Implications of Technology
+  - GPS Tracking
+  - Temperature Monitoring
+  - Offline-First Architecture
+  abstract: Artisanal fishing is a vital economic pillar in emerging economies like Ecuador, yet it suffers from a significant technological gap. Most vessels lack basic positioning and environmental monitoring systems, relying on manual logs that hinder regulatory compliance and operational safety. This paper presents the development of a low-cost IoT prototype designed to bridge this gap. The system integrates an ESP32 microcontroller with waterproof temperature sensors (DS18B20) and a mobile application developed in Android Studio. A key innovation is the "offline-first" architecture using Firebase Cloud Firestore, allowing data persistence during high-seas operations without cellular coverage, with automatic synchronization upon returning to port. Technical validation against professional-grade instruments (YSI Pro20 and GPS-73) yielded mean error rates below 1.43% for temperature and 0.67% for positioning. Furthermore, the system automates mandatory electronic logbooks, reducing administrative burdens and supporting sustainable fishing practices by monitoring Illegal, Unreported, and Unregulated (IUU) fishing. Beyond technical metrics, the project achieved a 94% user acceptance rate among local fishers. Economic analysis shows a Net Present Value (NPV) of US$ 81,316.21 and an Internal Rate of Return (IRR) of 50%, confirming its financial scalability. This solution demonstrates how accessible technology can empower coastal communities, enhance maritime domain awareness, and foster citizen-science participation in ocean observations.

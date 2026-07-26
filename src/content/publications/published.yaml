@@ -8,18 +8,30 @@ published:
   year: 2025
   month: 9
   status: Published
-  doi: null
+  doi: https://doi.org/10.1109/IC2E65552.2025.00043
   links:
     preprint: https://arxiv.org/abs/2508.01494
     repository: https://github.com/disel-espol/hpc-and-edge-cloud-architectures
+    doi: https://doi.org/10.1109/IC2E65552.2025.00043
+    paper: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=11196640&isnumber=11196102
   keywords:
   - Cloud Computing
-  - High-Performance Computing
+  - Architecture
+  - Buildings
+  - Computer Architecture
+  - Machine Learning
+  - Companies
+  - Market Research
+  - Reproducibility of Results
+  - Complexity Theory
   - Edge Computing
+  - HPC
+  - Fog Computing
+  - Architectures
+  - Workflows
   - AWS
-  - Cloud Architectures
-  abstract: Empirical characterization of HPC and edge components across a dataset of real-world AWS cloud
-    architectures.
+  - Cloud Continuum
+  abstract: We analyze a recently published dataset of 396 real-world cloud architectures deployed on AWS, from companies belonging to a wide range of industries. From this dataset, we identify those architectures that contain HPC or edge components and characterize their designs. Specifically, we investigate the prevalence and interplay of AWS services within these architectures, examine the types of storage systems employed, assess architectural complexity and the use of machine learning services, discuss the implications of our findings and how representative these results are of HPC and edge architectures in the cloud. This characterization provides valuable insights into current industry practices and trends in building robust and scalable HPC and edge solutions in the cloud continuum, and can be valuable for those seeking to better understand how these architectures are being built and to guide new research.
 - id: isgt-la-2025-energy-efficiency
   title: 'Predictive Monitoring of Energy Efficiency: Supervised Learning Case Study'
   authors:
@@ -35,12 +47,26 @@ published:
   doi: https://doi.org/10.1109/ISGTLA64895.2025.11371217
   links:
     doi: https://doi.org/10.1109/ISGTLA64895.2025.11371217
+    paper: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=11371217&isnumber=11371025
   keywords:
-  - Energy Efficiency
-  - Machine Learning
-  - Predictive Monitoring
+  - Energy Consumption
+  - ISO Standards
+  - Buildings
   - Supervised Learning
-  abstract: '[PROPORCIONAR]'
+  - Predictive Models
+  - Energy Efficiency
+  - Noise Measurement
+  - Forecasting
+  - Monitoring
+  - Long Short Term Memory
+  - Energy Management
+  - Data Availability
+  - Data Quality
+  - Machine Learning
+  - LSTM
+  - Random Forest
+  - XAI
+  abstract: Rising energy consumption in buildings and its environmental impact have brought significant attention to energy efficiency and monitoring practices. Many institutions adopt energy management systems aligned with ISO 50001, which emphasizes continuous monitoring and improvement. In this context, artificial intelligence and machine learning offer effective tools for detecting anomalies and forecasting energy demand. This study presents a practical approach using supervised learning models-Random Forest and Long Short-Term Memory (LSTM) networks-for short-term consumption forecasting and anomaly detection. The methodology relies on real-world data from a high-consumption university building, including manually labeled anomalies and high-frequency electrical measurements. Results show that both models are robust under noisy conditions, adaptable to different sampling resolutions, and benefit from periodic retraining. These findings support their integration into smart monitoring platforms aligned with ISO 50001 goals.
 - id: sas-2024-hayiot
   title: 'HayIoT: An IoT Standardization Architecture'
   authors:
@@ -48,6 +74,7 @@ published:
   - Steven Santillan Padilla
   - Jose Zapata
   - Francheska Iñiguez
+  - Jose Cordova-Garcia
   conference: 2024 IEEE Sensors Applications Symposium (SAS 2024)
   year: 2024
   month: 7
@@ -55,13 +82,20 @@ published:
   doi: https://doi.org/10.1109/SAS60918.2024.10636603
   links:
     doi: https://doi.org/10.1109/SAS60918.2024.10636603
+    paper: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10636603&isnumber=10636356
   keywords:
-  - Internet of Things
+  - Protocols
+  - Databases
+  - Memory
+  - Computer Architecture
   - Standardization
+  - Ontologies
+  - Internet of Things
   - Haystack
-  - Smart Buildings
-  abstract: IoT architecture that applies Haystack-based standardization to organize data from heterogeneous
-    devices in built environments.
+  - Ontology
+  - Architecture
+  - IoT
+  abstract: Over the years, different sensor technologies have been developed based on various protocols, measurement types, and timing mechanisms, among other characteristics. Even sensors designed for similar purposes can use different technologies, giving rise to a data standardization challenge. With the growing number of Internet of Things (IoT) devices integrated into computing systems, the complexity and heterogeneity of the data continue to escalate. To address this, it becomes urgent to design IoT architectures that enable seamless integration and standardization of sensor data to incorporate the rising variety of devices. In this work, we introduce HayIoT, an architecture that uses the haystack standardization technology to record and store data from diverse IoT devices suitable for a built environment. The key concept is to include an Application Programming Interface (API) designed for data standardization and integration, along with a choice of a hybrid database for efficient data storage from IoT devices and their corresponding data models. We validate the proposed architecture by deploying it at a large university campus and taking advantage of the characteristics of the selected database, we address a practical challenge about data access and IoT interoperability. Additionally, optimizations were made to enhance the proposed architecture's efficiency and interoperability with IoT devices.
 - id: sas-2021-fpga-weather-station
   title: FPGA Based Meteorological Monitoring Station
   authors:
@@ -81,10 +115,26 @@ published:
     repository: https://github.com/vasanza/Weather-Monitoring-Station
     dataset: https://doi.org/10.21227/mdfs-ya42
   keywords:
+  - Temperature Sensors
+  - Temperature Measurement
+  - Linear Regression
+  - Random Access Memory
+  - Humidity
+  - User Interfaces
+  - Sensor Systems and Applications
+  - Sensor
+  - Meteorological Station
+  - Temperature
+  - Soil Moisture
+  - Rain
+  - Embedded System
   - FPGA
-  - Meteorological Monitoring
-  - Embedded Systems
-  - Environmental Sensors
-  - Real-Time Data Acquisition
-  abstract: Embedded meteorological station using FPGA-based data acquisition and sensors for environmental
-    monitoring, supported by a web interface.
+  - Microprocessor
+  - Nios-II
+  - ARM
+  - Linux Web Server
+  - DHT11 Sensor
+  - FC-28 Hygrometer
+  - FC-37 Sensor
+  - LDR Sensor
+  abstract: In this paper, we propose to implement a meteorological monitoring station using embedded systems. This model is possible thanks to different sensors that enable us to measure several environmental parameters, such as i) relative humidity, ii) average ambient temperature, iii) soil humidity, iv) rain occurrence, and v) light intensity. The proposed system is based on a field-programmable gate array device (FPGA). The proposed design aims at ensuring high-resolution data acquisition and at predicting samples with precision and accuracy in real-time. To present the collected data, we develop also a web application with a simple and friendly user interface.

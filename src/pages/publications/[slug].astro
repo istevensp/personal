@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../components/Layout/BaseLayout.astro';
 import { getEntry } from 'astro:content';
+import { formatMonthYear } from '../../lib/publications';
 
 export const prerender = true;
 
@@ -36,6 +37,14 @@ if (!publication) {
   Astro.response.status = 404;
 }
 
+const dateLabel = publication
+  ? formatMonthYear(publication.year, 'month' in publication ? publication.month : null)
+  : '';
+
+const validLinks = publication
+  ? Object.entries(publication.links).filter(([, url]) => url && url !== '[PROPORCIONAR]')
+  : [];
+
 const jsonLd = publication
   ? {
       '@context': 'https://schema.org',
@@ -63,7 +72,7 @@ const jsonLd = publication
 
           <div class="flex flex-wrap items-center gap-2">
             <span class="badge badge-success">{publication.status}</span>
-            <span class="p-tiny text-[var(--text-secondary)]">{publication.year}</span>
+            <span class="p-tiny text-[var(--text-secondary)]">{dateLabel}</span>
           </div>
 
           <h1>{publication.title}</h1>
@@ -91,10 +100,10 @@ const jsonLd = publication
             </div>
           )}
 
-          {Object.keys(publication.links).length > 0 && (
+          {validLinks.length > 0 && (
             <div class="flex flex-wrap gap-3 border-t border-[var(--border)] pt-4">
-              {Object.entries(publication.links).map(([label, url]) => (
-                <a href={url} target="_blank" rel="noopener noreferrer" class="link inline-flex min-h-[44px] items-center text-sm capitalize">
+              {validLinks.map(([label, url]) => (
+                <a href={url as string} target="_blank" rel="noopener noreferrer" class="link inline-flex min-h-[44px] items-center text-sm capitalize">
                   {label}
                 </a>
               ))}

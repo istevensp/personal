@@ -264,7 +264,8 @@ const publicationsAccepted = defineCollection({
         authors: z.array(z.string()),
         conference: z.string(),
         year: z.number(),
-        month: z.number(),
+        // Null until the presentation month is confirmed by the venue.
+        month: z.number().nullable(),
         status: z.string(),
         doi: z.string().nullable(),
         links: z.record(z.string(), z.string()),

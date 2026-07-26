@@ -2,6 +2,7 @@
 import BaseLayout from '../../components/Layout/BaseLayout.astro';
 import PublicationCard from '../../components/Cards/PublicationCard.astro';
 import { getEntry } from 'astro:content';
+import { formatMonthYear, primaryExternalLink } from '../../lib/publications';
 
 export const prerender = true;
 
@@ -9,35 +10,55 @@ const publishedEntry = await getEntry('publicationsPublished', 'data');
 const acceptedEntry = await getEntry('publicationsAccepted', 'data');
 const underReviewEntry = await getEntry('publicationsUnderReview', 'data');
 
-const all = [
-  ...publishedEntry.data.published.map((p) => ({
+const published = publishedEntry.data.published
+  .map((p) => ({
     href: `/publications/${p.id}`,
     title: p.title,
     authors: p.authors,
     venue: p.conference,
-    year: p.year,
+    dateLabel: formatMonthYear(p.year, p.month),
+    sortKey: p.year * 100 + p.month,
     status: p.status,
     keywords: p.keywords,
-  })),
-  ...acceptedEntry.data.accepted.map((p) => ({
+    externalLink: primaryExternalLink(p.doi, p.links),
+  }))
+  .sort((a, b) => b.sortKey - a.sortKey);
+
+const accepted = acceptedEntry.data.accepted
+  .map((p) => ({
     href: `/publications/${p.id}`,
     title: p.title,
     authors: p.authors,
     venue: p.conference,
-    year: p.year,
+    dateLabel: formatMonthYear(p.year, p.month),
+    sortKey: p.year * 100 + (p.month ?? 0),
     status: p.status,
     keywords: p.keywords,
-  })),
-  ...underReviewEntry.data.underReview.map((p) => ({
+    externalLink: primaryExternalLink(p.doi, p.links),
+  }))
+  .sort((a, b) => b.sortKey - a.sortKey);
+
+const underReview = underReviewEntry.data.underReview
+  .map((p) => ({
     href: `/publications/${p.id}`,
     title: p.title,
     authors: p.authors,
     venue: p.journal,
-    year: p.year,
+    dateLabel: formatMonthYear(p.year),
+    sortKey: p.year * 100,
     status: p.status,
     keywords: p.keywords,
-  })),
-].sort((a, b) => b.year - a.year);
+    externalLink: primaryExternalLink(null, p.links),
+  }))
+  .sort((a, b) => b.sortKey - a.sortKey);
+
+// Default (unfiltered) order: Published first (chronological), then Accepted,
+// then Under Review — grouped, not interleaved by date.
+const groups = [
+  { status: 'Published', items: published },
+  { status: 'Accepted', items: accepted },
+  { status: 'Under Review', items: underReview },
+].filter((g) => g.items.length > 0);
 ---
 
 <BaseLayout title="Publications" description="Published, accepted, and under-review research publications.">
@@ -54,10 +75,20 @@ const all = [
 
       <div id="pub-grid" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {
-          all.map((p) => (
-            <div data-status={p.status}>
-              <PublicationCard {...p} />
-            </div>
+          groups.map((group, i) => (
+            <>
+              {i > 0 && (
+                <div
+                  data-divider
+                  class="col-span-full my-2 border-t border-[var(--border)]"
+                />
+              )}
+              {group.items.map((p) => (
+                <div data-status={p.status}>
+                  <PublicationCard {...p} />
+                </div>
+              ))}
+            </>
           ))
         }
       </div>
@@ -82,6 +113,9 @@ const all = [
       const status = button.dataset.statusFilter;
       grid?.querySelectorAll<HTMLElement>('[data-status]').forEach((card) => {
         card.classList.toggle('hidden', status !== 'All' && card.dataset.status !== status);
+      });
+      grid?.querySelectorAll<HTMLElement>('[data-divider]').forEach((divider) => {
+        divider.classList.toggle('hidden', status !== 'All');
       });
     });
   </script>

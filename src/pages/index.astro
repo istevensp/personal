@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '../components/Layout/BaseLayout.astro';
 import HeroSection from '../components/Home/HeroSection.astro';
+import PublicationsTimeline from '../components/Home/PublicationsTimeline.astro';
 import FeaturedProjects from '../components/Home/FeaturedProjects.astro';
-import FeaturedPublications from '../components/Home/FeaturedPublications.astro';
 import FeaturedAwards from '../components/Home/FeaturedAwards.astro';
 import RecentNews from '../components/Home/RecentNews.astro';
 import ContactCTA from '../components/Home/ContactCTA.astro';
@@ -26,8 +26,8 @@ const jsonLd = {
 
 <BaseLayout title={shortName} description={personal.summary} jsonLd={jsonLd}>
   <HeroSection />
+  <PublicationsTimeline />
   <FeaturedProjects />
-  <FeaturedPublications />
   <FeaturedAwards />
   <RecentNews />
   <ContactCTA />
