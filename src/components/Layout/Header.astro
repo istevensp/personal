@@ -7,13 +7,26 @@ import { getEntry } from 'astro:content';
 
 const personalEntry = await getEntry('personal', 'data');
 const personal = personalEntry.data;
-const shortName = `${personal.firstName} ${personal.lastName.split(' ')[0]}`;
+const initials = personal.fullName
+  .split(' ')
+  .map((word) => word[0])
+  .join('')
+  .toUpperCase();
 ---
 
 <header class="sticky top-0 z-30 h-16 border-b border-[var(--border)] bg-[var(--bg-primary)]/95 backdrop-blur">
   <div class="mx-auto flex h-16 max-w-container items-center justify-between gap-4 px-4 md:px-6 lg:px-12">
-    <a href="/" class="flex min-h-[44px] shrink-0 items-center text-lg font-semibold text-[var(--text-primary)] hover:text-primary transition duration-fast">
-      {shortName}
+    <a
+      href="/"
+      aria-label={`${personal.fullName} — go to homepage`}
+      class="group relative flex h-11 w-11 shrink-0 items-center justify-center"
+    >
+      <span class="flex h-9 w-9 animate-float items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary text-xs font-bold text-white transition-transform group-hover:scale-110">
+        {initials}
+      </span>
+      <span class="pointer-events-none absolute top-full mt-1 rounded-md bg-gray-900 px-2 py-1 text-xs text-white opacity-0 shadow-lg transition-opacity duration-fast group-hover:opacity-100 group-focus-visible:opacity-100 dark:bg-gray-700">
+        Home
+      </span>
     </a>
 
     <Navigation />

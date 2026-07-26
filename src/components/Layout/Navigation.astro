@@ -1,12 +1,11 @@
 ---
 const navItems = [
-  { label: 'Home', href: '/', i18n: 'nav.home', highlight: 'text-secondary' },
-  { label: 'News', href: '/news', i18n: 'nav.news', highlight: 'text-warning' },
   { label: 'About', href: '/about', i18n: 'nav.about' },
   { label: 'Teaching', href: '/teaching', i18n: 'nav.teaching' },
   { label: 'Experience', href: '/experience', i18n: 'nav.experience' },
   { label: 'Projects', href: '/projects', i18n: 'nav.projects' },
   { label: 'Publications', href: '/publications', i18n: 'nav.publications' },
+  { label: 'News', href: '/news', i18n: 'nav.news' },
   { label: 'Contact Me', href: '/contact', i18n: 'nav.contact' },
 ];
 
@@ -28,9 +27,7 @@ function isActive(href: string) {
           'rounded-md px-3 py-2 text-sm font-medium transition duration-fast',
           isActive(item.href)
             ? 'text-primary'
-            : item.highlight
-              ? `font-semibold ${item.highlight} hover:bg-gray-100 dark:hover:bg-gray-800`
-              : 'text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800',
+            : 'text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800',
         ]}
       >
         {item.label}
@@ -69,9 +66,7 @@ function isActive(href: string) {
           'min-h-[44px] rounded-md px-3 py-3 text-base font-medium transition duration-fast flex items-center',
           isActive(item.href)
             ? 'text-primary'
-            : item.highlight
-              ? `font-semibold ${item.highlight} hover:bg-gray-100 dark:hover:bg-gray-800`
-              : 'text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800',
+            : 'text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800',
         ]}
       >
         {item.label}
