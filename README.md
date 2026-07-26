@@ -3,7 +3,7 @@
 **URL:** https://stevensantillan.com  
 **Repositorio:** https://github.com/istevensp/personal  
 **Licencia:** MIT  
-**Estado:** En desarrollo (Astro 5 + React + Tailwind + Cloudflare Workers)
+**Estado:** En producción (Astro 5 + React + Tailwind + Cloudflare Workers)
 
 ---
 
@@ -13,17 +13,15 @@
 2. [Stack Tecnológico](#stack-tecnológico)
 3. [Requisitos Previos](#requisitos-previos)
 4. [Instalación y Setup](#instalación-y-setup)
-5. [Desarrollo con Claude Code](#desarrollo-con-claude-code)
-6. [Frontend Design & Mockups](#frontend-design--mockups)
-7. [Comandos Disponibles](#comandos-disponibles)
-8. [Estructura del Proyecto](#estructura-del-proyecto)
-9. [GitHub + Cloudflare Setup](#github--cloudflare-setup)
-10. [Despliegue a Producción](#despliegue-a-producción)
-11. [Configuración de Contenido](#configuración-de-contenido)
-12. [SEO y Búsqueda](#seo-y-búsqueda)
-13. [Guía de Contribuciones](#guía-de-contribuciones)
-14. [Troubleshooting](#troubleshooting)
-15. [Licencia y Contacto](#licencia-y-contacto)
+5. [Comandos Disponibles](#comandos-disponibles)
+6. [Estructura del Proyecto](#estructura-del-proyecto)
+7. [GitHub + Cloudflare Setup](#github--cloudflare-setup)
+8. [Despliegue a Producción](#despliegue-a-producción)
+9. [Configuración de Contenido](#configuración-de-contenido)
+10. [SEO y Búsqueda](#seo-y-búsqueda)
+11. [Guía de Contribuciones](#guía-de-contribuciones)
+12. [Troubleshooting](#troubleshooting)
+13. [Licencia y Contacto](#licencia-y-contacto)
 
 ---
 
@@ -47,7 +45,7 @@ Sitio web personal académico y profesional para **Steven Santillán Padilla**, 
 - ✅ Publicaciones con filtro por estado
 - ✅ Experiencia académica + profesional + tutoría de tesis
 - ✅ Noticias cronológicas filtrables
-- ✅ CVs descargables (Professional + Academic)
+- ✅ CVs descargables (Industry + Academic)
 - ✅ Optimizado para SEO
 - ✅ Responsive (móvil, tablet, desktop)
 
@@ -62,7 +60,7 @@ Sitio web personal académico y profesional para **Steven Santillán Padilla**, 
 | **Astro** | 5.x | Framework SSR/SSG |
 | **React** | 19.x | Componentes interactivos (islands) |
 | **TypeScript** | 5.x | Type safety |
-| **Tailwind CSS** | 4.x | Styling utility-first |
+| **Tailwind CSS** | 3.x | Styling utility-first |
 | **MDX** | 3.x | Markdown con componentes |
 
 ## Deployment
@@ -108,13 +106,6 @@ Sitio web personal académico y profesional para **Steven Santillán Padilla**, 
   - `CLOUDFLARE_API_TOKEN`
   - `CLOUDFLARE_ACCOUNT_ID`
 
-### Herramientas Opcionales (para desarrollo mejorado)
-
-- ✅ **Claude Code Desktop** (para construcción del proyecto)
-- ✅ **frontend-design skill** (recomendado)
-- ✅ **claude_design MCP** (para mockups de UI)
-- ✅ VSCode con extensiones Astro/TypeScript (alternativa a Claude Code)
-
 ---
 
 # 🚀 INSTALACIÓN Y SETUP
@@ -153,115 +144,7 @@ CLOUDFLARE_API_TOKEN=tu_api_token
 npm run dev
 ```
 
-Debe abrir: `http://localhost:3000`
-
----
-
-# 💻 DESARROLLO CON CLAUDE CODE
-
-## Opción A: Claude Code Desktop (RECOMENDADO)
-
-### Instalación de Claude Code
-
-1. Descarga: https://claude.com/download
-2. Instala Claude Code Desktop
-3. Abre la carpeta del proyecto
-
-### Instrucciones para Claude Code
-
-```
-Tengo un documento maestro EXHAUSTIVO con TODO el contexto del proyecto.
-
-Léelo completamente sin omitir nada y construye:
-1. Estructura Astro 5 completa
-2. Todos los componentes (15+)
-3. Todas las páginas (16)
-4. Configuraciones (astro.config, wrangler, tailwind, etc)
-5. Content Collections con Zod
-6. GitHub Actions workflow
-7. Estilos base
-8. TODO listo para npm install + npm run dev
-
-El documento está aquí: [PEGA CONTENIDO DE DOCUMENTO-MAESTRO-CLAUDE-CODE.md]
-```
-
-## Opción B: VSCode + Astro Extension
-
-```bash
-# Instala extension: "Astro" (oficial)
-# Luego:
-npm run dev
-# Edita archivos en src/
-```
-
----
-
-# 🎨 FRONTEND-DESIGN & MOCKUPS
-
-## Parte 1: Frontend-Design Skill (Automático)
-
-**¿Qué es?** Un archivo de referencia que Claude Code consulta automáticamente para decisiones de diseño.
-
-**Setup:** No requiere nada manual. Claude Code lo usa automáticamente.
-
-**Lo que hace:**
-- Define colores, tipografía, espaciado
-- Evita diseño genérico
-- Tailwind classes cohesivos
-
----
-
-## Parte 2: Claude Design MCP (Mockups Visuales)
-
-**¿Qué es?** Una herramienta que genera mockups interactivos de componentes ANTES de codificar.
-
-### Instalación Manual en Claude Code Desktop
-
-#### Paso 1: Habilitar Claude Design en Claude Desktop
-
-1. Abre **Claude Code Desktop**
-2. Ve a **Settings** → **Tools/Integrations**
-3. Busca: **"Claude Design"** o **"claude_design"**
-4. Click **"Install"** o **"Enable"**
-5. Reinicia Claude Code
-
-#### Paso 2: Usar Claude Design en el Proyecto
-
-En Claude Code, escribe un prompt como:
-
-```
-Genera mockup para el componente ProjectCard.astro
-
-Especificaciones:
-- Título del proyecto
-- Descripción corta (2 líneas)
-- Tags de tecnología
-- Imagen de thumbnail (placeholder)
-- Link "View more"
-- Dark mode compatible
-```
-
-Claude Design mostrará un visual interactivo que puedes:
-- ✅ Ver en vivo
-- ✅ Interactuar (hover, click, etc)
-- ✅ Aprobar o pedir cambios
-- ✅ Pasar feedback a Claude Code para implementar
-
----
-
-## Workflow Recomendado (Opción C - Perfeccionista)
-
-```
-1. Claude Code crea especificación del componente
-   ↓
-2. Usas Claude Design para visualizar mockup
-   ↓
-3. Apruebas o pides cambios visuales
-   ↓
-4. Claude Code implementa código basado en validación
-   ↓
-5. Resultado final: Componente validado visualmente
-```
+Debe abrir: `http://localhost:4321`
 
 ---
 
@@ -269,7 +152,7 @@ Claude Design mostrará un visual interactivo que puedes:
 
 ```bash
 # Desarrollo
-npm run dev                 # Inicia servidor dev (http://localhost:3000)
+npm run dev                 # Inicia servidor dev (http://localhost:4321)
 
 # Build
 npm run build              # Build para producción (Cloudflare Workers)
@@ -355,8 +238,8 @@ personal/
 │   │   ├── news/
 │   │   │   ├── index.astro
 │   │   │   └── [slug].astro
-│   │   ├── cv.astro                      # CV
-│   │   ├── contact.astro                 # Contact
+│   │   ├── cv.astro                      # Redirect a /contact#cv
+│   │   ├── contact.astro                 # Contact (incluye descarga de CV)
 │   │   └── 404.astro                     # Error page
 │   │
 │   ├── components/                       # Componentes reutilizables
@@ -384,24 +267,21 @@ personal/
 │   │       ├── ThemeToggle.jsx           # React: Dark/light
 │   │       └── LanguageSwitcher.jsx      # React: EN/ES
 │   │
-│   ├── styles/
-│   │   ├── globals.css
-│   │   ├── components.css
-│   │   └── tailwind.css
-│   │
-│   └── layouts/
-│       ├── BaseLayout.astro
-│       ├── PostLayout.astro
-│       └── ProjectLayout.astro
+│   └── styles/
+│       ├── globals.css
+│       ├── components.css
+│       └── tailwind.css
 │
 ├── public/
 │   ├── robots.txt                        # SEO
-│   ├── favicon.ico
+│   ├── favicon.ico, favicon.svg, favicon-16x16.png, favicon-32x32.png
+│   ├── apple-touch-icon.png, android-chrome-192x192.png, android-chrome-512x512.png
+│   ├── site.webmanifest
 │   └── images/
-│       └── (hero, profile, etc)
+│       └── profile.jpg
 │
-├── docs/                                 # PDFs de CVs (estáticos)
-│   ├── cv-professional.pdf
+├── docs/                                 # PDFs de CVs (estáticos, agregados manualmente)
+│   ├── cv-industry.pdf
 │   └── cv-academic.pdf
 │
 ├── .github/workflows/deploy.yml          # CI/CD
@@ -415,9 +295,9 @@ personal/
 ├── package.json                          # Dependencies + scripts
 ├── package-lock.json
 ├── README.md                             # Este archivo
+├── DOCUMENTATION.md                      # Referencia técnica detallada del proyecto
 ├── LICENSE                               # MIT License
-├── STACK_DECISIONS.md                    # Decisiones tecnológicas
-└── manifest.yaml                         # Índice de contenido (por ChatGPT)
+└── manifest.yaml                         # Índice de contenido inicial
 ```
 
 ---
@@ -462,11 +342,9 @@ Value: (obtenido en https://dash.cloudflare.com/)
 
 ## Paso 3: Configurar Cloudflare Domain
 
-1. Ve a: https://dash.cloudflare.com/
-2. Selecciona tu dominio: `stevensantillan.com`
-3. En sidebar: "Workers" → "Routes"
-4. Agrega ruta: `stevensantillan.com/*` → Worker Name
-5. Save
+1. El dominio `stevensantillan.com` debe existir como **zona activa** en tu cuenta de Cloudflare (Domains → verificar estado "Active").
+2. El binding del dominio al Worker se define en `wrangler.toml` como **Custom Domain** (`pattern = "stevensantillan.com"`, `custom_domain = true`) — no como "Route" con wildcard, ya que los Custom Domains de Cloudflare no aceptan `/*` ni paths.
+3. Se aplica automáticamente en cada `wrangler deploy` (vía GitHub Actions); no requiere pasos manuales adicionales en el dashboard.
 
 ---
 
@@ -656,11 +534,11 @@ npm install
 npm run dev
 ```
 
-## Port 3000 ya está en uso
+## Puerto 4321 ya está en uso
 
 ```bash
 # Cambiar puerto
-npm run dev -- --port 3001
+npm run dev -- --port 4322
 ```
 
 ## Cambios no se reflejan
