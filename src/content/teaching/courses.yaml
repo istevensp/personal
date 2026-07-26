@@ -16,9 +16,9 @@ courses:
     evaluationUrl: null
     status: in-progress
 - courseId: algorithms
-  name: Algorithms
+  name: Algorithm Analysis
   code: '[PROPORCIONAR]'
-  nameEs: Algoritmos
+  nameEs: Análisis de Algoritmos
   institution: ESPOL
   level: '[PROPORCIONAR]'
   description: Course focused on algorithmic reasoning and computational thinking.

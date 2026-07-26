@@ -13,12 +13,13 @@ export interface Props {
   code: string;
   level: string;
   description: string;
+  descriptionEs?: string;
   topics: string[];
   repositoryUrl: string;
   semesters: Semester[];
 }
 
-const { id, name, nameEs, code, level, description, topics, repositoryUrl, semesters } = Astro.props;
+const { id, name, nameEs, code, level, description, descriptionEs, topics, repositoryUrl, semesters } = Astro.props;
 const hasCode = code && code !== '[PROPORCIONAR]';
 const hasLevel = level && level !== '[PROPORCIONAR]';
 const hasRepo = repositoryUrl && repositoryUrl !== '[PROPORCIONAR]';
@@ -33,13 +34,36 @@ const years = Array.from(
       .filter((y) => !Number.isNaN(y))
   )
 ).sort((a, b) => b - a);
+
+// One consistent color per year (same year = same color on every card,
+// since it's a pure function of the year number) — only the years get
+// colored; the course code badge stays the plain default `.badge` color.
+// Deliberately no red/rose/pink/orange/amber tones here — those read as
+// warning/error/alarm (they're already used for the "In Progress"/
+// "Upcoming"/error badges elsewhere), which looked alarmist for something
+// as neutral as a year.
+const YEAR_COLORS = [
+  'bg-emerald-100 text-emerald-800',
+  'bg-teal-100 text-teal-800',
+  'bg-cyan-100 text-cyan-800',
+  'bg-sky-100 text-sky-800',
+  'bg-blue-100 text-blue-800',
+  'bg-indigo-100 text-indigo-800',
+  'bg-violet-100 text-violet-800',
+  'bg-purple-100 text-purple-800',
+  'bg-fuchsia-100 text-fuchsia-800',
+  'bg-lime-100 text-lime-800',
+];
+function yearColor(year: number): string {
+  return YEAR_COLORS[((year % YEAR_COLORS.length) + YEAR_COLORS.length) % YEAR_COLORS.length];
+}
 ---
 
 <div id={id} class="card flex scroll-mt-24 flex-col gap-3">
   <div class="flex flex-wrap items-center gap-2">
     {hasCode && <span class="badge">{code}</span>}
     {years.map((y) => (
-      <span class="badge">{y}</span>
+      <span class:list={['rounded-full px-2 py-1 text-xs font-medium', yearColor(y)]}>{y}</span>
     ))}
     {hasLevel && <span class="p-tiny text-[var(--text-secondary)]">{level}</span>}
     {hasInProgress && <span class="badge badge-warning">In Progress</span>}
@@ -47,7 +71,7 @@ const years = Array.from(
   </div>
 
   <h4 class="text-xl font-semibold text-[var(--text-primary)]" data-lang-en={nameEs ? name : undefined} data-lang-es={nameEs}>{name}</h4>
-  <p class="p-small text-[var(--text-secondary)]">{description}</p>
+  <p class="p-small text-[var(--text-secondary)]" data-lang-en={descriptionEs ? description : undefined} data-lang-es={descriptionEs}>{description}</p>
 
   {
     topics.length > 0 && (
