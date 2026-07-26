@@ -24,18 +24,23 @@ const initials = `${personal.firstName[0]}${personal.lastName[0]}`.toUpperCase()
           <a
             href={`mailto:${personal.email.institutional}`}
             class="btn-primary hover:-translate-y-0.5"
-            data-i18n="common.email"
           >
-            Email
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-bounce" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+            </svg>
+            <span data-i18n="common.email">Email</span>
           </a>
           <a
             href={personal.socials.linkedin}
             target="_blank"
             rel="noopener noreferrer"
             class="btn-secondary hover:-translate-y-0.5"
-            data-i18n="common.linkedin"
           >
-            LinkedIn
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="animate-bounce" aria-hidden="true">
+              <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.8 0 0 .78 0 1.75v20.5C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.75V1.75C24 .78 23.2 0 22.22 0z" />
+            </svg>
+            <span data-i18n="common.linkedin">LinkedIn</span>
           </a>
         </div>
       </div>
@@ -56,7 +61,10 @@ const initials = `${personal.firstName[0]}${personal.lastName[0]}`.toUpperCase()
 
   <section id="cv" class="px-4 py-3xl md:px-6 lg:px-12">
     <div class="mx-auto flex max-w-container flex-col items-start gap-4">
-      <h2>CV &amp; Resume</h2>
+      <h2 class="flex items-center gap-3">
+        CV &amp; Resume
+        <span class="inline-block animate-bounce text-3xl" aria-hidden="true">🧑‍💼</span>
+      </h2>
       <p class="max-w-xl text-[var(--text-secondary)]">
         Download the most recent industry and academic CVs as PDF.
       </p>
@@ -64,16 +72,24 @@ const initials = `${personal.firstName[0]}${personal.lastName[0]}`.toUpperCase()
         <a
           href="https://github.com/istevensp/personal/raw/main/docs/cv-industry.pdf"
           class="btn-primary hover:-translate-y-0.5"
-          data-i18n="common.downloadIndustryCv"
         >
-          Download Industry CV
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-bounce" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          <span data-i18n="common.downloadIndustryCv">Download Industry CV</span>
         </a>
         <a
           href="https://github.com/istevensp/personal/raw/main/docs/cv-academic.pdf"
           class="btn-secondary hover:-translate-y-0.5"
-          data-i18n="common.downloadAcademicCv"
         >
-          Download Academic CV
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-bounce" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          <span data-i18n="common.downloadAcademicCv">Download Academic CV</span>
         </a>
       </div>
     </div>
