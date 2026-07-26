@@ -61,3 +61,101 @@ export async function getSemestersForCode(code: string): Promise<CourseSemester[
     (a, b) => semesterSortKey(b.semester) - semesterSortKey(a.semester)
   );
 }
+
+// Same palette as the Teaching timeline legend (src/pages/teaching/index.astro)
+// — kept as a separate literal rather than a shared import so a change to
+// one doesn't silently reflow the other's already-live color assignment.
+const COURSE_COLORS = [
+  'bg-rose-100 text-rose-800',
+  'bg-orange-100 text-orange-800',
+  'bg-amber-100 text-amber-800',
+  'bg-lime-100 text-lime-800',
+  'bg-emerald-100 text-emerald-800',
+  'bg-teal-100 text-teal-800',
+  'bg-cyan-100 text-cyan-800',
+  'bg-sky-100 text-sky-800',
+  'bg-violet-100 text-violet-800',
+  'bg-fuchsia-100 text-fuchsia-800',
+  'bg-pink-100 text-pink-800',
+  'bg-indigo-100 text-indigo-800',
+];
+
+// Official English translations for historical SAAC course names — mirrors
+// src/pages/teaching/index.astro's COURSE_NAME_TRANSLATIONS, needed here too
+// so a course name coming from an evaluation record resolves to the same
+// display name (and therefore the same color/anchor) on both pages.
+const COURSE_NAME_TRANSLATIONS: Record<string, string> = {
+  'Calidad de Servicio y Redes Multimedia': 'Quality of Service and Multimedia Networks',
+  'Estructuras de Datos': 'Data Structures',
+  'Fundamentos de Programación': 'Programming Fundamentals',
+  Internetworking: 'Internetworking',
+  'Programación de Sistemas Telemáticos': 'Telematics Systems Programming',
+  'Redes Inalámbricas y de Sensores': 'Wireless and Sensor Networks',
+  'Redes de Datos': 'Data Networks',
+  'Sistemas Distribuidos y Computación en la Nube': 'Distributed Systems and Cloud Computing',
+  'Telemetría y Sistemas Ciberfísicos': 'Telemetry and Cyber-Physical Systems',
+};
+
+export interface CourseColorEntry {
+  badgeClass: string;
+  anchor: string;
+}
+
+// One stable color + Teaching-page anchor per course name, for use anywhere
+// outside /teaching that references a course by its display name (currently:
+// the "Courses Taught" labels on Experience cards). Already-taught courses
+// are assigned colors in the same alphabetical order as the Teaching
+// timeline legend, so the colors match 1:1; courses that only have an
+// upcoming (not-yet-taught) semester are appended afterward so they don't
+// shift the palette already in use on the Teaching page.
+export async function getCourseColorMap(): Promise<Map<string, CourseColorEntry>> {
+  const coursesEntry = await getEntry('courses', 'data');
+  const evaluacionesEntry = await getEntry('evaluaciones', 'data');
+  const courses = coursesEntry.data.courses;
+  const evaluations = evaluacionesEntry.data.evaluations;
+
+  const normalizedTranslations = new Map(
+    Object.entries(COURSE_NAME_TRANSLATIONS).map(([es, en]) => [normalizeCourseName(es), en])
+  );
+
+  const historicalNameToCourse = new Map<string, (typeof courses)[number]>();
+  for (const course of courses) {
+    for (const historicalName of course.historicalNames) {
+      historicalNameToCourse.set(normalizeCourseName(historicalName), course);
+    }
+  }
+
+  function displayCourseName(rawName: string): string {
+    const normalized = normalizeCourseName(rawName);
+    const matched = historicalNameToCourse.get(normalized);
+    return matched ? matched.name : (normalizedTranslations.get(normalized) ?? rawName);
+  }
+
+  function anchorFor(rawName: string, courseCode: string): string {
+    const matched = historicalNameToCourse.get(normalizeCourseName(rawName));
+    return matched ? `course-${matched.courseId}` : `course-${courseCode}`;
+  }
+
+  const taught = new Map<string, string>();
+  for (const e of evaluations) {
+    taught.set(displayCourseName(e.courseName), anchorFor(e.courseName, e.courseCode));
+  }
+  for (const c of courses) {
+    if (c.semesters.some((s) => s.status !== 'upcoming')) taught.set(c.name, `course-${c.courseId}`);
+  }
+
+  const upcoming = new Map<string, string>();
+  for (const c of courses) {
+    if (!taught.has(c.name) && c.semesters.length > 0) upcoming.set(c.name, `course-${c.courseId}`);
+  }
+
+  const orderedNames = [...Array.from(taught.keys()).sort(), ...Array.from(upcoming.keys()).sort()];
+  const map = new Map<string, CourseColorEntry>();
+  orderedNames.forEach((name, i) => {
+    map.set(name, {
+      badgeClass: COURSE_COLORS[i % COURSE_COLORS.length],
+      anchor: taught.get(name) ?? upcoming.get(name)!,
+    });
+  });
+  return map;
+}

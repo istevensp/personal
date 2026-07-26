@@ -120,14 +120,20 @@ const academicExperience = defineCollection({
       z.object({
         id: z.string(),
         title: z.string(),
+        titleEs: z.string().optional(),
         institution: z.string(),
         location: z.string(),
         startDate: z.string(),
         endDate: z.string().nullable(),
         current: z.boolean(),
         department: z.string(),
+        departmentEs: z.string().optional(),
+        program: z.string().optional(),
+        programEs: z.string().optional(),
         description: z.string(),
+        descriptionEs: z.string().optional(),
         courses: z.array(z.string()),
+        coursesEs: z.array(z.string()).optional(),
         highlights: z.array(z.string()),
         // Spanish translation of `highlights`, paired by index, for the
         // EN/ES toggle (same `data-lang-en`/`data-lang-es` pattern used on
@@ -145,13 +151,17 @@ const professionalExperience = defineCollection({
       z.object({
         id: z.string(),
         title: z.string(),
+        titleEs: z.string().optional(),
         organization: z.string(),
+        organizationEs: z.string().optional(),
         location: z.string(),
         startDate: z.string(),
         endDate: z.string().nullable(),
         current: z.boolean(),
         description: z.string(),
+        descriptionEs: z.string().optional(),
         highlights: z.array(z.string()),
+        highlightsEs: z.array(z.string()).optional(),
       })
     ),
   }),

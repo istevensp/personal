@@ -1,35 +1,112 @@
 ---
 export interface Props {
   title: string;
+  titleEs?: string;
   organization: string;
+  organizationEs?: string;
+  department?: string;
+  departmentEs?: string;
+  program?: string;
+  programEs?: string;
   location: string;
   startDate: string;
   endDate: string | null;
   current: boolean;
   description: string;
+  descriptionEs?: string;
+  courses?: string[];
+  coursesEs?: string[];
+  courseBadgeClasses?: string[];
+  courseHrefs?: string[];
   highlights: string[];
   highlightsEs?: string[];
 }
 
-const { title, organization, location, startDate, endDate, current, description, highlights, highlightsEs } = Astro.props;
+const {
+  title,
+  titleEs,
+  organization,
+  organizationEs,
+  department,
+  departmentEs,
+  program,
+  programEs,
+  location,
+  startDate,
+  endDate,
+  current,
+  description,
+  descriptionEs,
+  courses = [],
+  coursesEs,
+  courseBadgeClasses,
+  courseHrefs,
+  highlights,
+  highlightsEs,
+} = Astro.props;
 
-function formatMonth(value: string) {
+function formatMonth(value: string, locale: string) {
   const [year, month] = value.split('-').map(Number);
-  return new Date(year, (month ?? 1) - 1).toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+  return new Date(year, (month ?? 1) - 1).toLocaleDateString(locale, { year: 'numeric', month: 'short' });
 }
 
-const period = `${formatMonth(startDate)} – ${current ? 'Present' : endDate ? formatMonth(endDate) : ''}`;
+const periodEn = `${formatMonth(startDate, 'en-US')} – ${current ? 'Present' : endDate ? formatMonth(endDate, 'en-US') : ''}`;
+const periodEs = `${formatMonth(startDate, 'es-ES')} – ${current ? 'Presente' : endDate ? formatMonth(endDate, 'es-ES') : ''}`;
+
+const subtitleEn = [program, department].filter(Boolean).join(' · ');
+const subtitleEs = [programEs || program, departmentEs || department].filter(Boolean).join(' · ');
 ---
 
 <div class="card flex flex-col gap-2">
   <div class="flex flex-wrap items-center justify-between gap-2">
-    <h4 class="text-xl font-semibold text-[var(--text-primary)]">{title}</h4>
-    {current && <span class="badge badge-success">Current</span>}
+    <h4 class="text-xl font-semibold text-[var(--text-primary)]" data-lang-en={titleEs ? title : undefined} data-lang-es={titleEs}>
+      {title}
+    </h4>
+    {current && <span class="badge badge-success" data-i18n="common.current">Current</span>}
   </div>
 
-  <p class="p-small font-medium text-[var(--text-secondary)]">{organization}</p>
-  <p class="p-tiny text-[var(--text-secondary)]">{location} &middot; {period}</p>
-  <p class="p-small text-[var(--text-secondary)]">{description}</p>
+  <p
+    class="p-small font-medium text-[var(--text-secondary)]"
+    data-lang-en={organizationEs ? organization : undefined}
+    data-lang-es={organizationEs}
+  >
+    {organization}
+  </p>
+  {
+    subtitleEn && (
+      <p class="p-tiny italic text-[var(--text-secondary)]" data-lang-en={subtitleEn} data-lang-es={subtitleEs}>
+        {subtitleEn}
+      </p>
+    )
+  }
+  <p class="p-tiny text-[var(--text-secondary)]">
+    {location} &middot; <span data-lang-en={periodEn} data-lang-es={periodEs}>{periodEn}</span>
+  </p>
+  <p class="p-small text-[var(--text-secondary)]" data-lang-en={descriptionEs ? description : undefined} data-lang-es={descriptionEs}>
+    {description}
+  </p>
+
+  {
+    courses.length > 0 && (
+      <div class="mt-1 flex flex-col gap-1.5">
+        <p class="p-tiny font-medium text-[var(--text-secondary)]" data-i18n="experience.coursesTaught">
+          Courses Taught
+        </p>
+        <div class="flex flex-wrap gap-2">
+          {courses.map((c, i) => (
+            <a
+              href={courseHrefs?.[i]}
+              class:list={['badge transition-opacity hover:opacity-75', courseBadgeClasses?.[i]]}
+              data-lang-en={coursesEs?.[i] ? c : undefined}
+              data-lang-es={coursesEs?.[i]}
+            >
+              {c}
+            </a>
+          ))}
+        </div>
+      </div>
+    )
+  }
 
   {
     highlights.length > 0 && (

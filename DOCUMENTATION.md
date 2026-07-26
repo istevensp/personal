@@ -180,7 +180,11 @@ All of these are pure data edits — no component code changes required.
   `src/content/maps/evaluaciones.yaml` (raw SAAC historical export — grouped
   automatically by `courseCode` on the Teaching page, see §4.1).
 - **Thesis advisory**: add entries to the `thesisAdvisory` array in
-  `src/content/experience/thesis-advisory.yaml` (currently empty).
+  `src/content/experience/thesis-advisory.yaml` (currently empty). Rendered
+  on `/projects` (not `/experience`) as a third section alongside Research
+  and Community Engagement — moved there from the Experience pages per the
+  site owner's request, since thesis advising is closer to project work
+  than to a job/position entry.
 - **Profile/education/certifications/awards**: edit the corresponding YAML
   file directly under `src/content/profile/` or `src/content/experience/`.
 
@@ -291,7 +295,42 @@ real historical SAAC code via `courseIdToRealCode` (built from
 `historicalNames`, §4.1) when the course's own `code` isn't set — this is
 why the "Data Structures" *current* course card can link to
 `/teaching/ccpg1034` even though `courses.yaml`'s own `code` for that entry
-is still a placeholder.
+is still a placeholder. The same `realCodeForCourse()` resolution is also
+used to show the real course code badge (instead of `[PROPORCIONAR]`) and to
+merge historical semesters into a current course's card via
+`historicalSemestersForCourse()`, so a Current Courses card for a merged
+course (e.g. "Data Structures") shows the *same* years-taught range,
+parallel count, and evaluations accordion as its Historical Teaching Record
+counterpart — not just its own 2026 semester(s).
+
+**Detail page content deliberately excludes credits, contact hours,
+prerequisites, and corequisites** — even though the schema captures them —
+per the site owner's request; they didn't feel worth surfacing. "Topics
+Covered" is intentionally the most visually prominent section (colored
+chips cycling through a 13-hue palette, `TOPIC_COLORS` in the page file,
+plus a bouncing ✨ emoji) to compensate for the rest of the page reading as
+fairly plain otherwise. A "Taught N times (year range)" badge next to the
+title, and a "View evaluations" accordion (visually identical to
+`CourseCard`'s), are built from `src/lib/teaching.ts`'s
+`getSemestersForCode()` — the same historical+current merge logic as
+`teaching/index.astro`, factored out so it isn't triple-implemented. The
+"N times" count deliberately excludes `status: 'upcoming'` semesters (a
+scheduled-but-not-yet-taught semester still shows in the accordion, with an
+"Upcoming" badge, but doesn't inflate the "taught" count).
+
+**A real bilingual-pairing bug, already fixed once**: `pairLists()` used to
+zip English and Spanish lists by iterating the English array — if a
+course's English syllabus extraction was incomplete for a field (this
+happened for real: TLMG1030's English `topics` had only 1 of 5 real items
+and its `instruction_outcomes` was empty; TLMG1037's English
+`student_outcomes` was empty), the real Spanish content for the missing
+items was **silently invisible on the page, in both languages** — not just
+mislabeled. Fixed to derive the merged list's length from whichever
+language's array is longer, so real content from either language never
+disappears just because the other language's extraction was incomplete for
+that specific field. The same fix (`pick()` helper, preferring non-empty
+over merely non-null) applies to single-string fields like `description`,
+since `??` doesn't fall through on `""`.
 
 ---
 
@@ -375,9 +414,17 @@ detail pages: `ProjectCard`, `PublicationCard`, `NewsCard`, `ExperienceCard`,
 `<details>/<summary>` accordion for semester evaluation links, no JS needed).
 `CourseCard` also accepts an optional `id` (anchor target, used by the
 Teaching Timeline's "jump to card" links — the card root gets `scroll-mt-24`
-so it doesn't land under the sticky header) and `nameEs` (renders the title
-as `data-lang-en`/`data-lang-es`, see §7, instead of a plain string, when
-provided).
+so it doesn't land under the sticky header), `nameEs`/`descriptionEs`
+(bilingual title and description via `data-lang-en`/`data-lang-es`, see
+§7), and `syllabusHref` (§4.3). Year badges use a 10-hue `YEAR_COLORS`
+palette deliberately excluding red/rose/pink/orange/amber — those already
+mean warning/error/"In Progress"/"Upcoming" elsewhere on the same card, so
+using them for a plain year would read as alarming for no reason.
+
+`ExperienceCard` accepts an optional `highlightsEs?: string[]`, paired by
+index with `highlights` (same `data-lang-en`/`data-lang-es` pattern) — so
+far only populated for the current academic position
+(`academic.yaml`'s `espol-lecturer-researcher` entry).
 
 ### Common (`src/components/Common/`) — React islands
 - **ThemeToggle.jsx** — reads/writes `localStorage.theme`, toggles the
@@ -412,13 +459,13 @@ toggling CSS classes.
 | `/about` | `src/pages/about.astro` | Education, interests, certifications, awards |
 | `/teaching` | `src/pages/teaching/index.astro` | See §4.1 |
 | `/teaching/[code]` | `.../teaching/[code].astro` | Course syllabus detail — see §4.3; only exists for codes with a syllabus file |
-| `/projects` | `src/pages/projects/index.astro` | Research + Community grids |
+| `/projects` | `src/pages/projects/index.astro` | Research + Community grids + Thesis Advisory |
 | `/projects/research/[slug]` | `.../research/[slug].astro` | `slug` = MDX frontmatter `projectId` |
 | `/projects/community/[slug]` | `.../community/[slug].astro` | same |
 | `/publications` | `src/pages/publications/index.astro` | Client-side status filter; collapsible full timeline (§5) |
 | `/publications/[slug]` | `.../publications/[slug].astro` | `slug` = YAML `id`; ScholarlyArticle JSON-LD |
 | `/experience` | `src/pages/experience/index.astro` | Academic/Professional tabs |
-| `/experience/academic` | `.../academic.astro` | + Thesis Advisory |
+| `/experience/academic` | `.../academic.astro` | Full academic experience list (Thesis Advisory lives on `/projects`, not here) |
 | `/experience/professional` | `.../professional.astro` | |
 | `/news` | `src/pages/news/index.astro` | `NewsFilter` island |
 | `/news/[slug]` | `.../news/[slug].astro` | `slug` = MDX frontmatter `slug` |

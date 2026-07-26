@@ -1,18 +1,29 @@
 academicExperience:
 - id: espol-lecturer-researcher
   title: Professor — Researcher
+  titleEs: Profesor — Investigador
   institution: Escuela Superior Politécnica del Litoral (ESPOL)
   location: Guayaquil, Ecuador
-  startDate: 2025-02
+  startDate: 2024-09
   endDate: null
   current: true
-  department: '[PROPORCIONAR]'
+  department: Faculty of Electrical and Computer Engineering (FIEC) - ESPOL
+  departmentEs: Facultad de Ingeniería en Electricidad y Computación (FIEC) - ESPOL
+  program: Computer Science Engineering
+  programEs: Ingeniería en Ciencias Computacionales
   description: Teaching and research in computing, infrastructure, cloud computing, distributed systems,
     and cybersecurity.
+  descriptionEs: Docencia e investigación en computación, infraestructura, computación en la nube, sistemas distribuidos y ciberseguridad.
   courses:
-  - Distributed Systems
-  - Algorithms
   - Data Structures
+  - Programming Fundamentals
+  - Distributed Systems and Cloud Computing
+  - Algorithm Analysis
+  coursesEs:
+  - Estructuras de Datos
+  - Fundamentos de Programación
+  - Sistemas Distribuidos y Computación en la Nube
+  - Análisis de Algoritmos
   highlights:
   - Developing e-learning material for the Data Science and Artificial Intelligence program, for the Distributed Systems and Cloud Computing course.
   - Advisor for the Computer Science Capstone (Integrator) Project.
@@ -33,33 +44,49 @@ academicExperience:
   - Coordinación con empresas para charlas profesionales orientadas a la marca profesional, liderazgo y nuevas tecnologías.
 - id: espol-tech-research-project-assistant
   title: Research Project Assistant
+  titleEs: Asistente de Proyecto de Investigación
   institution: ESPOL — TECH E.P.
   location: Guayaquil, Ecuador
   startDate: 2023-02
   endDate: 2024-04
   current: false
-  department: '[PROPORCIONAR]'
+  department: Faculty of Electrical and Computer Engineering (FIEC) - ESPOL
+  departmentEs: Facultad de Ingeniería en Electricidad y Computación (FIEC) - ESPOL
   description: Research project leadership, coordination, and technical follow-up.
+  descriptionEs: Liderazgo, coordinación y seguimiento técnico de proyectos de investigación.
   courses: []
   highlights:
   - Coordinated research project activities.
   - Performed technical follow-up.
   - Supported coordination with internal teams.
+  highlightsEs:
+  - Coordinó actividades del proyecto de investigación.
+  - Realizó seguimiento técnico.
+  - Apoyó la coordinación con equipos internos.
 - id: espol-teaching-assistant
   title: Teaching Assistant
+  titleEs: Ayudante de Cátedra
   institution: Escuela Superior Politécnica del Litoral (ESPOL)
   location: Guayaquil, Ecuador
   startDate: 2017-05
   endDate: 2020-09
   current: false
-  department: '[PROPORCIONAR]'
+  department: Faculty of Electrical and Computer Engineering (FIEC) - ESPOL
+  departmentEs: Facultad de Ingeniería en Electricidad y Computación (FIEC) - ESPOL
   description: Teaching assistant supporting undergraduate courses across multiple semesters.
+  descriptionEs: Ayudante de cátedra brindando apoyo en materias de pregrado a lo largo de varios semestres.
   courses:
   - Programming Fundamentals
   - Differential Equations
   - Basic Electronics
   - Internetworking
   - Telemetry and Cyber-Physical Systems
+  coursesEs:
+  - Fundamentos de Programación
+  - Ecuaciones Diferenciales
+  - Electrónica Básica
+  - Internetworking
+  - Telemetría y Sistemas Ciberfísicos
   highlights:
   - '2017: Teaching assistant for Programming Fundamentals and Differential Equations.'
   - '2018–2019: Teaching assistant for Basic Electronics.'
@@ -70,18 +97,37 @@ academicExperience:
   - '2019 (2do semestre) – 2020 (1er semestre): Ayudante de cátedra de Internetworking y Telemetría y Sistemas Ciberfísicos.'
 - id: espol-lecturer-project-director-lab-head
   title: Lecturer, Project Director, and Data Networks Laboratory Head
+  titleEs: Profesor, Director de Proyectos y Jefe del Laboratorio de Redes de Datos
   institution: Escuela Superior Politécnica del Litoral (ESPOL)
   location: Guayaquil, Ecuador
   startDate: 2021-09
   endDate: 2024-03
   current: false
-  department: '[PROPORCIONAR]'
+  department: Faculty of Electrical and Computer Engineering (FIEC) - ESPOL
+  departmentEs: Facultad de Ingeniería en Electricidad y Computación (FIEC) - ESPOL
+  program: Telematics Engineering
+  programEs: Ingeniería en Telemática
   description: University teaching, project coordination, and management of the Data Networks Laboratory.
+  descriptionEs: Docencia universitaria, coordinación de proyectos y gestión del Laboratorio de Redes de Datos.
   courses:
-  - Distributed Systems
-  - Algorithms
-  - Data Structures
+  - Quality of Service and Multimedia Networks
+  - Internetworking
+  - Data Networks
+  - Wireless and Sensor Networks
+  - Telemetry and Cyber-Physical Systems
+  - Telematics Systems Programming
+  coursesEs:
+  - Calidad de Servicio y Redes Multimedia
+  - Internetworking
+  - Redes de Datos
+  - Redes Inalámbricas y de Sensores
+  - Telemetría y Sistemas Ciberfísicos
+  - Programación de Sistemas Telemáticos
   highlights:
   - Coordinated and managed academic and community-engagement projects.
   - Managed the Data Networks Laboratory.
   - Supported hands-on training in networks and systems.
+  highlightsEs:
+  - Coordinó y gestionó proyectos académicos y de vinculación con la sociedad.
+  - Gestionó el Laboratorio de Redes de Datos.
+  - Apoyó la formación práctica en redes y sistemas.

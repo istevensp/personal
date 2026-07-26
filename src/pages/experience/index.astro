@@ -2,11 +2,13 @@
 import BaseLayout from '../../components/Layout/BaseLayout.astro';
 import ExperienceCard from '../../components/Cards/ExperienceCard.astro';
 import { getEntry } from 'astro:content';
+import { getCourseColorMap } from '../../lib/teaching';
 
 export const prerender = true;
 
 const academicEntry = await getEntry('academicExperience', 'data');
 const professionalEntry = await getEntry('professionalExperience', 'data');
+const courseColorMap = await getCourseColorMap();
 
 const academic = [...academicEntry.data.academicExperience].sort((a, b) => b.startDate.localeCompare(a.startDate));
 const professional = [...professionalEntry.data.professionalExperience].sort((a, b) => b.startDate.localeCompare(a.startDate));
@@ -38,7 +40,7 @@ const professional = [...professionalEntry.data.professionalExperience].sort((a,
           data-tab="professional"
           class="min-h-[44px] rounded-md border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800"
         >
-          Professional
+          <span data-i18n="experience.industry">Industry</span>
         </button>
       </div>
 
@@ -46,12 +48,25 @@ const professional = [...professionalEntry.data.professionalExperience].sort((a,
         {academic.map((exp) => (
           <ExperienceCard
             title={exp.title}
+            titleEs={exp.titleEs}
             organization={exp.institution}
+            department={exp.department}
+            departmentEs={exp.departmentEs}
+            program={exp.program}
+            programEs={exp.programEs}
             location={exp.location}
             startDate={exp.startDate}
             endDate={exp.endDate}
             current={exp.current}
             description={exp.description}
+            descriptionEs={exp.descriptionEs}
+            courses={exp.courses}
+            coursesEs={exp.coursesEs}
+            courseBadgeClasses={exp.courses.map((c) => courseColorMap.get(c)?.badgeClass ?? '')}
+            courseHrefs={exp.courses.map((c) => {
+              const anchor = courseColorMap.get(c)?.anchor;
+              return anchor ? `/teaching#${anchor}` : undefined;
+            })}
             highlights={exp.highlights}
             highlightsEs={exp.highlightsEs}
           />
@@ -63,16 +78,26 @@ const professional = [...professionalEntry.data.professionalExperience].sort((a,
         {professional.map((exp) => (
           <ExperienceCard
             title={exp.title}
+            titleEs={exp.titleEs}
             organization={exp.organization}
+            organizationEs={exp.organizationEs}
             location={exp.location}
             startDate={exp.startDate}
             endDate={exp.endDate}
             current={exp.current}
             description={exp.description}
+            descriptionEs={exp.descriptionEs}
             highlights={exp.highlights}
+            highlightsEs={exp.highlightsEs}
           />
         ))}
-        <a href="/experience/professional" class="link inline-flex min-h-[44px] w-fit items-center text-sm">See full professional breakdown</a>
+        <a
+          href="/experience/professional"
+          class="link inline-flex min-h-[44px] w-fit items-center text-sm"
+          data-i18n="experience.seeFullIndustryBreakdown"
+        >
+          See full industry breakdown
+        </a>
       </div>
     </div>
   </section>

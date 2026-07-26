@@ -9,23 +9,27 @@ const professionalEntry = await getEntry('professionalExperience', 'data');
 const professional = [...professionalEntry.data.professionalExperience].sort((a, b) => b.startDate.localeCompare(a.startDate));
 ---
 
-<BaseLayout title="Professional Experience" description="Professional experience history.">
+<BaseLayout title="Industry Experience" description="Industry experience history.">
   <section class="px-4 py-2xl md:px-6 lg:px-12">
     <div class="mx-auto flex max-w-container flex-col gap-4">
       <a href="/experience" class="link inline-flex min-h-[44px] w-fit items-center text-sm">&larr; Back to Experience</a>
-      <h1>Professional Experience</h1>
+      <h1 data-i18n="experience.industryExperience">Industry Experience</h1>
 
       <div class="flex flex-col gap-4">
         {professional.map((exp) => (
           <ExperienceCard
             title={exp.title}
+            titleEs={exp.titleEs}
             organization={exp.organization}
+            organizationEs={exp.organizationEs}
             location={exp.location}
             startDate={exp.startDate}
             endDate={exp.endDate}
             current={exp.current}
             description={exp.description}
+            descriptionEs={exp.descriptionEs}
             highlights={exp.highlights}
+            highlightsEs={exp.highlightsEs}
           />
         ))}
       </div>

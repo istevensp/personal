@@ -1,71 +1,108 @@
 professionalExperience:
 - id: farmagro-it-cybersecurity-consultant
   title: IT & Cybersecurity Consultant
+  titleEs: Consultor de TI y Ciberseguridad
   organization: Farmagro S.A.
-  location: '[PROPORCIONAR]'
+  location: Guayaquil, Ecuador
   startDate: 2022-09
   endDate: null
   current: true
   description: IT and cybersecurity consulting focused on governance, risk, compliance, and controls.
+  descriptionEs: Consultoría de TI y ciberseguridad enfocada en gobierno, riesgo, cumplimiento y controles.
   highlights:
   - Supports initiatives to improve IT infrastructure and services.
   - Advises on cybersecurity governance, risk, compliance, and controls.
   - Supports security and operational improvement initiatives.
+  highlightsEs:
+  - Apoya iniciativas de mejora de infraestructura y servicios de TI.
+  - Asesora en gobierno, riesgo, cumplimiento y controles de ciberseguridad.
+  - Apoya iniciativas de mejora en seguridad y operaciones.
 - id: registro-civil-national-director
   title: National Director of IT Infrastructure & Operations
+  titleEs: Director Nacional de Infraestructura y Operaciones de TI
   organization: General Directorate of Civil Registry, Identification and ID Services
-  location: Ecuador
+  organizationEs: Dirección General de Registro Civil, Identificación y Cedulación
+  location: Quito, Ecuador
   startDate: 2024-02
   endDate: 2025-02
   current: false
   description: Leadership of national IT infrastructure and operations.
+  descriptionEs: Liderazgo de la infraestructura y operaciones de TI a nivel nacional.
   highlights:
   - Led service continuity, IT services, servers, and network operations.
   - Managed modernization and migration initiatives.
   - Promoted operational efficiency improvements.
+  highlightsEs:
+  - Lideró la continuidad de servicios, servicios de TI, servidores y operaciones de red.
+  - Gestionó iniciativas de modernización y migración.
+  - Impulsó mejoras de eficiencia operativa.
 - id: anubis-iot-solutions-architect
   title: IoT Systems Solutions Architect
+  titleEs: Arquitecto de Soluciones de Sistemas IoT
   organization: Anubis S.A.
-  location: '[PROPORCIONAR]'
+  location: Guayaquil, Ecuador
   startDate: 2021-11
   endDate: 2023-04
   current: false
   description: Architecture and design of integrated IoT solutions.
+  descriptionEs: Arquitectura y diseño de soluciones IoT integradas.
   highlights:
   - Designed IoT solution architectures.
   - Integrated sensors, connectivity, and backend components.
+  highlightsEs:
+  - Diseñó arquitecturas de soluciones IoT.
+  - Integró sensores, conectividad y componentes de backend.
 - id: sonda-digital-transformation-project-lead
   title: 'Project Lead: Digital Transformation for the Municipality of Guayaquil'
+  titleEs: 'Líder de Proyecto: Transformación Digital para la Municipalidad de Guayaquil'
   organization: SONDA
   location: Guayaquil, Ecuador
   startDate: 2020-09
   endDate: 2021-09
   current: false
   description: Project leadership for a municipal digital transformation initiative.
+  descriptionEs: Liderazgo de proyecto para una iniciativa municipal de transformación digital.
   highlights:
   - Led project activities and stakeholder coordination.
   - Tracked deliverables.
   - Supported operational continuity.
+  highlightsEs:
+  - Lideró actividades del proyecto y la coordinación con las partes interesadas.
+  - Dio seguimiento a los entregables.
+  - Apoyó la continuidad operativa.
 - id: fict-espol-database-backend
   title: Database Administrator and Backend Developer
+  titleEs: Administrador de Bases de Datos y Desarrollador Backend
   organization: FICT-ESPOL
   location: Guayaquil, Ecuador
   startDate: 2019-02
   endDate: 2020-01
   current: false
   description: Database administration and backend development.
+  descriptionEs: Administración de bases de datos y desarrollo backend.
   highlights:
   - Administered databases.
   - Developed backend components.
+  highlightsEs:
+  - Administró bases de datos.
+  - Desarrolló componentes backend.
 - id: gladwell-it-technician
-  title: IT Technician
+  title: IT Engineer
+  titleEs: Ingeniero TI
   organization: GLADWELL S.A.
-  location: '[PROPORCIONAR]'
+  location: Guayaquil, Ecuador
   startDate: 2015-01
   endDate: 2019-04
   current: false
   description: IT support, infrastructure maintenance, and operational assistance.
+  descriptionEs: Soporte de TI, mantenimiento de infraestructura y asistencia operativa.
   highlights:
   - Provided technical support.
+  - Supported and managed servers and computer equipment.
   - Performed corrective and preventive maintenance.
   - Supported daily IT operations.
+  highlightsEs:
+  - Brindó soporte técnico.
+  - Apoyó y gestionó servidores y equipos de cómputo.
+  - Realizó mantenimiento correctivo y preventivo.
+  - Apoyó las operaciones diarias de TI.

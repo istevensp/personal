@@ -2,10 +2,12 @@
 import BaseLayout from '../../components/Layout/BaseLayout.astro';
 import ExperienceCard from '../../components/Cards/ExperienceCard.astro';
 import { getEntry } from 'astro:content';
+import { getCourseColorMap } from '../../lib/teaching';
 
 export const prerender = true;
 
 const academicEntry = await getEntry('academicExperience', 'data');
+const courseColorMap = await getCourseColorMap();
 
 const academic = [...academicEntry.data.academicExperience].sort((a, b) => b.startDate.localeCompare(a.startDate));
 ---
@@ -22,12 +24,25 @@ const academic = [...academicEntry.data.academicExperience].sort((a, b) => b.sta
         {academic.map((exp) => (
           <ExperienceCard
             title={exp.title}
+            titleEs={exp.titleEs}
             organization={exp.institution}
+            department={exp.department}
+            departmentEs={exp.departmentEs}
+            program={exp.program}
+            programEs={exp.programEs}
             location={exp.location}
             startDate={exp.startDate}
             endDate={exp.endDate}
             current={exp.current}
             description={exp.description}
+            descriptionEs={exp.descriptionEs}
+            courses={exp.courses}
+            coursesEs={exp.coursesEs}
+            courseBadgeClasses={exp.courses.map((c) => courseColorMap.get(c)?.badgeClass ?? '')}
+            courseHrefs={exp.courses.map((c) => {
+              const anchor = courseColorMap.get(c)?.anchor;
+              return anchor ? `/teaching#${anchor}` : undefined;
+            })}
             highlights={exp.highlights}
             highlightsEs={exp.highlightsEs}
           />
