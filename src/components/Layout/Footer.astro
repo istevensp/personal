@@ -42,10 +42,11 @@ const year = new Date().getFullYear();
           href={`https://orcid.org/${personal.socials.orcid}`}
           target="_blank"
           rel="noopener noreferrer"
-          class="p-small link flex min-h-[44px] items-center text-[var(--text-secondary)]"
-          title="ORCID identifier"
+          aria-label="ORCID identifier"
+          title={`ORCID: ${personal.socials.orcid}`}
+          class="flex h-11 w-11 items-center justify-center rounded-md text-[var(--text-secondary)] transition duration-fast hover:bg-gray-100 dark:hover:bg-gray-800"
         >
-          ORCID: {personal.socials.orcid}
+          <img src="/images/ORCID_iD.svg" width="20" height="20" alt="" aria-hidden="true" />
         </a>
 
         <a

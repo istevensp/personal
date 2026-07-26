@@ -226,9 +226,11 @@ non-empty).
   by a small vanilla `<script>` (no React needed for a pure show/hide toggle).
   Current `navItems` order: About, Teaching, Experience, Projects,
   Publications, News, Contact Me.
-- **Footer.astro** — social links row (GitHub, LinkedIn, ORCID as a clickable
-  text link per the "no ORCID icon" rule, Google Scholar, ResearchGate) +
-  copyright line.
+- **Footer.astro** — social links row (GitHub, LinkedIn, Google Scholar,
+  ResearchGate, ORCID — all icon-only buttons; the ORCID icon uses the
+  official brand mark, `public/images/ORCID_iD.svg` (green circle + "iD"),
+  loaded via `<img>` rather than inlined as a `currentColor` SVG path like
+  the others) + copyright line.
 
 ### Home (`src/components/Home/`)
 Each is a self-contained `<section>` used only by `src/pages/index.astro`, in
