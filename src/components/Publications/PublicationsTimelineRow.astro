@@ -20,6 +20,11 @@ const statusDot: Record<string, string> = {
   Accepted: 'bg-warning',
   'Under Review': 'bg-gray-400',
 };
+const statusI18nKey: Record<string, string> = {
+  Published: 'publications.published',
+  Accepted: 'publications.accepted',
+  'Under Review': 'publications.underReview',
+};
 ---
 
 {
@@ -31,7 +36,7 @@ const statusDot: Record<string, string> = {
           <a href={p.href} class="group flex w-48 shrink-0 flex-col gap-1.5 px-2 first:pl-0">
             <span class:list={['block h-3 w-3 rounded-full', statusDot[p.status] ?? 'bg-gray-400']} />
             <p class="p-tiny text-[var(--text-secondary)]">
-              {p.dateLabel} &middot; {p.status}
+              {p.dateLabel} &middot; <span data-i18n={statusI18nKey[p.status]}>{p.status}</span>
             </p>
             <h4 class="line-clamp-2 text-sm font-semibold text-[var(--text-primary)] group-hover:text-primary">{p.title}</h4>
             <p class="p-tiny line-clamp-1 italic text-[var(--text-secondary)]">{p.venue}</p>

@@ -45,6 +45,13 @@ const validLinks = publication
   ? Object.entries(publication.links).filter(([, url]) => url && url !== '[PROPORCIONAR]')
   : [];
 
+function statusI18nKey(status: string): string | undefined {
+  if (status === 'Published') return 'publications.published';
+  if (status === 'Accepted') return 'publications.accepted';
+  if (status === 'Under Review') return 'publications.underReview';
+  return undefined;
+}
+
 const jsonLd = publication
   ? {
       '@context': 'https://schema.org',
@@ -68,10 +75,12 @@ const jsonLd = publication
     publication ? (
       <article class="px-4 py-2xl md:px-6 lg:px-12">
         <div class="mx-auto flex max-w-3xl flex-col gap-6">
-          <a href="/publications" class="link inline-flex min-h-[44px] w-fit items-center text-sm">&larr; Back to Publications</a>
+          <a href="/publications" class="link inline-flex min-h-[44px] w-fit items-center text-sm" data-i18n="publications.backToPublications">
+            &larr; Back to Publications
+          </a>
 
           <div class="flex flex-wrap items-center gap-2">
-            <span class="badge badge-success">{publication.status}</span>
+            <span class="badge badge-success" data-i18n={statusI18nKey(publication.status)}>{publication.status}</span>
             <span class="p-tiny text-[var(--text-secondary)]">{dateLabel}</span>
           </div>
 
@@ -88,7 +97,7 @@ const jsonLd = publication
           )}
 
           <div class="flex flex-col gap-2">
-            <h3>Abstract</h3>
+            <h3 data-i18n="publications.abstract">Abstract</h3>
             <p class="text-[var(--text-secondary)]">{publication.abstract}</p>
           </div>
 
@@ -113,8 +122,8 @@ const jsonLd = publication
       </article>
     ) : (
       <div class="flex min-h-[50vh] flex-col items-center justify-center gap-4 px-4 text-center">
-        <h1>Publication not found</h1>
-        <a href="/publications" class="btn-primary">Back to Publications</a>
+        <h1 data-i18n="publications.publicationNotFound">Publication not found</h1>
+        <a href="/publications" class="btn-primary" data-i18n="publications.backToPublications">Back to Publications</a>
       </div>
     )
   }

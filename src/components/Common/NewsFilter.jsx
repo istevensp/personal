@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { strings } from '../../i18n/strings';
 
 const ALL_CATEGORIES = [
   'All',
@@ -12,6 +13,16 @@ const ALL_CATEGORIES = [
 
 export default function NewsFilter({ containerId, categories = ALL_CATEGORIES }) {
   const [active, setActive] = useState('All');
+  const [lang, setLang] = useState('en');
+
+  useEffect(() => {
+    setLang(localStorage.getItem('lang') ?? 'en');
+    function onLanguageChange(e) {
+      setLang(e.detail);
+    }
+    window.addEventListener('languagechange', onLanguageChange);
+    return () => window.removeEventListener('languagechange', onLanguageChange);
+  }, []);
 
   function applyFilter(category) {
     setActive(category);
@@ -37,7 +48,7 @@ export default function NewsFilter({ containerId, categories = ALL_CATEGORIES })
               : 'border border-[var(--border)] text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800'
           }`}
         >
-          {category}
+          {strings[lang]?.[`news.category.${category}`] ?? category}
         </button>
       ))}
     </div>

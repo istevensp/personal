@@ -68,7 +68,7 @@ const timelineAll = [...published, ...accepted, ...underReview].sort((a, b) => b
 <BaseLayout title="Publications" description="Published, accepted, and under-review research publications.">
   <section class="px-4 py-2xl md:px-6 lg:px-12">
     <div class="mx-auto flex max-w-container flex-col gap-6">
-      <h1>Publications</h1>
+      <h1 data-i18n="nav.publications">Publications</h1>
 
       {
         timelineAll.length > 0 && (
@@ -86,10 +86,10 @@ const timelineAll = [...published, ...accepted, ...underReview].sort((a, b) => b
       }
 
       <div class="flex flex-wrap gap-2" role="group" aria-label="Filter publications by status" id="pub-filters">
-        <button type="button" data-status-filter="All" aria-pressed="true" class="min-h-[44px] rounded-full bg-primary px-4 py-2 text-sm font-medium text-white">All</button>
-        <button type="button" data-status-filter="Published" aria-pressed="false" class="min-h-[44px] rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800">Published</button>
-        <button type="button" data-status-filter="Accepted" aria-pressed="false" class="min-h-[44px] rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800">Accepted</button>
-        <button type="button" data-status-filter="Under Review" aria-pressed="false" class="min-h-[44px] rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800">Under Review</button>
+        <button type="button" data-status-filter="All" aria-pressed="true" data-i18n="common.all" class="min-h-[44px] rounded-full bg-primary px-4 py-2 text-sm font-medium text-white">All</button>
+        <button type="button" data-status-filter="Published" aria-pressed="false" data-i18n="publications.published" class="min-h-[44px] rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800">Published</button>
+        <button type="button" data-status-filter="Accepted" aria-pressed="false" data-i18n="publications.accepted" class="min-h-[44px] rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800">Accepted</button>
+        <button type="button" data-status-filter="Under Review" aria-pressed="false" data-i18n="publications.underReview" class="min-h-[44px] rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800">Under Review</button>
       </div>
 
       <div id="pub-grid" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">

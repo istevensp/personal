@@ -25,6 +25,12 @@ function formatMonth(value: string | null) {
   const [year, month] = value.split('-').map(Number);
   return new Date(year, (month ?? 1) - 1).toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
 }
+
+function yearRangeLabel(startDate: string, endDate: string | null): string {
+  const startYear = Number(startDate.split('-')[0]);
+  const endYear = endDate ? Number(endDate.split('-')[0]) : new Date().getFullYear();
+  return startYear === endYear ? `${startYear}` : `${startYear}–${endYear}`;
+}
 ---
 
 <BaseLayout
@@ -35,20 +41,53 @@ function formatMonth(value: string | null) {
     project ? (
       <article class="px-4 py-2xl md:px-6 lg:px-12">
         <div class="mx-auto flex max-w-3xl flex-col gap-6">
-          <a href="/projects" class="link inline-flex min-h-[44px] w-fit items-center text-sm">&larr; Back to Projects</a>
+          <a href="/projects" class="link inline-flex min-h-[44px] w-fit items-center text-sm" data-i18n="projects.backToProjects">
+            &larr; Back to Projects
+          </a>
 
           <div class="flex flex-wrap items-center gap-2">
-            <span class="badge">Community</span>
-            {project.current && <span class="badge badge-warning">Ongoing</span>}
-            <span class="p-tiny text-[var(--text-secondary)]">{project.year}</span>
+            <span class="badge" data-i18n="projects.communityBadge">Community</span>
+            {project.current && <span class="badge badge-warning" data-i18n="projects.ongoing">Ongoing</span>}
+            <span class="badge">{yearRangeLabel(project.startDate, project.endDate)}</span>
           </div>
 
-          <h1>{project.name}</h1>
+          <h1 data-lang-en={project.nameEs ? project.name : undefined} data-lang-es={project.nameEs}>{project.name}</h1>
 
-          <div class="flex flex-wrap gap-4 text-sm text-[var(--text-secondary)]">
-            <span>Role: {project.myRole}</span>
+          {
+            project.program && (
+              <p
+                class="italic text-[var(--text-secondary)]"
+                data-lang-en={project.programEs ? project.program : undefined}
+                data-lang-es={project.programEs}
+              >
+                {project.program}
+              </p>
+            )
+          }
+
+          <div class="flex flex-wrap items-center gap-3 text-sm text-[var(--text-secondary)]">
+            <span class="badge bg-violet-100 text-violet-800" data-lang-en={project.myRoleEs ? project.myRole : undefined} data-lang-es={project.myRoleEs}>
+              {project.myRole}
+            </span>
             <span>{formatMonth(project.startDate)} – {formatMonth(project.endDate)}</span>
           </div>
+
+          {
+            project.degreePrograms && project.degreePrograms.length > 0 && (
+              <div class="flex flex-col gap-1.5">
+                <p class="p-tiny font-medium text-[var(--text-secondary)]" data-i18n="projects.collaboratingPrograms">
+                  Collaborating Degree Programs
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  {project.degreePrograms.map((dp, i) => (
+                    <span class="badge" data-lang-en={project.degreeProgramsEs?.[i] ? dp : undefined} data-lang-es={project.degreeProgramsEs?.[i]}>
+                      {dp}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )
+          }
 
           <div class="prose-content flex flex-col gap-4">
             {Content && <Content />}
@@ -67,8 +106,8 @@ function formatMonth(value: string | null) {
       </article>
     ) : (
       <div class="flex min-h-[50vh] flex-col items-center justify-center gap-4 px-4 text-center">
-        <h1>Project not found</h1>
-        <a href="/projects" class="btn-primary">Back to Projects</a>
+        <h1 data-i18n="projects.projectNotFound">Project not found</h1>
+        <a href="/projects" class="btn-primary" data-i18n="projects.backToProjects">Back to Projects</a>
       </div>
     )
   }

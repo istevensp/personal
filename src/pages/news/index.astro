@@ -14,7 +14,7 @@ const items = (await getCollection('news', ({ data }) => !data.draft)).sort(
 <BaseLayout title="News" description="Latest news and announcements.">
   <section class="px-4 py-2xl md:px-6 lg:px-12">
     <div class="mx-auto flex max-w-container flex-col gap-6">
-      <h1>News</h1>
+      <h1 data-i18n="nav.news">News</h1>
 
       <NewsFilter client:load containerId="news-grid" />
 
@@ -34,7 +34,7 @@ const items = (await getCollection('news', ({ data }) => !data.draft)).sort(
             ))}
           </div>
         ) : (
-          <p class="p-small text-[var(--text-secondary)]">No news published yet.</p>
+          <p class="p-small text-[var(--text-secondary)]" data-i18n="news.noNewsYet">No news published yet.</p>
         )
       }
     </div>

@@ -2,28 +2,64 @@
 export interface Props {
   href: string;
   name: string;
-  year: number;
+  nameEs?: string;
+  program?: string;
+  programEs?: string;
+  year: number | string;
   myRole: string;
+  myRoleEs?: string;
   excerpt: string;
+  excerptEs?: string;
   type: 'research' | 'community';
   current: boolean;
   featured?: boolean;
 }
 
-const { href, name, year, myRole, excerpt, type, current, featured = false } = Astro.props;
+const {
+  href,
+  name,
+  nameEs,
+  program,
+  programEs,
+  year,
+  myRole,
+  myRoleEs,
+  excerpt,
+  excerptEs,
+  type,
+  current,
+  featured = false,
+} = Astro.props;
 ---
 
 <a href={href} class="card animate-fade-in flex flex-col gap-3 no-underline">
   <div class="flex flex-wrap items-center gap-2">
-    <span class:list={['badge', type === 'research' ? 'badge-success' : '']}>
+    <span class:list={['badge', type === 'research' ? 'badge-success' : '']} data-i18n={type === 'research' ? 'projects.research' : 'projects.communityBadge'}>
       {type === 'research' ? 'Research' : 'Community'}
     </span>
-    {current && <span class="badge badge-warning">Ongoing</span>}
-    {featured && <span class="badge">Featured</span>}
-    <span class="p-tiny ml-auto text-[var(--text-secondary)]">{year}</span>
+    {current && <span class="badge badge-warning" data-i18n="projects.ongoing">Ongoing</span>}
+    {featured && <span class="badge" data-i18n="common.featured">Featured</span>}
+    <span class="badge ml-auto">{year}</span>
   </div>
 
-  <h4 class="text-xl font-semibold text-[var(--text-primary)]">{name}</h4>
-  <p class="p-small text-[var(--text-secondary)]">{myRole}</p>
-  <p class="p-small line-clamp-3 text-[var(--text-secondary)]">{excerpt}</p>
+  <h4 class="text-xl font-semibold text-[var(--text-primary)]" data-lang-en={nameEs ? name : undefined} data-lang-es={nameEs}>
+    {name}
+  </h4>
+  {
+    program && (
+      <p class="p-tiny italic text-[var(--text-secondary)]" data-lang-en={programEs ? program : undefined} data-lang-es={programEs}>
+        {program}
+      </p>
+    )
+  }
+  <span class="badge w-fit bg-violet-100 text-violet-800" data-lang-en={myRoleEs ? myRole : undefined} data-lang-es={myRoleEs}>
+    {myRole}
+  </span>
+  <p
+    class="p-small line-clamp-3 text-[var(--text-secondary)]"
+    data-lang-en={excerptEs ? excerpt : undefined}
+    data-lang-es={excerptEs}
+  >
+    {excerpt}
+  </p>
 </a>

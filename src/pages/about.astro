@@ -23,11 +23,11 @@ function formatMonth(value: string | null) {
 }
 ---
 
-<BaseLayout title="About" description={personal.summary}>
+<BaseLayout title="About Me" description={personal.summary}>
   <section class="px-4 py-2xl md:px-6 lg:px-12">
     <div class="mx-auto flex max-w-container flex-col gap-3xl">
       <div class="flex flex-col gap-4">
-        <h1>About</h1>
+        <h1 data-i18n="nav.about">About Me</h1>
         <p class="max-w-3xl text-lg text-[var(--text-secondary)]">{personal.summary}</p>
         <ul class="flex flex-col gap-2">
           {personal.profile.map((line: string) => (
@@ -39,29 +39,72 @@ function formatMonth(value: string | null) {
         </ul>
       </div>
 
-      <div class="flex flex-col gap-6">
-        <h2>Education</h2>
-        <div class="flex flex-col gap-4">
-          {degrees.map((d) => (
-            <div class="card flex flex-col gap-1">
-              <div class="flex flex-wrap items-center justify-between gap-2">
-                <h4 class="text-xl font-semibold text-[var(--text-primary)]">{d.level} · {d.field}</h4>
-                {d.current && <span class="badge badge-warning">In progress</span>}
-              </div>
-              <p class="p-small font-medium text-[var(--text-secondary)]">{d.institution}</p>
-              <p class="p-tiny text-[var(--text-secondary)]">
-                {d.location} &middot; {formatMonth(d.startDate)} – {formatMonth(d.endDate)}
-              </p>
-              {d.advisor && <p class="p-tiny text-[var(--text-secondary)]">Advisor: {d.advisor}</p>}
-              {d.status && <p class="p-tiny text-[var(--text-secondary)]">{d.status}</p>}
-              <p class="p-small text-[var(--text-secondary)]">{d.description}</p>
-            </div>
-          ))}
-        </div>
+      <div class="flex gap-2" role="tablist" aria-label="About Me sections">
+        <button
+          type="button"
+          role="tab"
+          aria-selected="true"
+          aria-controls="panel-education"
+          id="tab-education"
+          data-tab="education"
+          class="min-h-[44px] rounded-md bg-primary px-4 py-2 text-sm font-medium text-white"
+        >
+          <span data-i18n="about.education">Education</span>
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-research"
+          id="tab-research"
+          data-tab="research"
+          class="min-h-[44px] rounded-md border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800"
+        >
+          <span data-i18n="about.researchInterests">Research Interests</span>
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-certifications"
+          id="tab-certifications"
+          data-tab="certifications"
+          class="min-h-[44px] rounded-md border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800"
+        >
+          <span data-i18n="about.certifications">Certifications</span>
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-awards"
+          id="tab-awards"
+          data-tab="awards"
+          class="min-h-[44px] rounded-md border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800"
+        >
+          <span data-i18n="about.honorsAwards">Honors &amp; Awards</span>
+        </button>
       </div>
 
-      <div class="flex flex-col gap-6">
-        <h2>Research Interests</h2>
+      <div id="panel-education" role="tabpanel" aria-labelledby="tab-education" class="flex flex-col gap-4">
+        {degrees.map((d) => (
+          <div class="card flex flex-col gap-1">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <h4 class="text-xl font-semibold text-[var(--text-primary)]">{d.level} · {d.field}</h4>
+              {d.current && <span class="badge badge-warning">In progress</span>}
+            </div>
+            <p class="p-small font-medium text-[var(--text-secondary)]">{d.institution}</p>
+            <p class="p-tiny text-[var(--text-secondary)]">
+              {d.location} &middot; {formatMonth(d.startDate)} – {formatMonth(d.endDate)}
+            </p>
+            {d.advisor && <p class="p-tiny text-[var(--text-secondary)]">Advisor: {d.advisor}</p>}
+            {d.status && <p class="p-tiny text-[var(--text-secondary)]">{d.status}</p>}
+            <p class="p-small text-[var(--text-secondary)]">{d.description}</p>
+          </div>
+        ))}
+      </div>
+
+      <div id="panel-research" role="tabpanel" aria-labelledby="tab-research" class="hidden flex-col gap-6">
         <div class="flex flex-wrap gap-2">
           {researchInterests.map((interest: string) => (
             <span class="badge">{interest}</span>
@@ -84,33 +127,55 @@ function formatMonth(value: string | null) {
         </div>
       </div>
 
-      <div class="flex flex-col gap-6">
-        <h2>Certifications</h2>
-        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {certifications.map((cert) => (
-            <div class="card flex flex-col gap-1">
-              <h4 class="text-lg font-semibold text-[var(--text-primary)]">{cert.name}</h4>
-              <p class="p-small text-[var(--text-secondary)]">{cert.issuer}</p>
-              <p class="p-tiny text-[var(--text-secondary)]">{cert.issueDate}</p>
-              <p class="p-small text-[var(--text-secondary)]">{cert.description}</p>
-            </div>
-          ))}
-        </div>
+      <div id="panel-certifications" role="tabpanel" aria-labelledby="tab-certifications" class="hidden grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {certifications.map((cert) => (
+          <div class="card flex flex-col gap-1">
+            <h4 class="text-lg font-semibold text-[var(--text-primary)]">{cert.name}</h4>
+            <p class="p-small text-[var(--text-secondary)]">{cert.issuer}</p>
+            <p class="p-tiny text-[var(--text-secondary)]">{cert.issueDate}</p>
+            <p class="p-small text-[var(--text-secondary)]">{cert.description}</p>
+          </div>
+        ))}
       </div>
 
-      <div class="flex flex-col gap-6">
-        <h2>Honors &amp; Awards</h2>
-        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {awards.map((award) => (
-            <div class="card flex flex-col gap-1">
-              <span class="badge w-fit">{award.type}</span>
-              <h4 class="text-lg font-semibold text-[var(--text-primary)]">{award.name}</h4>
-              <p class="p-small text-[var(--text-secondary)]">{award.issuer}</p>
-              <p class="p-small text-[var(--text-secondary)]">{award.description}</p>
-            </div>
-          ))}
-        </div>
+      <div id="panel-awards" role="tabpanel" aria-labelledby="tab-awards" class="hidden grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {awards.map((award) => (
+          <div class="card flex flex-col gap-1">
+            <span class="badge w-fit">{award.type}</span>
+            <h4 class="text-lg font-semibold text-[var(--text-primary)]">{award.name}</h4>
+            <p class="p-small text-[var(--text-secondary)]">{award.issuer}</p>
+            <p class="p-small text-[var(--text-secondary)]">{award.description}</p>
+          </div>
+        ))}
       </div>
     </div>
   </section>
+
+  <script>
+    const tabs = document.querySelectorAll<HTMLButtonElement>('[data-tab]');
+    const panels: Record<string, string> = {
+      education: 'flex',
+      research: 'flex',
+      certifications: 'grid',
+      awards: 'grid',
+    };
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((t) => {
+          t.setAttribute('aria-selected', 'false');
+          t.className = 'min-h-[44px] rounded-md border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800';
+        });
+        tab.setAttribute('aria-selected', 'true');
+        tab.className = 'min-h-[44px] rounded-md bg-primary px-4 py-2 text-sm font-medium text-white';
+
+        Object.keys(panels).forEach((key) => {
+          const panel = document.getElementById(`panel-${key}`);
+          const displayClass = panels[key];
+          panel?.classList.toggle('hidden', tab.dataset.tab !== key);
+          panel?.classList.toggle(displayClass, tab.dataset.tab === key);
+        });
+      });
+    });
+  </script>
 </BaseLayout>

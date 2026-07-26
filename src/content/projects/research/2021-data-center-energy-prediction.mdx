@@ -8,11 +8,15 @@ current: false
 type: research
 myRole: Researcher
 collaboration: null
-problem: '[PROPORCIONAR]'
-myContribution: '[PROPORCIONAR]'
-methodology: '[PROPORCIONAR]'
-results: []
-relatedPapers: []
+problem: Data centers need real-time visibility into their energy consumption to plan capacity and control maintenance costs, but instrumenting production servers directly is invasive and risky.
+myContribution: Contributed to the design of a non-invasive, sensor-network-based energy meter and to the machine learning pipeline — data preprocessing, feature extraction and selection, and regression model evaluation — used to forecast the data center's energy consumption.
+methodology: Built a non-invasive metering setup around a microcontroller, the MQTT protocol, and a power measurement module, capturing voltage, current, power, frequency, energy, and power factor in real time through a dashboard. Measurements were taken on a workstation configured to match the characteristics of the servers at ESPOL's Information Technology Center data center, then used to train and compare several linear regression models for forecasting future consumption.
+results:
+- Built a non-invasive, MQTT-based energy metering system with a real-time monitoring dashboard.
+- Evaluated multiple linear regression models to select the best predictor of future energy consumption.
+- Produced supervised machine learning models able to forecast energy consumption on both an hourly and a daily basis, supporting maintenance cost optimization.
+relatedPapers:
+- sas-2021-fpga-weather-station
 links: {}
 featured: false
 draft: false
@@ -20,16 +24,16 @@ draft: false
 
 ## Overview
 
-[PROPORCIONAR]
+This project proposes an energy consumption prediction model for data center infrastructure, combining hardware design, data preprocessing, and feature extraction and selection. The main goal was a non-invasive meter built around a sensor network — a microcontroller, the MQTT communication protocol, and a power measurement module — that captures voltage, current, power, frequency, energy, and power factor, with a real-time dashboard for the measurements.
 
 ## Problem Statement
 
-[PROPORCIONAR]
+Data centers need real-time visibility into their energy consumption to plan capacity and control maintenance costs, but instrumenting production servers directly is invasive and risky. Measurements were instead taken on a workstation with characteristics similar to the servers at the data center of ESPOL's Information Technology Center (CTI), which currently provides this type of service in Ecuador.
 
 ## My Contribution
 
-[PROPORCIONAR]
+As a researcher on this project, I contributed to designing the non-invasive metering setup and to the machine learning side of the work: preprocessing the sensor data, extracting and selecting features, and evaluating different linear regression models to select the best one for predicting future energy consumption from the workstation's measurements over several hours.
 
 ## Results & Impact
 
-[PROPORCIONAR]
+The supervised machine learning models developed in this work predict energy consumption on both an hourly and a daily basis, supporting optimization and cost reduction in computing equipment maintenance. The research group's related work on sensor networks and embedded measurement from this period also produced the publication "FPGA Based Meteorological Monitoring Station" (SAS 2021).

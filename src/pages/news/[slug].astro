@@ -32,10 +32,12 @@ const formattedDate = item?.date.toLocaleDateString('en-US', {
     item ? (
       <article class="px-4 py-2xl md:px-6 lg:px-12">
         <div class="mx-auto flex max-w-3xl flex-col gap-6">
-          <a href="/news" class="link inline-flex min-h-[44px] w-fit items-center text-sm">&larr; Back to News</a>
+          <a href="/news" class="link inline-flex min-h-[44px] w-fit items-center text-sm" data-i18n="news.backToNews">
+            &larr; Back to News
+          </a>
 
           <div class="flex flex-wrap items-center gap-2">
-            <span class="badge">{item.category}</span>
+            <span class="badge" data-i18n={`news.category.${item.category}`}>{item.category}</span>
             <span class="p-tiny text-[var(--text-secondary)]">{formattedDate}</span>
           </div>
 
@@ -48,8 +50,8 @@ const formattedDate = item?.date.toLocaleDateString('en-US', {
       </article>
     ) : (
       <div class="flex min-h-[50vh] flex-col items-center justify-center gap-4 px-4 text-center">
-        <h1>News item not found</h1>
-        <a href="/news" class="btn-primary">Back to News</a>
+        <h1 data-i18n="news.newsItemNotFound">News item not found</h1>
+        <a href="/news" class="btn-primary" data-i18n="news.backToNews">Back to News</a>
       </div>
     )
   }

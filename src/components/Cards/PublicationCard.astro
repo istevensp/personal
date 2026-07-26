@@ -14,11 +14,19 @@ const { href, title, authors, venue, dateLabel, status, keywords, externalLink =
 
 const statusBadgeClass =
   status === 'Published' ? 'badge-success' : status === 'Accepted' ? 'badge-warning' : '';
+const statusI18nKey =
+  status === 'Published'
+    ? 'publications.published'
+    : status === 'Accepted'
+      ? 'publications.accepted'
+      : status === 'Under Review'
+        ? 'publications.underReview'
+        : undefined;
 ---
 
 <div class="card animate-fade-in flex flex-col gap-3">
   <div class="flex flex-wrap items-center gap-2">
-    <span class:list={['badge', statusBadgeClass]}>{status}</span>
+    <span class:list={['badge', statusBadgeClass]} data-i18n={statusI18nKey}>{status}</span>
     <span class="p-tiny ml-auto text-[var(--text-secondary)]">{dateLabel}</span>
   </div>
 
@@ -39,7 +47,7 @@ const statusBadgeClass =
   }
 
   <div class="mt-auto flex items-center justify-between gap-2 pt-1">
-    <a href={href} class="link inline-flex min-h-[44px] items-center text-sm">
+    <a href={href} class="link inline-flex min-h-[44px] items-center text-sm" data-i18n="publications.details">
       Details
     </a>
     {

@@ -17,7 +17,7 @@ const professional = [...professionalEntry.data.professionalExperience].sort((a,
 <BaseLayout title="Experience" description="Academic and professional experience.">
   <section class="px-4 py-2xl md:px-6 lg:px-12">
     <div class="mx-auto flex max-w-container flex-col gap-6">
-      <h1>Experience</h1>
+      <h1 data-i18n="nav.experience">Experience</h1>
 
       <div class="flex gap-2" role="tablist" aria-label="Experience type">
         <button
@@ -29,7 +29,7 @@ const professional = [...professionalEntry.data.professionalExperience].sort((a,
           data-tab="academic"
           class="min-h-[44px] rounded-md bg-primary px-4 py-2 text-sm font-medium text-white"
         >
-          Academic
+          <span data-i18n="experience.academic">Academic</span>
         </button>
         <button
           type="button"
@@ -71,7 +71,13 @@ const professional = [...professionalEntry.data.professionalExperience].sort((a,
             highlightsEs={exp.highlightsEs}
           />
         ))}
-        <a href="/experience/academic" class="link inline-flex min-h-[44px] w-fit items-center text-sm">See full academic breakdown</a>
+        <a
+          href="/experience/academic"
+          class="link inline-flex min-h-[44px] w-fit items-center text-sm"
+          data-i18n="experience.seeFullAcademicBreakdown"
+        >
+          See full academic breakdown
+        </a>
       </div>
 
       <div id="panel-professional" role="tabpanel" aria-labelledby="tab-professional" class="hidden flex-col gap-4">

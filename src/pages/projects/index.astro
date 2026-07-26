@@ -11,6 +11,32 @@ const research = (await getCollection('projectsResearch', ({ data }) => !data.dr
 const community = (await getCollection('projectsCommunity', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.year - a.data.year
 );
+
+// A project can span more than one calendar year (e.g. started 2024, ran
+// through 2025) — it should show up under every year it touched, not just
+// its start year.
+function yearsSpanned(startDate: string, endDate: string | null): number[] {
+  const startYear = Number(startDate.split('-')[0]);
+  const endYear = endDate ? Number(endDate.split('-')[0]) : new Date().getFullYear();
+  const result: number[] = [];
+  for (let y = startYear; y <= endYear; y++) result.push(y);
+  return result;
+}
+function yearRangeLabel(startDate: string, endDate: string | null): string {
+  const years = yearsSpanned(startDate, endDate);
+  const startYear = years[0];
+  const endYear = years[years.length - 1];
+  return startYear === endYear ? `${startYear}` : `${startYear}–${endYear}`;
+}
+
+const researchYears = [
+  'All',
+  ...Array.from(new Set(research.flatMap((p) => yearsSpanned(p.data.startDate, p.data.endDate)))).sort((a, b) => b - a),
+];
+const communityYears = [
+  'All',
+  ...Array.from(new Set(community.flatMap((p) => yearsSpanned(p.data.startDate, p.data.endDate)))).sort((a, b) => b - a),
+];
 const thesisEntry = await getEntry('thesisAdvisory', 'data');
 const thesisAdvisory = thesisEntry.data.thesisAdvisory;
 ---
@@ -18,58 +44,123 @@ const thesisAdvisory = thesisEntry.data.thesisAdvisory;
 <BaseLayout title="Projects" description="Research and community-engagement projects.">
   <section class="px-4 py-2xl md:px-6 lg:px-12">
     <div class="mx-auto flex max-w-container flex-col gap-3xl">
-      <h1>Projects</h1>
+      <h1 data-i18n="projects.title">Projects</h1>
 
       <div class="flex flex-col gap-6">
-        <h2>Research</h2>
+        <h2 data-i18n="projects.research">Research</h2>
         {
           research.length > 0 ? (
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {research.map((p) => (
-                <ProjectCard
-                  href={`/projects/research/${p.data.projectId}`}
-                  name={p.data.name}
-                  year={p.data.year}
-                  myRole={p.data.myRole}
-                  excerpt={p.data.problem}
-                  type="research"
-                  current={p.data.current}
-                  featured={p.data.featured}
-                />
-              ))}
-            </div>
+            <>
+              <div class="flex flex-wrap gap-2" role="group" aria-label="Filter research projects by year" id="research-year-filters">
+                {researchYears.map((year, i) => (
+                  <button
+                    type="button"
+                    data-year-filter={year}
+                    aria-pressed={i === 0 ? 'true' : 'false'}
+                    data-i18n={year === 'All' ? 'common.all' : undefined}
+                    class:list={[
+                      'min-h-[44px] rounded-full px-4 py-2 text-sm font-medium transition duration-fast',
+                      i === 0
+                        ? 'bg-secondary text-white'
+                        : 'border border-[var(--border)] text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800',
+                    ]}
+                  >
+                    {year}
+                  </button>
+                ))}
+              </div>
+
+              <div id="research-grid" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {research.map((p) => (
+                  <div data-years={yearsSpanned(p.data.startDate, p.data.endDate).join(' ')}>
+                    <ProjectCard
+                      href={`/projects/research/${p.data.projectId}`}
+                      name={p.data.name}
+                      year={yearRangeLabel(p.data.startDate, p.data.endDate)}
+                      myRole={p.data.myRole}
+                      excerpt={p.data.problem}
+                      type="research"
+                      current={p.data.current}
+                      featured={p.data.featured}
+                    />
+                  </div>
+                ))}
+              </div>
+            </>
           ) : (
-            <p class="p-small text-[var(--text-secondary)]">No research projects published yet.</p>
+            <p class="p-small text-[var(--text-secondary)]" data-i18n="projects.noResearchYet">
+              No research projects published yet.
+            </p>
           )
         }
       </div>
 
       <div class="flex flex-col gap-6">
-        <h2>Community Engagement</h2>
+        <div class="flex flex-col gap-2">
+          <h2 data-i18n="projects.communityEngagement">Community Engagement</h2>
+          <p
+            class="p-small max-w-2xl text-[var(--text-secondary)]"
+            data-i18n="projects.communityEngagementDescription"
+          >
+            Applied technology projects developed with and for local communities across Ecuador — from digital
+            literacy to sustainable infrastructure — as part of ESPOL's community engagement (vinculación con la
+            sociedad) initiatives.
+          </p>
+        </div>
         {
           community.length > 0 ? (
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {community.map((p) => (
-                <ProjectCard
-                  href={`/projects/community/${p.data.projectId}`}
-                  name={p.data.name}
-                  year={p.data.year}
-                  myRole={p.data.myRole}
-                  excerpt={p.data.description}
-                  type="community"
-                  current={p.data.current}
-                  featured={p.data.featured}
-                />
-              ))}
-            </div>
+            <>
+              <div class="flex flex-wrap gap-2" role="group" aria-label="Filter community projects by year" id="community-year-filters">
+                {communityYears.map((year, i) => (
+                  <button
+                    type="button"
+                    data-year-filter={year}
+                    aria-pressed={i === 0 ? 'true' : 'false'}
+                    data-i18n={year === 'All' ? 'common.all' : undefined}
+                    class:list={[
+                      'min-h-[44px] rounded-full px-4 py-2 text-sm font-medium transition duration-fast',
+                      i === 0
+                        ? 'bg-secondary text-white'
+                        : 'border border-[var(--border)] text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800',
+                    ]}
+                  >
+                    {year}
+                  </button>
+                ))}
+              </div>
+
+              <div id="community-grid" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {community.map((p) => (
+                  <div data-years={yearsSpanned(p.data.startDate, p.data.endDate).join(' ')}>
+                    <ProjectCard
+                      href={`/projects/community/${p.data.projectId}`}
+                      name={p.data.name}
+                      nameEs={p.data.nameEs}
+                      program={p.data.program}
+                      programEs={p.data.programEs}
+                      year={yearRangeLabel(p.data.startDate, p.data.endDate)}
+                      myRole={p.data.myRole}
+                      myRoleEs={p.data.myRoleEs}
+                      excerpt={p.data.description}
+                      excerptEs={p.data.descriptionEs}
+                      type="community"
+                      current={p.data.current}
+                      featured={p.data.featured}
+                    />
+                  </div>
+                ))}
+              </div>
+            </>
           ) : (
-            <p class="p-small text-[var(--text-secondary)]">No community projects published yet.</p>
+            <p class="p-small text-[var(--text-secondary)]" data-i18n="projects.noCommunityYet">
+              No community projects published yet.
+            </p>
           )
         }
       </div>
 
       <div class="flex flex-col gap-6">
-        <h2>Thesis Advisory</h2>
+        <h2 data-i18n="projects.thesisAdvisory">Thesis Advisory</h2>
         {
           thesisAdvisory.length > 0 ? (
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -83,10 +174,41 @@ const thesisAdvisory = thesisEntry.data.thesisAdvisory;
               ))}
             </div>
           ) : (
-            <p class="p-small text-[var(--text-secondary)]">No thesis advisory records on file yet.</p>
+            <p class="p-small text-[var(--text-secondary)]" data-i18n="projects.noThesisYet">
+              No thesis advisory records on file yet.
+            </p>
           )
         }
       </div>
     </div>
   </section>
+
+  <script>
+    function wireYearFilter(groupId: string, gridId: string) {
+      const yearFilterGroup = document.getElementById(groupId);
+      const grid = document.getElementById(gridId);
+
+      yearFilterGroup?.addEventListener('click', (e) => {
+        const button = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-year-filter]');
+        if (!button) return;
+
+        yearFilterGroup.querySelectorAll<HTMLButtonElement>('[data-year-filter]').forEach((b) => {
+          b.setAttribute('aria-pressed', 'false');
+          b.className =
+            'min-h-[44px] rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-800';
+        });
+        button.setAttribute('aria-pressed', 'true');
+        button.className = 'min-h-[44px] rounded-full bg-secondary px-4 py-2 text-sm font-medium text-white';
+
+        const year = button.dataset.yearFilter ?? 'All';
+        grid?.querySelectorAll<HTMLElement>('[data-years]').forEach((card) => {
+          const years = card.dataset.years?.split(' ') ?? [];
+          card.classList.toggle('hidden', !(year === 'All' || years.includes(year)));
+        });
+      });
+    }
+
+    wireYearFilter('research-year-filters', 'research-grid');
+    wireYearFilter('community-year-filters', 'community-grid');
+  </script>
 </BaseLayout>

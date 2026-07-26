@@ -18,8 +18,8 @@ const formattedDate = date.toLocaleDateString('en-US', {
 
 <a href={href} class="card animate-fade-in flex flex-col gap-3 no-underline">
   <div class="flex items-center gap-2">
-    <span class="badge">{category}</span>
-    {featured && <span class="badge badge-success">Featured</span>}
+    <span class="badge" data-i18n={`news.category.${category}`}>{category}</span>
+    {featured && <span class="badge badge-success" data-i18n="common.featured">Featured</span>}
   </div>
 
   <h4 class="text-xl font-semibold text-[var(--text-primary)]">{title}</h4>

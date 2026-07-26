@@ -394,18 +394,29 @@ const projectsCommunity = defineCollection({
   schema: z.object({
     projectId: z.string(),
     name: z.string(),
+    nameEs: z.string().optional(),
+    // The umbrella initiative this project belongs to (e.g. several distinct
+    // projects can all be phases/instances of the same multi-year program).
+    program: z.string().optional(),
+    programEs: z.string().optional(),
     year: z.number(),
     startDate: z.string(),
     endDate: z.string().nullable(),
     current: z.boolean(),
     type: z.literal('community'),
     myRole: z.string(),
+    myRoleEs: z.string().optional(),
     description: z.string(),
+    descriptionEs: z.string().optional(),
+    // Degree programs/careers collaborating on the project (interdisciplinary
+    // reach) — paired by index with degreeProgramsEs for the EN/ES toggle.
+    degreePrograms: z.array(z.string()).optional(),
+    degreeProgramsEs: z.array(z.string()).optional(),
     draft: z.boolean(),
-    problem: z.string(),
-    community: z.string(),
-    technology: z.string(),
-    impact: z.string(),
+    problem: z.string().optional(),
+    community: z.string().optional(),
+    technology: z.string().optional(),
+    impact: z.string().optional(),
     links: z.record(z.string(), z.string()),
     featured: z.boolean(),
   }),
