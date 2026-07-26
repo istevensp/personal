@@ -101,6 +101,14 @@ const pageTitle = isHome ? title : `${title} · Steven Santillan`;
           const key = el.getAttribute('data-i18n');
           if (key && table[key]) el.textContent = table[key];
         });
+
+        // Ad-hoc bilingual content (e.g. course names) that doesn't belong in
+        // the global chrome-level dictionary above: the element itself
+        // carries both variants as attributes.
+        document.querySelectorAll('[data-lang-en]').forEach((el) => {
+          const text = el.getAttribute(lang === 'es' ? 'data-lang-es' : 'data-lang-en');
+          if (text) el.textContent = text;
+        });
       }
 
       applyTranslations(localStorage.getItem('lang') || 'en');

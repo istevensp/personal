@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../components/Layout/BaseLayout.astro';
 import CourseCard from '../../components/Cards/CourseCard.astro';
+import TimelineToggle from '../../components/Publications/PublicationsTimelineToggle.astro';
 import { getEntry } from 'astro:content';
 
 export const prerender = true;
@@ -11,16 +12,87 @@ const evaluacionesEntry = await getEntry('evaluaciones', 'data');
 const courses = coursesEntry.data.courses;
 const evaluations = evaluacionesEntry.data.evaluations;
 
+// The SAAC export's `courseName` is ALL CAPS; the confirmed name mappings
+// below are written in normal case. Compare/lookup using a normalized
+// (upper-cased, trimmed) key on both sides so they actually match.
+function normalizeCourseName(value: string): string {
+  return value.trim().toUpperCase();
+}
+
+// Official English translations for historical SAAC course names, confirmed
+// by the site owner — used everywhere a historical course name is displayed,
+// instead of the raw Spanish SAAC name.
+const COURSE_NAME_TRANSLATIONS: Record<string, string> = {
+  'Calidad de Servicio y Redes Multimedia': 'Quality of Service and Multimedia Networks',
+  'Estructuras de Datos': 'Data Structures',
+  'Fundamentos de Programación': 'Programming Fundamentals',
+  Internetworking: 'Internetworking',
+  'Programación de Sistemas Telemáticos': 'Telematics Systems Programming',
+  'Redes Inalámbricas y de Sensores': 'Wireless and Sensor Networks',
+  'Redes de Datos': 'Data Networks',
+  'Sistemas Distribuidos y Computación en la Nube': 'Distributed Systems and Cloud Computing',
+  'Telemetría y Sistemas Ciberfísicos': 'Telemetry and Cyber-Physical Systems',
+};
+const normalizedTranslations = new Map(
+  Object.entries(COURSE_NAME_TRANSLATIONS).map(([es, en]) => [normalizeCourseName(es), en])
+);
+
+// Some historical SAAC course names are the same course as one of the
+// current entries in `courses.yaml`, just recorded under its official
+// Spanish name — confirmed by the site owner via `historicalNames` on the
+// matching course (e.g. "Estructuras de Datos" = "Data Structures").
+const historicalNameToCourse = new Map<string, (typeof courses)[number]>();
+for (const course of courses) {
+  for (const historicalName of course.historicalNames) {
+    historicalNameToCourse.set(normalizeCourseName(historicalName), course);
+  }
+}
+
+function displayCourseName(rawName: string): string {
+  const normalized = normalizeCourseName(rawName);
+  const matchedCourse = historicalNameToCourse.get(normalized);
+  return matchedCourse ? matchedCourse.name : (normalizedTranslations.get(normalized) ?? rawName);
+}
+
+function anchorForCourseName(rawName: string, courseCode: string): string {
+  const matchedCourse = historicalNameToCourse.get(normalizeCourseName(rawName));
+  return matchedCourse ? `course-${matchedCourse.courseId}` : `course-${courseCode}`;
+}
+
+// English display name -> official Spanish name, for the EN/ES toggle.
+// Confirmed by the site owner one by one — not always a literal reverse of
+// COURSE_NAME_TRANSLATIONS above, since a course's SAAC record can be in
+// English already (e.g. "Internetworking") while its real Spanish course
+// name is something else entirely ("Conmutación y Enrutamiento"). Courses
+// with no confirmed Spanish name show the same text in both languages
+// rather than a guessed translation.
+const SPANISH_NAMES: Record<string, string> = {
+  'Quality of Service and Multimedia Networks': 'Calidad de Servicio y Redes Multimedia',
+  'Data Structures': 'Estructuras de Datos',
+  'Programming Fundamentals': 'Fundamentos de Programación',
+  Internetworking: 'Conmutación y Enrutamiento',
+  'Telematics Systems Programming': 'Programación de Sistemas Telemáticos',
+  'Wireless and Sensor Networks': 'Redes Inalámbricas y de Sensores',
+  'Data Networks': 'Redes de Datos',
+  'Distributed Systems and Cloud Computing': 'Sistemas Distribuidos y Computación en la Nube',
+  'Telemetry and Cyber-Physical Systems': 'Telemetría y Sistemas Ciberfísicos',
+  Algorithms: 'Algoritmos',
+};
+const courseNameToSpanish = new Map(Object.entries(SPANISH_NAMES));
+
 // Historical record grouped straight from the SAAC evaluation export.
 // Kept separate from the curated `courses` list above rather than merged by
 // guessing a courseId/code match — several course names don't correspond
 // 1:1 (e.g. "Algorithms" has no matching SAAC course code in the export).
-const historicalByCode = new Map<string, { courseName: string; courseCode: string; records: typeof evaluations }>();
+// `displayName` uses the English translation (or the matching current
+// course's name, when the same course is also taught today).
+const historicalByCode = new Map<string, { courseName: string; displayName: string; courseCode: string; records: typeof evaluations }>();
 for (const evaluation of evaluations) {
   const key = evaluation.courseCode;
   if (!historicalByCode.has(key)) {
     historicalByCode.set(key, {
       courseName: evaluation.courseName,
+      displayName: displayCourseName(evaluation.courseName),
       courseCode: evaluation.courseCode,
       records: [],
     });
@@ -49,6 +121,110 @@ const historicalCourses = Array.from(historicalByCode.values())
 
 const areas = ['All', ...Array.from(new Set(historicalCourses.map((g) => g.area))).sort()];
 const years = ['All', ...Array.from(new Set(historicalCourses.flatMap((g) => g.years))).sort((a, b) => b - a)];
+
+// Teaching timeline: one column per semester, combining the historical SAAC
+// export with the curated `courses` list (current 2026 semesters only —
+// upcoming/not-yet-started semesters are excluded so the timeline stops at
+// "today", not at whatever is planned). Historical courses that are also
+// taught today are merged into a single entry (same display name, color,
+// and card anchor) via `displayCourseName`/`anchorForCourseName` above.
+function termFromPeriod(period: string): number {
+  return Number(period.match(/^(\d+)S$/)?.[1] ?? 0);
+}
+
+// `courses` here is a Map of display name -> number of parallels taught
+// *that semester* (a course can have several parallels in the same
+// semester, e.g. 4 sections of "Data Networks" in one term — each is a
+// separate SAAC evaluation record / `courses.yaml` semester entry).
+const semesterMap = new Map<string, { label: string; year: number; term: number; courses: Map<string, number> }>();
+// Anchor id of the card each course name should scroll to when clicked.
+const courseAnchorMap = new Map<string, string>();
+
+for (const evaluation of evaluations) {
+  const key = `${evaluation.year}-${evaluation.academicPeriod}`;
+  if (!semesterMap.has(key)) {
+    semesterMap.set(key, { label: key, year: evaluation.year, term: termFromPeriod(evaluation.academicPeriod), courses: new Map() });
+  }
+  const entry = semesterMap.get(key)!;
+
+  const name = displayCourseName(evaluation.courseName);
+  const anchor = anchorForCourseName(evaluation.courseName, evaluation.courseCode);
+
+  entry.courses.set(name, (entry.courses.get(name) ?? 0) + 1);
+  courseAnchorMap.set(name, anchor);
+}
+
+for (const course of courses) {
+  for (const sem of course.semesters) {
+    if (sem.status === 'upcoming') continue; // not yet underway — keep the timeline at "today"
+    const [yearStr, period] = sem.semester.split('-');
+    const key = sem.semester;
+    if (!semesterMap.has(key)) {
+      semesterMap.set(key, { label: key, year: Number(yearStr), term: termFromPeriod(period), courses: new Map() });
+    }
+    const entry = semesterMap.get(key)!;
+    entry.courses.set(course.name, (entry.courses.get(course.name) ?? 0) + 1);
+    courseAnchorMap.set(course.name, `course-${course.courseId}`);
+  }
+}
+
+// Newest first.
+const teachingTimeline = Array.from(semesterMap.values())
+  .filter((s) => s.courses.size > 0)
+  .sort((a, b) => b.year - a.year || b.term - a.term);
+
+const timelineYears = teachingTimeline.map((s) => s.year);
+const timelineFirstYear = timelineYears.length > 0 ? Math.min(...timelineYears) : null;
+
+// Total individual parallels/sections taught (each SAAC evaluation record is
+// one parallel; each non-upcoming `courses.yaml` semester entry is one too).
+const totalParallels =
+  evaluations.length + courses.flatMap((c) => c.semesters).filter((s) => s.status !== 'upcoming').length;
+
+// One consistent color per distinct course, assigned alphabetically so it
+// doesn't reshuffle every time a new semester is added.
+const COURSE_COLORS = [
+  'bg-rose-100 text-rose-800',
+  'bg-orange-100 text-orange-800',
+  'bg-amber-100 text-amber-800',
+  'bg-lime-100 text-lime-800',
+  'bg-emerald-100 text-emerald-800',
+  'bg-teal-100 text-teal-800',
+  'bg-cyan-100 text-cyan-800',
+  'bg-sky-100 text-sky-800',
+  'bg-violet-100 text-violet-800',
+  'bg-fuchsia-100 text-fuchsia-800',
+  'bg-pink-100 text-pink-800',
+  'bg-indigo-100 text-indigo-800',
+];
+const COURSE_DOT_COLORS = [
+  'bg-rose-400',
+  'bg-orange-400',
+  'bg-amber-400',
+  'bg-lime-400',
+  'bg-emerald-400',
+  'bg-teal-400',
+  'bg-cyan-400',
+  'bg-sky-400',
+  'bg-violet-400',
+  'bg-fuchsia-400',
+  'bg-pink-400',
+  'bg-indigo-400',
+];
+
+// Total parallels per course across all semesters — this is what the legend
+// badges show, and they must sum to `totalParallels` above.
+const courseParallelTotals = new Map<string, number>();
+for (const s of teachingTimeline) {
+  for (const [name, count] of s.courses) {
+    courseParallelTotals.set(name, (courseParallelTotals.get(name) ?? 0) + count);
+  }
+}
+
+const distinctCourseNames = Array.from(courseParallelTotals.keys()).sort();
+const courseColorMap = new Map(distinctCourseNames.map((name, i) => [name, COURSE_COLORS[i % COURSE_COLORS.length]]));
+const courseDotColorMap = new Map(distinctCourseNames.map((name, i) => [name, COURSE_DOT_COLORS[i % COURSE_DOT_COLORS.length]]));
+const distinctCourseCount = distinctCourseNames.length;
 ---
 
 <BaseLayout title="Teaching" description="Courses taught and historical student evaluation records at ESPOL.">
@@ -61,12 +237,67 @@ const years = ['All', ...Array.from(new Set(historicalCourses.flatMap((g) => g.y
         </p>
       </div>
 
+      {
+        teachingTimeline.length > 0 && (
+          <div class="flex flex-col gap-4 rounded-lg border border-primary/20 bg-primary/5 p-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <p class="flex items-center gap-2 p-body font-medium text-[var(--text-primary)]">
+                <span class="animate-bounce text-xl" aria-hidden="true">🎓</span>
+                <span>
+                  {distinctCourseCount} distinct course{distinctCourseCount === 1 ? '' : 's'} taught over {teachingTimeline.length} semester{teachingTimeline.length === 1 ? '' : 's'}
+                  {' '}({totalParallels} parallel{totalParallels === 1 ? '' : 's'} total)
+                  {timelineFirstYear && ` since ${timelineFirstYear}`}.
+                </span>
+              </p>
+              <TimelineToggle targetId="teaching-timeline-row" defaultExpanded={false} />
+            </div>
+
+            <div id="teaching-timeline-row" class:list={['flex flex-col gap-5', 'hidden']}>
+              <div class="grid grid-cols-1 gap-x-4 gap-y-1 sm:grid-cols-2 lg:grid-cols-3">
+                {distinctCourseNames.map((name) => (
+                  <a
+                    href={`#${courseAnchorMap.get(name)}`}
+                    class="flex min-h-[36px] items-center gap-2 rounded-md px-2 text-sm text-[var(--text-secondary)] transition-colors hover:bg-[var(--bg-secondary)] hover:text-primary"
+                  >
+                    <span class:list={['h-2.5 w-2.5 shrink-0 rounded-full', courseDotColorMap.get(name)]} />
+                    <span class="truncate" data-lang-en={courseNameToSpanish.has(name) ? name : undefined} data-lang-es={courseNameToSpanish.get(name)}>{name}</span>
+                    <span class="ml-auto shrink-0 text-xs">&times;{courseParallelTotals.get(name)}</span>
+                  </a>
+                ))}
+              </div>
+
+              <div class="flex flex-col gap-5 border-l-2 border-[var(--border)] pl-5">
+                {teachingTimeline.map((s) => (
+                  <div class="relative">
+                    <span class="absolute -left-[1.6rem] top-1 h-3 w-3 rounded-full bg-primary" />
+                    <p class="p-small font-semibold text-[var(--text-primary)]">{s.label}</p>
+                    <div class="mt-1.5 flex flex-wrap gap-1.5">
+                      {Array.from(s.courses.entries()).map(([c, count]) => (
+                        <a
+                          href={`#${courseAnchorMap.get(c)}`}
+                          class:list={['rounded-md px-2 py-1 text-xs font-medium leading-snug transition-opacity hover:opacity-75', courseColorMap.get(c)]}
+                        >
+                          <span data-lang-en={courseNameToSpanish.has(c) ? c : undefined} data-lang-es={courseNameToSpanish.get(c)}>{c}</span>
+                          {count > 1 && ` ×${count}`}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )
+      }
+
       <div class="flex flex-col gap-6">
         <h2>Current Courses</h2>
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {courses.map((course) => (
             <CourseCard
+              id={`course-${course.courseId}`}
               name={course.name}
+              nameEs={courseNameToSpanish.get(course.name)}
               code={course.code}
               level={course.level}
               description={course.description}
@@ -126,7 +357,9 @@ const years = ['All', ...Array.from(new Set(historicalCourses.flatMap((g) => g.y
           {historicalCourses.map((group) => (
             <div data-area={group.area} data-years={group.years.join(' ')}>
               <CourseCard
-                name={group.courseName}
+                id={`course-${group.courseCode}`}
+                name={group.displayName}
+                nameEs={courseNameToSpanish.get(group.displayName)}
                 code={group.courseCode}
                 level=""
                 description={`${group.records.length} parallel${group.records.length === 1 ? '' : 's'} taught across ${group.distinctSemesters} semester${group.distinctSemesters === 1 ? '' : 's'}.`}

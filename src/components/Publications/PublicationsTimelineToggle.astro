@@ -1,0 +1,56 @@
+---
+export interface Props {
+  targetId?: string;
+  defaultExpanded?: boolean;
+}
+
+const { targetId = 'timeline-row', defaultExpanded = true } = Astro.props;
+const labelKey = defaultExpanded ? 'common.hideTimeline' : 'common.showTimeline';
+const labelText = defaultExpanded ? 'Hide timeline' : 'Show timeline';
+---
+
+<button
+  type="button"
+  data-timeline-toggle
+  data-target={targetId}
+  aria-expanded={String(defaultExpanded)}
+  aria-controls={targetId}
+  class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-1.5 rounded-md px-2 text-sm text-[var(--text-secondary)] transition-colors hover:bg-[var(--bg-secondary)] hover:text-primary"
+>
+  <svg
+    data-icon
+    class:list={['h-4 w-4 shrink-0 transition-transform duration-fast', !defaultExpanded && 'rotate-180']}
+    viewBox="0 0 20 20"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+  </svg>
+  <span data-label data-i18n={labelKey}>{labelText}</span>
+</button>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-timeline-toggle]').forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      const next = !expanded;
+      const targetId = toggle.dataset.target;
+      const row = targetId ? document.getElementById(targetId) : null;
+      const icon = toggle.querySelector('[data-icon]');
+      const label = toggle.querySelector<HTMLElement>('[data-label]');
+
+      toggle.setAttribute('aria-expanded', String(next));
+      row?.classList.toggle('hidden', !next);
+      icon?.classList.toggle('rotate-180', !next);
+
+      if (label) {
+        const key = next ? 'common.hideTimeline' : 'common.showTimeline';
+        label.setAttribute('data-i18n', key);
+        const dictEl = document.getElementById('i18n-dict');
+        const dict = dictEl ? JSON.parse(dictEl.textContent ?? '{}') : {};
+        const lang = localStorage.getItem('lang') || 'en';
+        label.textContent = dict[lang]?.[key] ?? (next ? 'Hide timeline' : 'Show timeline');
+      }
+    });
+  });
+</script>

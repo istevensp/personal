@@ -7,7 +7,9 @@ export interface Semester {
 }
 
 export interface Props {
+  id?: string;
   name: string;
+  nameEs?: string;
   code: string;
   level: string;
   description: string;
@@ -16,7 +18,7 @@ export interface Props {
   semesters: Semester[];
 }
 
-const { name, code, level, description, topics, repositoryUrl, semesters } = Astro.props;
+const { id, name, nameEs, code, level, description, topics, repositoryUrl, semesters } = Astro.props;
 const hasCode = code && code !== '[PROPORCIONAR]';
 const hasLevel = level && level !== '[PROPORCIONAR]';
 const hasRepo = repositoryUrl && repositoryUrl !== '[PROPORCIONAR]';
@@ -33,7 +35,7 @@ const years = Array.from(
 ).sort((a, b) => b - a);
 ---
 
-<div class="card flex flex-col gap-3">
+<div id={id} class="card flex scroll-mt-24 flex-col gap-3">
   <div class="flex flex-wrap items-center gap-2">
     {hasCode && <span class="badge">{code}</span>}
     {years.map((y) => (
@@ -44,7 +46,7 @@ const years = Array.from(
     {!hasInProgress && hasUpcoming && <span class="badge badge-success">Upcoming</span>}
   </div>
 
-  <h4 class="text-xl font-semibold text-[var(--text-primary)]">{name}</h4>
+  <h4 class="text-xl font-semibold text-[var(--text-primary)]" data-lang-en={nameEs ? name : undefined} data-lang-es={nameEs}>{name}</h4>
   <p class="p-small text-[var(--text-secondary)]">{description}</p>
 
   {

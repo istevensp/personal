@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../components/Layout/BaseLayout.astro';
 import PublicationCard from '../../components/Cards/PublicationCard.astro';
+import PublicationsTimelineRow from '../../components/Publications/PublicationsTimelineRow.astro';
+import PublicationsTimelineToggle from '../../components/Publications/PublicationsTimelineToggle.astro';
 import { getEntry } from 'astro:content';
 import { formatMonthYear, primaryExternalLink } from '../../lib/publications';
 
@@ -59,12 +61,29 @@ const groups = [
   { status: 'Accepted', items: accepted },
   { status: 'Under Review', items: underReview },
 ].filter((g) => g.items.length > 0);
+
+const timelineAll = [...published, ...accepted, ...underReview].sort((a, b) => b.sortKey - a.sortKey);
 ---
 
 <BaseLayout title="Publications" description="Published, accepted, and under-review research publications.">
   <section class="px-4 py-2xl md:px-6 lg:px-12">
     <div class="mx-auto flex max-w-container flex-col gap-6">
       <h1>Publications</h1>
+
+      {
+        timelineAll.length > 0 && (
+          <div class="flex flex-col gap-3 rounded-lg border border-primary/20 bg-primary/5 p-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <p class="flex items-center gap-2 p-body font-medium text-[var(--text-primary)]">
+                <span class="animate-bounce text-xl" aria-hidden="true">📊</span>
+                <span data-i18n="common.timelinePrompt">Prefer a quick timeline view?</span>
+              </p>
+              <PublicationsTimelineToggle defaultExpanded={false} />
+            </div>
+            <PublicationsTimelineRow timeline={timelineAll} hidden={true} />
+          </div>
+        )
+      }
 
       <div class="flex flex-wrap gap-2" role="group" aria-label="Filter publications by status" id="pub-filters">
         <button type="button" data-status-filter="All" aria-pressed="true" class="min-h-[44px] rounded-full bg-primary px-4 py-2 text-sm font-medium text-white">All</button>

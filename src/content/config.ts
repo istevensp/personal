@@ -181,6 +181,15 @@ const courses = defineCollection({
         courseId: z.string(),
         name: z.string(),
         code: z.string(),
+        // Official Spanish course name(s) this course was historically taught
+        // under in the SAAC evaluations export (src/content/maps/evaluaciones.yaml),
+        // confirmed by the site owner. Used to merge the historical and
+        // current teaching records for the same course instead of treating
+        // them as two different courses.
+        historicalNames: z.array(z.string()).default([]),
+        // Spanish translation of `name`, for courses with no historical SAAC
+        // record to borrow a Spanish name from (e.g. a brand-new course).
+        nameEs: z.string().optional(),
         institution: z.string(),
         level: z.string(),
         description: z.string(),

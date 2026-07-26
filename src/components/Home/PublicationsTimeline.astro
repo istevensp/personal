@@ -1,6 +1,8 @@
 ---
 import { getEntry } from 'astro:content';
 import { formatMonthYear } from '../../lib/publications';
+import PublicationsTimelineRow from '../Publications/PublicationsTimelineRow.astro';
+import PublicationsTimelineToggle from '../Publications/PublicationsTimelineToggle.astro';
 
 const publishedEntry = await getEntry('publicationsPublished', 'data');
 const acceptedEntry = await getEntry('publicationsAccepted', 'data');
@@ -34,39 +36,18 @@ const all = [
 ].sort((a, b) => b.sortKey - a.sortKey);
 
 const timeline = all.slice(0, 6);
-
-const statusDot: Record<string, string> = {
-  Published: 'bg-success',
-  Accepted: 'bg-warning',
-  'Under Review': 'bg-gray-400',
-};
 ---
 
 <section class="px-4 py-2xl md:px-6 lg:px-12">
   <div class="mx-auto flex max-w-container flex-col gap-6">
     <div class="flex items-center justify-between gap-4">
-      <h2>Publications Timeline</h2>
-      <a href="/publications" class="link inline-flex min-h-[44px] items-center text-sm" data-i18n="common.viewAllPublications">View all publications</a>
+      <h2><a href="/publications" class="transition-colors hover:text-primary">Publications Timeline</a></h2>
+      <div class="flex items-center gap-2">
+        <a href="/publications" class="link inline-flex min-h-[44px] items-center text-sm" data-i18n="common.viewAllPublications">View all publications</a>
+        {timeline.length > 0 && <PublicationsTimelineToggle defaultExpanded={true} />}
+      </div>
     </div>
 
-    {
-      timeline.length > 0 && (
-        <div class="flex items-start gap-0 overflow-x-auto pb-2">
-          {timeline.map((p, i) => (
-            <>
-              {i > 0 && <div class="mt-1.5 h-px w-6 shrink-0 bg-[var(--border)] sm:w-10" />}
-              <a href={p.href} class="group flex w-48 shrink-0 flex-col gap-1.5 px-2 first:pl-0">
-                <span class:list={['block h-3 w-3 rounded-full', statusDot[p.status] ?? 'bg-gray-400']} />
-                <p class="p-tiny text-[var(--text-secondary)]">
-                  {p.dateLabel} &middot; {p.status}
-                </p>
-                <h4 class="line-clamp-2 text-sm font-semibold text-[var(--text-primary)] group-hover:text-primary">{p.title}</h4>
-                <p class="p-tiny line-clamp-1 italic text-[var(--text-secondary)]">{p.venue}</p>
-              </a>
-            </>
-          ))}
-        </div>
-      )
-    }
+    <PublicationsTimelineRow timeline={timeline} />
   </div>
 </section>

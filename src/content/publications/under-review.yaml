@@ -6,12 +6,11 @@ underReview:
   - Cristina L. Abad
   journal: International Journal of Networked and Distributed Computing
   year: 2026
-  submittedDate: '[PROPORCIONAR]'
+  submittedDate: '2026-07-01'
   status: Under Review
   expectedPublicationDate: null
   links:
     preprint: '[PROPORCIONAR]'
-    repository: https://github.com/disel-espol/hpc-and-edge-cloud-architectures
   keywords:
   - Cloud Architecture
   - High-Performance Computing
