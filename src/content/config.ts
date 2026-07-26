@@ -129,6 +129,10 @@ const academicExperience = defineCollection({
         description: z.string(),
         courses: z.array(z.string()),
         highlights: z.array(z.string()),
+        // Spanish translation of `highlights`, paired by index, for the
+        // EN/ES toggle (same `data-lang-en`/`data-lang-es` pattern used on
+        // the Teaching page — see DOCUMENTATION.md §7).
+        highlightsEs: z.array(z.string()).optional(),
       })
     ),
   }),

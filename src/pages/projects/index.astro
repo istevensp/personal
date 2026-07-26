@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../components/Layout/BaseLayout.astro';
 import ProjectCard from '../../components/Cards/ProjectCard.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 
 export const prerender = true;
 
@@ -11,6 +11,8 @@ const research = (await getCollection('projectsResearch', ({ data }) => !data.dr
 const community = (await getCollection('projectsCommunity', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.year - a.data.year
 );
+const thesisEntry = await getEntry('thesisAdvisory', 'data');
+const thesisAdvisory = thesisEntry.data.thesisAdvisory;
 ---
 
 <BaseLayout title="Projects" description="Research and community-engagement projects.">
@@ -62,6 +64,26 @@ const community = (await getCollection('projectsCommunity', ({ data }) => !data.
             </div>
           ) : (
             <p class="p-small text-[var(--text-secondary)]">No community projects published yet.</p>
+          )
+        }
+      </div>
+
+      <div class="flex flex-col gap-6">
+        <h2>Thesis Advisory</h2>
+        {
+          thesisAdvisory.length > 0 ? (
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {thesisAdvisory.map((t) => (
+                <div class="card flex flex-col gap-1">
+                  <span class="badge w-fit">{t.role}</span>
+                  <h4 class="text-lg font-semibold text-[var(--text-primary)]">{t.thesisTitle}</h4>
+                  <p class="p-small text-[var(--text-secondary)]">{t.studentName}</p>
+                  <p class="p-tiny text-[var(--text-secondary)]">{t.institution} &middot; {t.year}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p class="p-small text-[var(--text-secondary)]">No thesis advisory records on file yet.</p>
           )
         }
       </div>

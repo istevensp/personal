@@ -1,6 +1,6 @@
 academicExperience:
 - id: espol-lecturer-researcher
-  title: Lecturer — Researcher
+  title: Professor — Researcher
   institution: Escuela Superior Politécnica del Litoral (ESPOL)
   location: Guayaquil, Ecuador
   startDate: 2025-02
@@ -14,9 +14,23 @@ academicExperience:
   - Algorithms
   - Data Structures
   highlights:
-  - Participates in academic and applied research projects.
-  - Teaches courses focused on scalable system design and computational thinking.
-  - Collaborates on next-generation cloud computing research with the University of Würzburg.
+  - Developing e-learning material for the Data Science and Artificial Intelligence program, for the Distributed Systems and Cloud Computing course.
+  - Advisor for the Computer Science Capstone (Integrator) Project.
+  - Supervising community service practicums.
+  - Advisor for community computing projects.
+  - Supervising corporate internships.
+  - Researcher.
+  - Organizing and supporting community outreach activities (open house events, competitions, forums, and similar initiatives).
+  - Coordinating with companies on professional talks about personal branding, leadership, and emerging technologies.
+  highlightsEs:
+  - Desarrollo de material e-learning para la carrera de Ciencia de Datos e Inteligencia Artificial, materia Sistemas Distribuidos y Computación en la Nube.
+  - Tutor del Proyecto Integrador de Computación.
+  - Tutoría de prácticas de servicio comunitario.
+  - Tutor de proyectos comunitarios de computación.
+  - Tutor de prácticas empresariales.
+  - Investigador.
+  - Organización o colaboración en actividades de vinculación con la sociedad (casa abierta, concursos, foros y otras afines).
+  - Coordinación con empresas para charlas profesionales orientadas a la marca profesional, liderazgo y nuevas tecnologías.
 - id: espol-tech-research-project-assistant
   title: Research Project Assistant
   institution: ESPOL — TECH E.P.
@@ -31,6 +45,29 @@ academicExperience:
   - Coordinated research project activities.
   - Performed technical follow-up.
   - Supported coordination with internal teams.
+- id: espol-teaching-assistant
+  title: Teaching Assistant
+  institution: Escuela Superior Politécnica del Litoral (ESPOL)
+  location: Guayaquil, Ecuador
+  startDate: 2017-05
+  endDate: 2020-09
+  current: false
+  department: '[PROPORCIONAR]'
+  description: Teaching assistant supporting undergraduate courses across multiple semesters.
+  courses:
+  - Programming Fundamentals
+  - Differential Equations
+  - Basic Electronics
+  - Internetworking
+  - Telemetry and Cyber-Physical Systems
+  highlights:
+  - '2017: Teaching assistant for Programming Fundamentals and Differential Equations.'
+  - '2018–2019: Teaching assistant for Basic Electronics.'
+  - '2019 (2nd semester) – 2020 (1st semester): Teaching assistant for Internetworking and Telemetry and Cyber-Physical Systems.'
+  highlightsEs:
+  - '2017: Ayudante de cátedra de Fundamentos de Programación y Ecuaciones Diferenciales.'
+  - '2018–2019: Ayudante de cátedra de Electrónica Básica.'
+  - '2019 (2do semestre) – 2020 (1er semestre): Ayudante de cátedra de Internetworking y Telemetría y Sistemas Ciberfísicos.'
 - id: espol-lecturer-project-director-lab-head
   title: Lecturer, Project Director, and Data Networks Laboratory Head
   institution: Escuela Superior Politécnica del Litoral (ESPOL)

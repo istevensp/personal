@@ -8,9 +8,10 @@ export interface Props {
   current: boolean;
   description: string;
   highlights: string[];
+  highlightsEs?: string[];
 }
 
-const { title, organization, location, startDate, endDate, current, description, highlights } = Astro.props;
+const { title, organization, location, startDate, endDate, current, description, highlights, highlightsEs } = Astro.props;
 
 function formatMonth(value: string) {
   const [year, month] = value.split('-').map(Number);
@@ -33,12 +34,12 @@ const period = `${formatMonth(startDate)} – ${current ? 'Present' : endDate ? 
   {
     highlights.length > 0 && (
       <ul class="mt-2 flex flex-col gap-1">
-        {highlights.map((h) => (
+        {highlights.map((h, i) => (
           <li class="p-small flex gap-2 text-[var(--text-secondary)]">
             <span class="text-primary" aria-hidden="true">
               •
             </span>
-            {h}
+            <span data-lang-en={highlightsEs?.[i] ? h : undefined} data-lang-es={highlightsEs?.[i]}>{h}</span>
           </li>
         ))}
       </ul>
