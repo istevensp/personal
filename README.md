@@ -250,8 +250,8 @@ personal/
 │   │   │   └── Footer.astro
 │   │   ├── Home/
 │   │   │   ├── HeroSection.astro
+│   │   │   ├── PublicationsTimeline.astro
 │   │   │   ├── FeaturedProjects.astro
-│   │   │   ├── FeaturedPublications.astro
 │   │   │   ├── FeaturedAwards.astro
 │   │   │   ├── RecentNews.astro
 │   │   │   └── ContactCTA.astro
@@ -267,22 +267,26 @@ personal/
 │   │       ├── ThemeToggle.jsx           # React: Dark/light
 │   │       └── LanguageSwitcher.jsx      # React: EN/ES
 │   │
+│   ├── lib/
+│   │   └── publications.ts               # Helpers: formatMonthYear(), primaryExternalLink()
 │   └── styles/
 │       ├── globals.css
 │       ├── components.css
 │       └── tailwind.css
 │
 ├── public/
+│   ├── .assetsignore                     # Excluye _worker.js del deploy de assets estáticos
 │   ├── robots.txt                        # SEO
-│   ├── favicon.ico, favicon.svg, favicon-16x16.png, favicon-32x32.png
-│   ├── apple-touch-icon.png, android-chrome-192x192.png, android-chrome-512x512.png
+│   ├── favicon-16x16.png, favicon-32x32.png, favicon-48x48.png, favicon-64x64.png, favicon-128x128.png
+│   ├── apple-touch-icon.png, icon.png    # icon.png = imagen maestra 1826x1826 (OG/social)
 │   ├── site.webmanifest
 │   └── images/
-│       └── profile.jpg
+│       └── profile.jpg                   # (pendiente de subir)
 │
-├── docs/                                 # PDFs de CVs (estáticos, agregados manualmente)
-│   ├── cv-industry.pdf
-│   └── cv-academic.pdf
+├── docs/                                 # PDFs de CVs (estáticos, agregados manualmente — aún pendientes)
+│   ├── README.md
+│   ├── cv-industry.pdf                   # (pendiente)
+│   └── cv-academic.pdf                   # (pendiente)
 │
 ├── .github/workflows/deploy.yml          # CI/CD
 ├── .env.example                          # Variables de entorno (template)
@@ -612,8 +616,25 @@ Ver `LICENSE` para detalles completos.
 - [React](https://react.dev)
 - [Pagefind Search](https://pagefind.app)
 
+## Documentación del proyecto
+
+- [`DOCUMENTATION.md`](DOCUMENTATION.md) — referencia técnica completa (arquitectura, contenido, componentes, decisiones de stack).
+- [`docs/PROJECT-STATUS.md`](docs/PROJECT-STATUS.md) — estado actual: qué está hecho, en progreso y pendiente.
+- [`docs/DECISIONS.md`](docs/DECISIONS.md) — decisiones arquitectónicas relevantes en formato ADR.
+- [`CHANGELOG.md`](CHANGELOG.md) — historial de cambios notables.
+
+---
+
+# 📊 ESTADO ACTUAL
+
+El sitio está **en producción** en https://stevensantillan.com y funcionando
+correctamente. Contenido pendiente (no bloquea el funcionamiento del sitio):
+PDFs de CV, algunos campos `[PROPORCIONAR]` en proyectos y publicaciones, y
+noticias reales (ver [`docs/PROJECT-STATUS.md`](docs/PROJECT-STATUS.md) para
+el detalle completo).
+
 ---
 
 **Última actualización:** 2026-07-25  
 **Versión:** 1.0.0  
-**Estado:** Production-ready
+**Estado:** Production-ready (contenido parcialmente pendiente, ver arriba)

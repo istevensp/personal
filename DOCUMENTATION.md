@@ -7,9 +7,12 @@ etc.) picking this up cold can become productive without re-deriving any of
 the decisions below from scratch.
 
 It complements, but does not replace:
-- `README.md` — original content-package notes from the YAML/MDX generation step. Left untouched.
-- `manifest.yaml` — original file manifest from that same step. Left untouched.
-- `STACK_DECISIONS.md` (if present) — any additional stack rationale the owner keeps separately.
+- `README.md` — public-facing project overview (setup, commands, structure).
+- `manifest.yaml` — original file manifest from the YAML/MDX generation step. Left untouched.
+- `docs/PROJECT-STATUS.md` — current snapshot of what's done/in-progress/pending, kept short and meant to go stale fast — this file (`DOCUMENTATION.md`) is the durable technical reference.
+- `docs/DECISIONS.md` — architectural decisions in ADR-style records, a more structured complement to §10 below.
+- `CHANGELOG.md` — dated log of notable changes, derived only from git history.
+- `PROJECT-CONTEXT-HANDOFF.md` — a point-in-time full context dump generated for a chat-to-chat handoff; not meant to be kept in sync, unlike this file.
 
 If this file and the code disagree, the code is the source of truth — update
 this file to match rather than the other way around.
@@ -33,10 +36,12 @@ and researcher at ESPOL), built with:
 - **Cloudflare Workers** (`@astrojs/cloudflare`) — deployment target.
 - **Pagefind** — static full-text search, built as a post-build step.
 
-Output mode is `server` (`astro.config.mjs`), meaning every route renders per
-request rather than being pre-rendered at build time. There is currently no
-use of `export const prerender = true` anywhere; if a page is proven to be
-fully static content, prerendering it is a valid future optimization.
+Output mode is `server` (`astro.config.mjs`) at the project level, but **every
+page currently sets `export const prerender = true`** (with `getStaticPaths()`
+on the four `[slug]` routes) — see §10. Nothing on this site needs
+per-request logic today, so the whole site builds as static HTML; `output:
+'server'` is kept only so a genuinely dynamic route could be added later
+without re-plumbing the adapter.
 
 ---
 
@@ -45,9 +50,13 @@ fully static content, prerendering it is a valid future optimization.
 ```
 personal/
 ├── .github/workflows/deploy.yml   # CI: build + pagefind + deploy to Cloudflare Workers
-├── docs/                          # CV PDFs go here manually (not generated)
+├── docs/                          # CV PDFs go here manually (not generated); README.md explains what's expected
 ├── public/
-│   ├── favicon.svg                # Monogram "SS" favicon (placeholder, see §9)
+│   ├── .assetsignore              # Excludes _worker.js from being uploaded as a public asset — see §10
+│   ├── favicon-16x16.png, favicon-32x32.png, favicon-48x48.png, favicon-64x64.png, favicon-128x128.png
+│   ├── apple-touch-icon.png       # 180x180
+│   ├── icon.png                   # 1826x1826 master icon — used as default OG/social image and largest manifest icon
+│   ├── site.webmanifest
 │   ├── robots.txt
 │   └── images/                    # Put profile.jpg here (see §9)
 ├── src/
@@ -63,9 +72,10 @@ personal/
 │   │   └── news/*.mdx
 │   ├── components/
 │   │   ├── Layout/                # BaseLayout, Header, Navigation, Footer
-│   │   ├── Home/                  # Hero + featured-content sections for index.astro
+│   │   ├── Home/                  # Hero + featured-content sections for index.astro, incl. PublicationsTimeline
 │   │   ├── Cards/                 # Reusable card presentational components
 │   │   └── Common/                # React islands: ThemeToggle, LanguageSwitcher, SearchBar, NewsFilter
+│   ├── lib/publications.ts        # Shared helpers: formatMonthYear(), primaryExternalLink()
 │   ├── i18n/strings.ts            # EN/ES dictionary for chrome-level UI text only
 │   ├── pages/                     # File-based routes — see §6
 │   └── styles/
@@ -204,20 +214,38 @@ non-empty).
   wraps every page in `<Header />` + `<main><slot /></main>` + `<Footer />`.
   Props: `title`, `description`, `image?`, `type?`, `publishedDate?`,
   `jsonLd?`.
-- **Header.astro** — sticky top bar: short name/logo, `<Navigation />`, and
-  the three React islands (`SearchBar`, `LanguageSwitcher`, `ThemeToggle`),
-  all `client:load`.
+- **Header.astro** — sticky top bar: an icon-only animated logo (an
+  `animate-float` monogram derived from `personal.fullName`'s initials,
+  currently rendering "SISP", with a custom CSS tooltip reading "Home" on
+  hover/focus — no text name is shown next to it), `<Navigation />`, and the
+  three React islands (`SearchBar`, `LanguageSwitcher`, `ThemeToggle`), all
+  `client:load`. There is deliberately **no separate "Home" nav item** — the
+  logo is the sole way back to `/`, since a dedicated Home button was found
+  to be redundant with it.
 - **Navigation.astro** — desktop inline nav + a mobile slide-down menu driven
   by a small vanilla `<script>` (no React needed for a pure show/hide toggle).
+  Current `navItems` order: About, Teaching, Experience, Projects,
+  Publications, News, Contact Me.
 - **Footer.astro** — social links row (GitHub, LinkedIn, ORCID as a clickable
   text link per the "no ORCID icon" rule, Google Scholar, ResearchGate) +
   copyright line.
 
 ### Home (`src/components/Home/`)
 Each is a self-contained `<section>` used only by `src/pages/index.astro`, in
-this order: `HeroSection` → `FeaturedProjects` → `FeaturedPublications` →
+this order: `HeroSection` → `PublicationsTimeline` → `FeaturedProjects` →
 `FeaturedAwards` → `RecentNews` → `ContactCTA`. All fetch their own content via
 `astro:content` — no props passed from the page.
+
+`PublicationsTimeline.astro` replaced an earlier `FeaturedPublications.astro`
+(now deleted) after 3 rounds of design iteration. It renders a horizontal,
+newest-first row of the 6 most recent publications (across all statuses,
+sorted by a `sortKey` combining year+month), each as a `w-48` column with a
+status-colored dot, date + status label, `line-clamp-2` title, and
+`line-clamp-1` venue, connected by fixed-width line segments and wrapped in
+an `overflow-x-auto` container for mobile. Status-dot colors: `Published` →
+`bg-success`, `Accepted` → `bg-warning`, `Under Review` → `bg-gray-400`. Uses
+the shared `formatMonthYear()`/sorting helpers pattern also used by
+`src/lib/publications.ts`.
 
 `HeroSection.astro` also renders the profile photo box (see §9) and the
 social-links row (email, GitHub, Google Scholar, LinkedIn, ResearchGate,
@@ -276,10 +304,12 @@ toggling CSS classes.
 | `/cv` | `src/pages/cv.astro` | 301 redirect to `/contact#cv` (kept so old links/bookmarks still resolve) |
 | `/404` | `src/pages/404.astro` | Astro's default 404 handler |
 
-Because output is `server`, dynamic `[slug]` routes do **not** use
-`getStaticPaths()` — they read `Astro.params.slug` per request, look it up in
-the relevant collection, and set `Astro.response.status = 404` (rendering an
-inline "not found" block, same layout) when nothing matches.
+Every route above sets `export const prerender = true` and the four `[slug]`
+routes implement `getStaticPaths()`, so the whole site is generated as static
+HTML at build time (see §10) — none of it renders per-request despite the
+project-level `output: 'server'` setting. Unmatched slugs are handled inside
+`getStaticPaths()`/the page body, rendering an inline "not found" block
+(same layout) rather than a true runtime 404 lookup.
 
 ---
 
@@ -330,6 +360,22 @@ steps before deploying, so production search works as long as CI runs.
 None of these were invented — they're left as explicit gaps rather than
 fabricated content:
 
+- **Favicon set**: `public/` now has a full PNG icon set —
+  `favicon-16x16.png`, `favicon-32x32.png`, `favicon-48x48.png`,
+  `favicon-64x64.png`, `favicon-128x128.png`, `apple-touch-icon.png`
+  (180×180), and `icon.png` (a 1826×1826 master image used as the default
+  Open Graph/social-share image and as the largest `site.webmanifest` icon).
+  `BaseLayout.astro`'s `<head>` block declares each PNG icon with an explicit
+  `sizes` attribute (verified against each file's real PNG `IHDR` dimensions,
+  not just its filename). This set went through two prior states worth
+  knowing about if a future `git blame` looks confusing: it started as a
+  larger set (`favicon.svg`, `favicon-16x16.png`, `favicon-32x32.png`,
+  `apple-touch-icon.png`, `android-chrome-192x192.png`), was reduced to just
+  `favicon.ico`/`favicon.png`/`android-chrome-512x512.png` (which briefly
+  broke the site because the code still referenced the old files), and was
+  then replaced with the current PNG-only set described above — there is no
+  `favicon.ico` anymore, which is fine since every browser that matters
+  supports PNG `<link rel="icon">` with explicit sizes.
 - **Profile photo**: drop a file at `public/images/profile.jpg`. The Hero
   photo box (`HeroSection.astro`) already points at that path; if it 404s,
   an `onerror` handler hides the broken `<img>` and reveals a gradient +
@@ -409,6 +455,30 @@ back to the original spec by mistake:
   `@tailwind base/components/utilities` (plain CSS rule: `@import` must
   precede all other statements). Get this order backwards and the Vite build
   fails outright.
+- **`public/.assetsignore`** (new file, contents: `_worker.js`) — a second
+  deploy failure (`Uploading a Pages _worker.js directory as an asset`)
+  happened because Wrangler's Assets upload saw `dist/_worker.js` (the server
+  bundle) sitting inside the `[assets] directory = "./dist"` tree and refused
+  to treat server code as a public static asset. This gitignore-style file
+  excludes it from that upload without needing to change the output
+  directory structure.
+- **`react-dom/server` → `react-dom/server.edge` Vite alias** (in
+  `astro.config.mjs`, production-only via `import.meta.env.PROD`) — a third
+  deploy failure surfaced only at runtime, after a successful deploy:
+  `Uncaught ReferenceError: MessageChannel is not defined`. React's default
+  `react-dom/server` resolution picks the "browser" build, which needs
+  `MessageChannel`, an API the Cloudflare Workers runtime doesn't provide.
+  Aliasing to the edge-compatible build fixes it. Verified locally with
+  `wrangler dev` + a real HTTP request before pushing (Astro's own dev server
+  doesn't exercise this code path, so `npm run dev` alone won't catch a
+  regression here).
+- **Tailwind Preflight silently overriding custom heading styles** — `h1`/
+  `h2` `font-weight` rules in `globals.css` weren't wrapped in `@layer base`,
+  so Tailwind's own Preflight reset (`font-weight: inherit`) won on cascade
+  order even though the custom rule came later in the file. Fixed by moving
+  the relevant `html`/`body`/`h1`–`h6`/`p`/`*:focus-visible` rules into
+  `@layer base { ... }`, which puts them in the correct Tailwind cascade
+  layer instead of relying on source order.
 - Two `personal.yaml` data fixes (not code, but worth flagging since they
   contradict what a stale copy of the source YAML might still say elsewhere):
   the domain typo `stevensantillanp.com` → `stevensantillan.com`, and
