@@ -1,0 +1,40 @@
+schema_version: 1
+language: "en"
+source:
+  file: "EN-Syllabus-TLMG1033.pdf"
+  pages: 2
+course:
+  code: "TLMG1033"
+  name: "WIRELESS AND SENSOR NETWORKS"
+  document_title: "WIRELESS AND SENSOR NETWORKS"
+  program: "Telematics Engineering"
+  credits: 2
+  contact_hours: 4
+  credits_and_contact_hours_text: "2 credits and 4 contact hours"
+bibliography:
+  textbooks:
+    - "Gordon Colbach. Wireless Networking: Introduction to Bluetooth and WiFi (2017)"
+  supplemental_materials:
+    - "Perahia. E, Stacey R.. Next Generation Wireless LANs (2)"
+    - "Vijay K. Garg. Wireless Communications and Networking (1)"
+    - "Habib M. Ammari. The Art of Wireless Sensor Networks (1)"
+course_information:
+  description: "This intermediate level theoretical-practical professional training subject presents the fundamentals of wireless communications, by reviewing the characteristics, operation, and application of the main wireless networks in the industry such as WiFi. Bluetooth and Zigbee. In addition, the fundamentals of the mobile Internet are presented as a means to facilitate the integration of different wireless technologies. Finally, the knowledge of design, administration, management and application of wireless sensor networks (WSN) is covered."
+  prerequisites:
+    - "DATA NETWORKS - TLMG1032"
+  corequisites: []
+  course_type: "Required"
+course_goals:
+  instruction_outcomes:
+    - "Identify basic concepts related to wireless and sensor networks for the design and implementation of the network infrastructure used in monitoring systems."
+    - "Analyze the behavior of different ad hoc routing algorithms for implementation in a multi-hop wireless network and a sensor network."
+    - "Analyze wireless sensor networks by using different simulation tools."
+  student_outcomes:
+    - "1. Ability to identify, formulate, and solve complex telematics engineering problems through the application of engineering, science, and mathematics principles."
+    - "6. Ability to develop and conduct appropriate experimentation, analyze and interpret data, and use telematics engineering criteria to draw conclusions."
+topics:
+  - "Evaluation activities"
+  - "Wireless Communications Fundamentals."
+  - "Wireless Personal Area Network (WPAN)."
+  - "Wireless local area network (WLAN)."
+  - "Wireless Sensor Networks (WSN)."

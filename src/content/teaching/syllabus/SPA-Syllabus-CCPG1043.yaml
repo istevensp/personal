@@ -1,0 +1,42 @@
+schema_version: 1
+language: "es"
+source:
+  file: "SPA-Syllabus-CCPG1043.pdf"
+  pages: 2
+course:
+  code: "CCPG1043"
+  name: "FUNDAMENTOS DE PROGRAMACIÓN"
+  document_title: "FUNDAMENTOS DE PROGRAMACIÓN"
+  program: "Computación"
+  credits: 3
+  contact_hours: 4
+  credits_and_contact_hours_text: "3 créditos y 4 horas de docencia"
+bibliography:
+  textbooks:
+    - "van Rossum, Guido. El Tutorial de Python (3.6.4)"
+  supplemental_materials: []
+course_information:
+  description: "El curso de formación básica presenta a los estudiantes estrategias para la resolución de problemas comunes en diversos campos profesionales por medio del diseño e implementación de soluciones basadas en el uso de un lenguaje de programación. Cubre los principios básicos para que el estudiante pueda leer y escribir programas; haciendo énfasis en el diseño y análisis de algoritmos. Además, introduce a los estudiantes en el uso de herramientas de desarrollo y depuración."
+  prerequisites: []
+  corequisites: []
+  course_type: "Obligatorio"
+course_goals:
+  instruction_outcomes:
+    - "Aplicar métodos computacionales para resolver problemas de su campo de estudio utilizando un lenguaje de programación."
+    - "Utilizar herramientas computacionales para modelar e interpretar datos."
+    - "Aplicar algoritmos receta en la resolución de problemas."
+    - "Utilizar un ambiente de desarrollo para escribir y depurar programas."
+    - "Utilizar modularización para la simplificación de la estructura de un programa."
+  student_outcomes:
+    - "5. Funcionar efectivamente como miembro o líder de un equipo involucrado en actividades apropiadas para la disciplina del programa."
+    - "2. Diseñar, implementar y evaluar una solución basada en computación para cumplir con un conjunto dado de requisitos de computación en el contexto de la disciplina del programa."
+topics:
+  - "Actividades de evaluación"
+  - "Introducción a la programación"
+  - "Variables y tipos de datos (strings y listas)"
+  - "Funciones"
+  - "Estructuras de control"
+  - "Colecciones"
+  - "Arreglos n-dimensionales"
+  - "Archivos: entrada y salida"
+  - "Procesamiento de datos"

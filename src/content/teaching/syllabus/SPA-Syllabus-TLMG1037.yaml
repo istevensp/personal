@@ -1,0 +1,40 @@
+schema_version: 1
+language: "es"
+source:
+  file: "SPA-Syllabus-TLMG1037.pdf"
+  pages: 2
+course:
+  code: "TLMG1037"
+  name: "PROGRAMACIÓN DE SISTEMAS TELEMÁTICOS"
+  document_title: "PROGRAMACIÓN DE SISTEMAS TELEMÁTICOS"
+  program: "Mecatrónica"
+  credits: 2
+  contact_hours: 4
+  credits_and_contact_hours_text: "2 créditos y 4 horas de docencia"
+bibliography:
+  textbooks:
+    - "Guo, M., Zhou, J., Tang, F., Shen, Y. Pervasive computing: concepts, technologies and applications (First edition)"
+  supplemental_materials:
+    - "K.V., S. Introduction to Embedded Systems (Second edition)"
+    - "Horton, J. Android Programming for Beginners (First edition)"
+course_information:
+  description: "Esta asignatura de formación profesional teórico-práctica de nivel intermedio presenta sistemas telemáticos basados en modelos estándar de diseño de redes. También, se desarrolla aplicaciones web y móviles para el control y monitoreo remoto de sistemas telemáticos. Además, se presenta la integración de varios servicios en red, como localización y mensajería haciendo énfasis en aspectos de seguridad de la información."
+  prerequisites:
+    - "PROGRAMACIÓN ORIENTADA A OBJETOS - CCPG1052"
+    - "INTRODUCCIÓN A LA MECATRÓNICA - MCTG1018"
+  corequisites: []
+  course_type: "Obligatorio"
+course_goals:
+  instruction_outcomes:
+    - "Identificar los servicios basados en red como localización y mensajería para la integración de sistemas telemáticos."
+    - "Aplicar protocolos de comunicación para la interconexión remota de los sistemas telemáticos."
+    - "Desarrollar aplicaciones web y móviles para el control y manejo remoto de sistemas telemáticos."
+  student_outcomes:
+    - "7. Habilidad para adquirir y aplicar nuevos conocimientos de Ingeniería en Mecatrónica según sean necesarios, usando estrategias apropiadas de aprendizaje."
+    - "8. Diseñar soluciones reales de Ingeniería en Mecatrónica que proponen valor único como respuesta a necesidades específicas consideradas desde el punto de vista de los involucrados"
+topics:
+  - "Actividades de evaluación"
+  - "Introducción a sistemas telemáticos"
+  - "Administración de tecnologías web"
+  - "Control móvil de sistemas telemáticos"
+  - "Integración de sistemas telemáticos"

@@ -1,0 +1,31 @@
+schema_version: 1
+language: "en"
+source:
+  file: "EN-Syllabus-TLMG1030.pdf"
+  pages: 2
+course:
+  code: "TLMG1030"
+  name: "INTERNETWORKING"
+  document_title: "INTERNETWORKING"
+  program: "Telematics Engineering"
+  credits: 2
+  contact_hours: 4
+  credits_and_contact_hours_text: "2 credits and 4 contact hours"
+bibliography:
+  textbooks:
+    - "Medhi D., Ramasamy K.. Network Routing : Algorithms, Protocols, and Architectures (Segunda)"
+  supplemental_materials:
+    - "Szarkowicz K., Monge A.. MPLS in the SDN Era: Interoperable Scenarios to Make Networks Scale to New Services (Primera edición)"
+course_information:
+  description: ""
+  prerequisites:
+    - "DATA NETWORKS - TLMG1032"
+  corequisites: []
+  course_type: "Required"
+course_goals:
+  instruction_outcomes: []
+  student_outcomes:
+    - "1. Ability to identify, formulate, and solve complex telematics engineering problems through the application of engineering, science, and mathematics principles."
+    - "6. Ability to develop and conduct appropriate experimentation, analyze and interpret data, and use telematics engineering criteria to draw conclusions."
+topics:
+  - "Evaluation activities"

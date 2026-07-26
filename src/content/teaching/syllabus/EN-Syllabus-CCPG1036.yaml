@@ -1,0 +1,41 @@
+schema_version: 1
+language: "en"
+source:
+  file: "EN-Syllabus-CCPG1036.pdf"
+  pages: 2
+course:
+  code: "CCPG1036"
+  name: "ANALYSIS OF ALGORITHMS"
+  document_title: "ANALYSIS OF ALGORITHMS"
+  program: "Computer Science"
+  credits: 2
+  contact_hours: 3
+  credits_and_contact_hours_text: "2 credits and 3 contact hours"
+bibliography:
+  textbooks:
+    - "Cormen, T., Leiserson, C., Rivest, R. and Clifford, S. Introduction to Algorithms (4th Edition)"
+  supplemental_materials:
+    - "Sedgewick, R. and Wayne, K. Algorithms (4th Edition)"
+    - "Kleinberg, J. and Tardos, E. Algorithm Design (1st Edition)"
+course_information:
+  description: "This course provides an introduction to algorithm design and algorithm analysis. Covers formal techniques to determine algorithms’ efficiency in addition to algorithm design strategies that allow to solve new computational problems. Moreover, this course covers computational complexity topics and ways to reduce new computational problems to known ones to be solve efficiently through algorithms."
+  prerequisites:
+    - "DATA STRUCTURES - CCPG1034"
+  corequisites: []
+  course_type: "Required"
+course_goals:
+  instruction_outcomes:
+    - "Analyze the asymptotic execution time of algorithms using formal notations or empirical studies that validate the execution time hypotheses."
+    - "Create algorithmic solutions to real-world problems through the proper use of design strategies as an alternative to the use of the brute force strategy."
+    - "Identify efficient algorithms by means of the evaluation of the complexity level of various computational problems and the theory knowledge of their problems’ typology."
+  student_outcomes:
+    - "1. Analyze a complex computing problem and apply principles of computing and other relevant disciplines to identify solutions."
+    - "5. Function effectively as a member or leader of a team engaged in activities appropriate to the program’s discipline."
+topics:
+  - "Evaluation activities"
+  - "The role of algorithms in computing"
+  - "Algorithm analysis and asymptotic notations"
+  - "Algorithm analysis techniques"
+  - "Algorithms with data structures"
+  - "Algorithm design"
+  - "Computational complexity"

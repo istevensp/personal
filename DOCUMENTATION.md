@@ -67,6 +67,7 @@ personal/
 │   │   ├── profile/*.yaml         # personal, education, certifications, interests, awards-honors
 │   │   ├── experience/*.yaml      # academic, professional, thesis-advisory
 │   │   ├── teaching/courses.yaml
+│   │   ├── teaching/syllabus/     # One YAML per course per language — see §4.3
 │   │   ├── maps/evaluaciones.yaml # 55 SAAC evaluation records (historical, all courses)
 │   │   ├── publications/*.yaml    # published, accepted, under-review
 │   │   ├── projects/research/*.mdx
@@ -258,6 +259,40 @@ really "Conmutación y Enrutamiento") applied via a new, generic
 `data-lang-en`/`data-lang-es` attribute pair (see §7) rather than the global
 chrome-only i18n dictionary.
 
+### 4.3 Course syllabus detail pages (`/teaching/[code]`)
+
+`src/content/teaching/syllabus/` is a **multi-entry** content collection
+(`teachingSyllabus`, `glob()`-loaded), one YAML file per course *per
+language*, extracted from official course PDFs by the site owner's own
+tooling. Naming convention: `EN-Syllabus-{CODE}.yaml` /
+`SPA-Syllabus-{CODE}.yaml` (e.g. `EN-Syllabus-CCPG1034.yaml`,
+`SPA-Syllabus-CCPG1034.yaml`) — **drop new files straight into that folder
+with the same naming pattern; no code changes needed.** The schema (see
+`config.ts`) captures: `course` (code/name/program/credits/contact_hours),
+`bibliography` (textbooks/supplemental_materials), `course_information`
+(description/prerequisites/corequisites/course_type), `course_goals`
+(instruction_outcomes/student_outcomes), and `topics`.
+
+`src/pages/teaching/[code].astro` is a prerendered detail page
+(`getStaticPaths()` derives one path per distinct `course.code` found in the
+collection, lowercased for the URL, e.g. `/teaching/ccpg1034`). It pairs up
+the `en`/`es` entries for a code by index across every list field
+(`pairLists()` in the page) so each item can be shown bilingually via
+`data-lang-en`/`data-lang-es` — this assumes the English and Spanish syllabus
+files list the same items in the same order; if they don't, ES falls back to
+the EN text for that index rather than crashing or showing a blank.
+
+**`CourseCard.astro`'s new `syllabusHref?: string` prop** renders a "View
+course details" link (bottom of the card, next to "Course repository" if
+both exist) only when a syllabus file exists for that course's code. Since a
+current course's own `code` field is frequently still `[PROPORCIONAR]`,
+`teaching/index.astro`'s `syllabusHrefForCourse()` helper falls back to the
+real historical SAAC code via `courseIdToRealCode` (built from
+`historicalNames`, §4.1) when the course's own `code` isn't set — this is
+why the "Data Structures" *current* course card can link to
+`/teaching/ccpg1034` even though `courses.yaml`'s own `code` for that entry
+is still a placeholder.
+
 ---
 
 ## 5. Components reference
@@ -376,6 +411,7 @@ toggling CSS classes.
 | `/` | `src/pages/index.astro` | Home; Person JSON-LD |
 | `/about` | `src/pages/about.astro` | Education, interests, certifications, awards |
 | `/teaching` | `src/pages/teaching/index.astro` | See §4.1 |
+| `/teaching/[code]` | `.../teaching/[code].astro` | Course syllabus detail — see §4.3; only exists for codes with a syllabus file |
 | `/projects` | `src/pages/projects/index.astro` | Research + Community grids |
 | `/projects/research/[slug]` | `.../research/[slug].astro` | `slug` = MDX frontmatter `projectId` |
 | `/projects/community/[slug]` | `.../community/[slug].astro` | same |

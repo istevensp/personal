@@ -1,0 +1,42 @@
+schema_version: 1
+language: "en"
+source:
+  file: "EN-Syllabus-TLMG1035.pdf"
+  pages: 2
+course:
+  code: "TLMG1035"
+  name: "TELEMETRY AND CYBERPHYSICAL SYSTEMS"
+  document_title: "TELEMETRY AND CYBERPHYSICAL SYSTEMS"
+  program: "Telematics Engineering"
+  credits: 3
+  contact_hours: 4
+  credits_and_contact_hours_text: "3 credits and 4 contact hours"
+bibliography:
+  textbooks:
+    - "Meneses Benavides, Gustavo Adolfo. Principios de instrumentación electrónica y telemetría. Conceptos básicos y prácticas de laboratorio. (1)"
+  supplemental_materials:
+    - "Park, J. Mackay, S. Wright, E. Practical Data Communications for Instrumentation and Control (1)"
+    - "Bailey, D. Practical radio engineering and telemetry for industry (1)"
+    - "Chung-Ming Huang. Telematics Communication Technologies and Vehicular Networks: Wireless Architectures and Applications (1)"
+course_information:
+  description: "This theoretical-practical professional training course of advanced level presents the fundamentals of telemetry corresponding to the recording and automatic transmission of information from non-accessible or remote sites to a system located in a different location for monitoring and analysis, through the use of sensory devices and transducers. At the same time, industrial communication protocols and their application in wode-area measurement and control systems are presented. This course also covers the fundamentals of integration of computing and communication capabilities for their control and interaction through a cyber- physical system."
+  prerequisites:
+    - "SYSTEMS PROGRAMMING - CCPG1051"
+    - "WIRELESS AND SENSOR NETWORKS - TLMG1033"
+  corequisites: []
+  course_type: "Required"
+course_goals:
+  instruction_outcomes:
+    - "To determine the appropriate communication technology for accessing remote sites considering the long-distance communication fundamentals."
+    - "To select the components and protocols of a communication network for meeting the requirements of remote monitoring and control of processes at remote sites."
+    - "To determine the network infrastructure of a cyber-physical system for the execution of industrial processes remotely."
+  student_outcomes:
+    - "1. Ability to identify, formulate, and solve complex telematics engineering problems through the application of engineering, science, and mathematics principles."
+    - "2. Ability to apply telematics engineering systems design to produce solutions that meet specific needs, considering public health, safety and well-being, as well as global, cultural, social, environmental and economic factors."
+    - "8. Design real telematics engineering solutions that propose unique value in response to specific needs considered from the point of view of those involved."
+topics:
+  - "Evaluation activities"
+  - "Wide-area data communication and remote access monitoring"
+  - "Information monitoring and storage tools"
+  - "Protocols oriented for industrial networks"
+  - "Cyber-Physical Systems"

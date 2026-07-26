@@ -1,0 +1,43 @@
+schema_version: 1
+language: "es"
+source:
+  file: "SPA-Syllabus-CCPG1034.pdf"
+  pages: 2
+course:
+  code: "CCPG1034"
+  name: "ESTRUCTURAS DE DATOS"
+  document_title: "ESTRUCTURAS DE DATOS"
+  program: "Computación"
+  credits: 3
+  contact_hours: 4
+  credits_and_contact_hours_text: "3 créditos y 4 horas de docencia"
+bibliography:
+  textbooks:
+    - "Weiss, Mark A.. Data Structures and Algorithm Analysis in Java (3)"
+  supplemental_materials:
+    - "Goodrich, M.T., Tamassia, R., Goldwasser, M.H.. Data Structures and Algorithms in Java (6th Edition)"
+    - "Aguilar, L.J., Martínez, I.Z., Zahonero, I.. ESTRUCTURA DE DATOS EN JAVA (Primera Edición)"
+course_information:
+  description: "El curso de formación profesional presenta los fundamentos del análisis, diseño e implementación de estructuras de datos elementales utilizadas en las ciencias computacionales. Estudia algoritmos para manipulación y organización de datos en estructuras, con énfasis particular en eficiencia computacional y estilos de codificación adecuados. Asimismo, plantea problemas reales de mediana complejidad para que los estudiantes diseñen e implementen soluciones utilizando estructuras de datos apropiadas."
+  prerequisites:
+    - "PROGRAMACIÓN ORIENTADA A OBJETOS - CCPG1052"
+  corequisites:
+    - "MATEMÁTICAS DISCRETAS - MATG1051"
+  course_type: "Obligatorio"
+course_goals:
+  instruction_outcomes:
+    - "Implementar los estados y comportamientos de los tipos de datos abstractos, mediante el uso de un lenguaje de programación."
+    - "Analizar el rendimiento de los algoritmos que usan tipos de datos abstractos, mediante el uso de una notación asintótica."
+    - "Implementar algoritmos que usan tipos de datos abstractos, para la resolución de problemas con necesidades específicas, mediante el uso de un lenguaje de programación."
+  student_outcomes:
+    - "1. Analizar un problema computacional complejo y aplicar principios de computación y otras disciplinas relevantes para identificar soluciones."
+    - "6. Aplicar teoría de ciencias computacionales y fundamentos de desarrollo de software para producir soluciones basadas en computación."
+topics:
+  - "Actividades de evaluación"
+  - "Tipos de Datos"
+  - "Listas"
+  - "Pilas"
+  - "Colas"
+  - "Conjuntos y Mapas"
+  - "Árboles"
+  - "Grafos"

@@ -1,0 +1,43 @@
+schema_version: 1
+language: "es"
+source:
+  file: "SPA-Syllabus-TLMG1032.pdf"
+  pages: 2
+course:
+  code: "TLMG1032"
+  name: "REDES DE DATOS"
+  document_title: "REDES DE DATOS"
+  program: "Telemática"
+  credits: 3
+  contact_hours: 4
+  credits_and_contact_hours_text: "3 créditos y 4 horas de docencia"
+bibliography:
+  textbooks:
+    - "James F. Kurose, Keith W. Ross. Computer Networking: A Top-Down Approach (7ma)"
+  supplemental_materials:
+    - "Tanenbaum, A., Wetherall, D.. Computer Networks (5)"
+    - "Cisco Networking Academy. Switched Networks Companion Guide (Primera Edición)"
+    - "William Stallings. Data and Computer Communications (10th Edition) (10)"
+course_information:
+  description: "Esta asignatura de formación profesional teórico-práctica de nivel inicial presenta los fundamentos de las redes de comunicación de datos considerando aspectos como la importancia de las comunicaciones actuales de colaboración entre personas y empresas, los requerimientos de las redes convergentes de voz, datos y video, los protocolos y arquitecturas de comunicación, así como las ventajas de los modelos de referencia. Adicionalmente, se enfatiza el direccionamiento lógico basado en IPv4 e IPv6, la importancia y aplicación de la segmentación lógica de redes, y la agregación de rutas como aspecto de optimización de las decisiones de enrutamiento. De igual manera, se analiza los conceptos de protocolos de conmutación y enrutamiento, así como la transmisión confiable. Finalmente, se presenta las tendencias actuales de redes de comunicación."
+  prerequisites: []
+  corequisites: []
+  course_type: "Obligatorio"
+course_goals:
+  instruction_outcomes:
+    - "Identificar los dispositivos de comunicación intermedios y finales para el diseño de una topología de red de datos."
+    - "Definir tareas de planificación, diseño, instalación y operación para el despliegue de una red de datos."
+    - "Analizar una red de datos para la identificación de problemas que afecten su funcionamiento."
+  student_outcomes:
+    - "Liderar el desarrollo y la implementación de proyectos relacionados a la Ingeniería en Telemática que posibiliten la generación de empleo o la innovación para satisfacer las necesidades del mercado actual y así contribuir responsablemente al sector productivo de la sociedad"
+    - "Adquirir nuevos conocimientos técnicos y científicos a través del ejercicio profesional o en estudios de postgrado, que les permita mejorar sus habilidades en temas contemporáneos relacionados a la Ingeniería en Telemática."
+    - "Sistemas y Procesamiento de señales"
+    - "Tener habilidades de comunicación efectiva que les permita ser asertivos en entornos de trabajo interdisciplinarios y multiculturales."
+topics:
+  - "Actividades de evaluación"
+  - "Fundamentos de redes de datos"
+  - "Transmisión de datos en medios compartidos"
+  - "Capa de Internet, direccionamiento y enrutamiento"
+  - "Segmentación lógica de redes, redes virtuales, y agregación de rutas"
+  - "Transmisión confiable de datos"
+  - "Servicios y aplicaciones de red"

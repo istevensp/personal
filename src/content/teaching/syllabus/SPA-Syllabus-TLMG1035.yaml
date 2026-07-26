@@ -1,0 +1,42 @@
+schema_version: 1
+language: "es"
+source:
+  file: "SPA-Syllabus-TLMG1035.pdf"
+  pages: 2
+course:
+  code: "TLMG1035"
+  name: "TELEMETRÍA Y SISTEMAS CIBERFÍSICOS"
+  document_title: "TELEMETRÍA Y SISTEMAS CIBERFÍSICOS"
+  program: "Telemática"
+  credits: 3
+  contact_hours: 4
+  credits_and_contact_hours_text: "3 créditos y 4 horas de docencia"
+bibliography:
+  textbooks:
+    - "Meneses Benavides, Gustavo Adolfo. Principios de instrumentación electrónica y telemetría. Conceptos básicos y prácticas de laboratorio. (1)"
+  supplemental_materials:
+    - "Park, J. Mackay, S. Wright, E. Practical Data Communications for Instrumentation and Control (1)"
+    - "Bailey, D. Practical radio engineering and telemetry for industry (1)"
+    - "Chung-Ming Huang. Telematics Communication Technologies and Vehicular Networks: Wireless Architectures and Applications (1)"
+course_information:
+  description: "Esta asignatura de formación profesional teórico-práctica de nivel avanzado presenta los fundamentos de telemetría correspondientes al registro y transmisión automática de información desde sitios no accesibles o remotos hacia un sistema loalizado en una ubicación diferente para su monitoreo y análisis, mediante el uso de dispositivos sensoriales y transductores. A su vez, se presenta los protocolos de comunicación industrial y su aplicación en sistemas de medición y control de área amplia. De igual manera, se cubre los fundamentos de integración de capacidades informáticas y de comunicación para su control e interacción mediante un sistema ciberfísico."
+  prerequisites:
+    - "PROGRAMACIÓN DE SISTEMAS - CCPG1051"
+    - "REDES INALÁMBRICAS Y DE SENSORES - TLMG1033"
+  corequisites: []
+  course_type: "Obligatorio"
+course_goals:
+  instruction_outcomes:
+    - "Determinar la tecnología de comunicación apropiada para el acceso a sitios remotos considerando fundamentos de comunicación a larga distancia."
+    - "Seleccionar los componentes y protocolos de una red de comunicación para el cumplimiento de los requerimientos de monitoreo y control remoto de procesos en sitios remotos."
+    - "Determinar la infraestructura de una red de un sistema ciberfisico para la ejecución de procesos industriales de manera remota."
+  student_outcomes:
+    - "1. Habilidad para identificar, formular y resolver problemas complejos de ingeniería en telemática mediante la aplicación de principios de ingeniería, ciencia y matemática."
+    - "2. Habilidad para aplicar diseño de sistemas de ingeniería en telemática, para producir soluciones que satisfagan necesidades específicas, considerando la salud pública, seguridad y el bienestar, así como factores globales, culturales, sociales, ambientales y económicos."
+    - "8. Diseñar soluciones reales de ingeniería en telemática que proponen valor único como respuesta a necesidades específicas consideradas desde el punto de vista de los involucrados."
+topics:
+  - "Actividades de evaluación"
+  - "Comunicación de datos en área amplia y monitoreo de accesos remotos"
+  - "Herramientas para el monitoreo y almacenamiento de la información"
+  - "Protocolos orientados a redes industriales"
+  - "Sistemas ciberfísicos"

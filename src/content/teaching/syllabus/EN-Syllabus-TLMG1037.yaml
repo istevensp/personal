@@ -1,0 +1,38 @@
+schema_version: 1
+language: "en"
+source:
+  file: "EN-Syllabus-TLMG1037.pdf"
+  pages: 2
+course:
+  code: "TLMG1037"
+  name: "TELEMATICS SYSTEMS PROGRAMMING"
+  document_title: "TELEMATICS SYSTEMS PROGRAMMING"
+  program: "Mechatronics Engineering"
+  credits: 2
+  contact_hours: 4
+  credits_and_contact_hours_text: "2 credits and 4 contact hours"
+bibliography:
+  textbooks:
+    - "Guo, M., Zhou, J., Tang, F., Shen, Y. Pervasive computing: concepts, technologies and applications (First edition)"
+  supplemental_materials:
+    - "K.V., S. Introduction to Embedded Systems (Second edition)"
+    - "Horton, J. Android Programming for Beginners (First edition)"
+course_information:
+  description: "This course of theoretical and practical professional training presents intermediate telematics systems based on standard network design models. Also, it develops web and mobile applications for remote control and monitoring of telematics systems. In addition, the integration of various network services is presented, such as location and messaging, emphasizing information security aspects."
+  prerequisites:
+    - "OBJECT ORIENTED PROGRAMMING - CCPG1052"
+    - "INTRODUCTION TO MECHATRONICS - MCTG1018"
+  corequisites: []
+  course_type: "Required"
+course_goals:
+  instruction_outcomes:
+    - "Identifying network-based services such as location and messaging for the integration of telematic systems."
+    - "Applying communication protocols for remote telematics systems interconnection."
+    - "Developing web and mobile applications for monitoring and remote management of telematics systems."
+  student_outcomes: []
+topics:
+  - "Evaluation activities"
+  - "Introduction to telematics systems"
+  - "Web technology management"
+  - "Mobile control of telematics systems"
+  - "Integration of telematics systems"

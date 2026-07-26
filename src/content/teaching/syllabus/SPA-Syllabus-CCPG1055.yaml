@@ -1,0 +1,44 @@
+schema_version: 1
+language: "es"
+source:
+  file: "SPA-Syllabus-CCPG1055.pdf"
+  pages: 2
+course:
+  code: "CCPG1055"
+  name: "SISTEMAS DISTRIBUIDOS Y COMPUTACIÓN EN LA NUBE"
+  document_title: "SISTEMAS DISTRIBUIDOS Y COMPUTACIÓN EN LA NUBE"
+  program: "Computación"
+  credits: 3
+  contact_hours: 4
+  credits_and_contact_hours_text: "3 créditos y 4 horas de docencia"
+bibliography:
+  textbooks:
+    - "Maarten van Steen y Andrew S. Tanenbaum. Distributed Systems (3era)"
+  supplemental_materials:
+    - "Coulouris, George F. & Dollimore, Jean & Kindberg, Tim & Blair, Gordon. Distributed Systems: Concepts and Design (5th Edition) (Hardcover; 2011-05-07)"
+    - "Martin Kleppmann. Designing Data-Intensive Applications (Primera)"
+    - "Brendan Burns. Designing Distributed Systems: Patterns and Paradigms for Scalable, Reliable Services (Primera)"
+course_information:
+  description: "Este curso de formación profesional introduce los principios fundamentales de los sistemas distribuidos y paralelos, con especial énfasis en aquellos que se usan en plataformas de computación en la nube y de procesamiento masivo y escalable de datos. Se exploran conceptos de comunicación y coordinación entre procesos distribuidos, recalcando los conceptos de atomicidad y consenso. Se recalca que resulta imprescindible el usar paralelismo para conseguir mejoras de rendimiento, y se estudian las estrategias de descomposición, diseño y arquitectura de sistemas, incluyendo estrategias de implementación, análisis de rendimiento y mejoras (tuning). Se estudia también los conceptos de tolerancia a fallos, con un énfasis en el mantenimiento de estado replicado, introduciendo conceptos que proporcionan un enlace con los conceptos estudiados bajo el contexto de las redes de datos."
+  prerequisites:
+    - "PROGRAMACIÓN DE SISTEMAS - CCPG1051"
+    - "REDES DE DATOS - TLMG1032"
+  corequisites: []
+  course_type: "Obligatorio"
+course_goals:
+  instruction_outcomes:
+    - "Comprender los diferentes conceptos y tecnologías que constituyen la base del diseño e implementación de los sistemas distribuidos, a través de su estudio teórico-práctico."
+    - "Aplicar el conocimiento adquirido en sistemas distribuidos y paralelos, para el uso, diseño e implementación de los mismos en plataformas de computación en la nube."
+    - "Diseñar un algoritmo paralelo mediante la aplicación de \"paralelismo de datos\" o \"descomposición basada en tareas\", para la reducción de su tiempo de ejecución."
+    - "Analizar las ventajas y desventajas de las diferentes decisiones de diseño que se presentan durante la implementación de un sistema distribuido, mejorando el rendimiento, escalabilidad, consistencia fuerte, y/o alta tolerancia a fallos."
+  student_outcomes:
+    - "2. Diseñar, implementar y evaluar una solución basada en computación para cumplir con un conjunto dado de requisitos de computación en el contexto de la disciplina del programa."
+    - "6. Habilidad para aplicar teoría de ciencias computacionales y fundamentos de desarrollo de software para producir soluciones basadas en computación"
+topics:
+  - "Actividades de evaluación"
+  - "Introducción a los sistemas distribuidos y la computación en la nube."
+  - "Confiabilidad, escalabilidad y tolerancia a fallos de sistemas distribuidos."
+  - "Modelos de descomposición de tareas paralelas y procesamiento de datos en la nube."
+  - "Comunicaciones entre procesos distribuidos."
+  - "Decisiones de diseño e implementación de sistemas distribuidos."
+  - "Teoría de sistemas distribuidos."

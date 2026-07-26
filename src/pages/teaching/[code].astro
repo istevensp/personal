@@ -1,0 +1,287 @@
+---
+import BaseLayout from '../../components/Layout/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { getSemestersForCode } from '../../lib/teaching';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const entries = await getCollection('teachingSyllabus');
+  const codes = new Set(entries.map((s) => s.data.course.code));
+  return Array.from(codes).map((code) => ({ params: { code: code.toLowerCase() } }));
+}
+
+const { code } = Astro.params;
+
+const entries = await getCollection('teachingSyllabus');
+const matches = entries.filter((s) => s.data.course.code.toLowerCase() === code);
+const en = matches.find((s) => s.data.language === 'en')?.data;
+const es = matches.find((s) => s.data.language === 'es')?.data;
+const primary = en ?? es;
+
+if (!primary) {
+  Astro.response.status = 404;
+}
+
+// Pair up an English list with its Spanish translation by index, so each
+// item can be shown bilingually. Extraction sometimes fully misses a field
+// in ONE language (e.g. a course's English topics list came back with only
+// 1 of 5 real items) — driving off whichever list happens to be longer,
+// rather than always the English one, means real content from either
+// language never silently disappears just because the other language's
+// extraction was incomplete for that field.
+function pairLists(enList: string[] = [], esList: string[] = []) {
+  const length = Math.max(enList.length, esList.length);
+  return Array.from({ length }, (_, i) => ({
+    en: enList[i] ?? esList[i] ?? '',
+    es: esList[i] ?? enList[i] ?? '',
+  })).filter((pair) => pair.en || pair.es);
+}
+
+const topics = primary ? pairLists(en?.topics, es?.topics) : [];
+const instructionOutcomes = primary ? pairLists(en?.course_goals.instruction_outcomes, es?.course_goals.instruction_outcomes) : [];
+const studentOutcomes = primary ? pairLists(en?.course_goals.student_outcomes, es?.course_goals.student_outcomes) : [];
+const textbooks = primary ? pairLists(en?.bibliography.textbooks, es?.bibliography.textbooks) : [];
+const supplemental = primary ? pairLists(en?.bibliography.supplemental_materials, es?.bibliography.supplemental_materials) : [];
+
+const MINOR_WORDS = new Set(['de', 'del', 'la', 'las', 'el', 'los', 'en', 'y', 'a', 'con', 'para', 'and', 'of', 'the', 'in', 'for']);
+function titleCase(value: string): string {
+  return value
+    .toLowerCase()
+    .split(' ')
+    .map((w, i) => (i > 0 && MINOR_WORDS.has(w) ? w : w.length > 0 ? w[0].toUpperCase() + w.slice(1) : w))
+    .join(' ');
+}
+
+const nameEn = en ? titleCase(en.course.name) : undefined;
+const nameEs = es ? titleCase(es.course.name) : undefined;
+const displayName = nameEn ?? nameEs ?? '';
+
+const semesters = primary ? await getSemestersForCode(primary.course.code) : [];
+// "Taught N times" should only count semesters that actually happened (or
+// are happening) — an `upcoming` semester hasn't been taught yet, it's just
+// scheduled, so it shouldn't inflate this count even though it's still
+// worth showing in the evaluations list below (with an "Upcoming" badge).
+const taughtSemesters = semesters.filter((s) => s.status !== 'upcoming');
+const semesterYears = Array.from(new Set(taughtSemesters.map((s) => parseInt(s.semester.split('-')[0], 10)))).sort((a, b) => b - a);
+const yearRange = semesterYears.length > 1 ? `${semesterYears[semesterYears.length - 1]}–${semesterYears[0]}` : semesterYears[0] ? `${semesterYears[0]}` : '';
+const timesTaughtEn = `Taught ${taughtSemesters.length} time${taughtSemesters.length === 1 ? '' : 's'}${yearRange ? ` (${yearRange})` : ''}`;
+const timesTaughtEs = `Dictado ${taughtSemesters.length} ${taughtSemesters.length === 1 ? 'vez' : 'veces'}${yearRange ? ` (${yearRange})` : ''}`;
+
+// Prefer whichever language has real (non-empty) text for a given field —
+// extraction sometimes leaves a field as `""` in one language while the
+// other has the real value (e.g. TLMG1030's English description came back
+// empty). Plain `??` doesn't fall through on `""`, only on null/undefined,
+// so it would silently render blank instead of falling back.
+function pick(a?: string, b?: string): string {
+  return a || b || '';
+}
+const program = pick(en?.course.program, es?.course.program);
+const courseType = pick(en?.course_information.course_type, es?.course_information.course_type);
+const description = pick(en?.course_information.description, es?.course_information.description);
+const programEn = pick(en?.course.program, es?.course.program);
+const programEs = pick(es?.course.program, en?.course.program);
+const courseTypeEn = pick(en?.course_information.course_type, es?.course_information.course_type);
+const courseTypeEs = pick(es?.course_information.course_type, en?.course_information.course_type);
+const descriptionEn = pick(en?.course_information.description, es?.course_information.description);
+const descriptionEs = pick(es?.course_information.description, en?.course_information.description);
+
+// A lively, varied palette for topic chips — this page is meant to feel
+// energetic, not a plain list, so topics cycle through many hues rather
+// than sharing one flat badge color.
+const TOPIC_COLORS = [
+  'bg-emerald-100 text-emerald-800',
+  'bg-teal-100 text-teal-800',
+  'bg-cyan-100 text-cyan-800',
+  'bg-sky-100 text-sky-800',
+  'bg-blue-100 text-blue-800',
+  'bg-indigo-100 text-indigo-800',
+  'bg-violet-100 text-violet-800',
+  'bg-purple-100 text-purple-800',
+  'bg-fuchsia-100 text-fuchsia-800',
+  'bg-pink-100 text-pink-800',
+  'bg-rose-100 text-rose-800',
+  'bg-amber-100 text-amber-800',
+  'bg-lime-100 text-lime-800',
+];
+function topicColor(i: number): string {
+  return TOPIC_COLORS[i % TOPIC_COLORS.length];
+}
+---
+
+<BaseLayout
+  title={primary ? displayName : 'Course not found'}
+  description={primary ? description : 'This course could not be found.'}
+>
+  {
+    primary ? (
+      <article class="px-4 py-2xl md:px-6 lg:px-12">
+        <div class="mx-auto flex max-w-3xl flex-col gap-8">
+          <a href="/teaching" class="link inline-flex min-h-[44px] w-fit items-center text-sm">&larr; Back to Teaching</a>
+
+          <div class="animate-fade-in flex flex-col gap-4 rounded-xl bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 p-xl md:p-2xl">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="badge">{primary.course.code}</span>
+              {program && (
+                <span class="badge" data-lang-en={programEn} data-lang-es={programEs}>{program}</span>
+              )}
+              {courseType && (
+                <span class="badge badge-warning" data-lang-en={courseTypeEn} data-lang-es={courseTypeEs}>
+                  {courseType}
+                </span>
+              )}
+            </div>
+
+            <h1 class="flex flex-wrap items-center gap-3">
+              <span data-lang-en={nameEn} data-lang-es={nameEs}>{displayName}</span>
+              <span class="animate-float text-3xl" aria-hidden="true">📚</span>
+              {taughtSemesters.length > 0 && (
+                <span class="badge text-sm" data-lang-en={timesTaughtEn} data-lang-es={timesTaughtEs}>
+                  {timesTaughtEn}
+                </span>
+              )}
+            </h1>
+
+            {description && (
+              <p class="text-[var(--text-secondary)]" data-lang-en={descriptionEn} data-lang-es={descriptionEs}>
+                {description}
+              </p>
+            )}
+
+            {semesters.length > 0 && (
+              <details class="group rounded-md border border-[var(--border)] bg-[var(--bg-primary)]">
+                <summary class="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-2 px-3 py-2 text-sm font-medium text-[var(--text-primary)]">
+                  <span data-i18n="common.viewEvaluations">View evaluations</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="shrink-0 transition-transform duration-fast group-open:rotate-180"
+                  >
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </summary>
+                <ul class="flex flex-col gap-1 border-t border-[var(--border)] p-3">
+                  {semesters.map((s) =>
+                    s.evaluationUrl ? (
+                      <li>
+                        <a
+                          href={s.evaluationUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="link flex min-h-[44px] items-center justify-between gap-2 text-sm"
+                        >
+                          <span>
+                            {s.semester} &middot; Parallel {s.parallel}
+                          </span>
+                          <span aria-hidden="true">&rarr;</span>
+                        </a>
+                      </li>
+                    ) : (
+                      <li class="flex min-h-[44px] items-center justify-between gap-2 text-sm text-[var(--text-secondary)]">
+                        <span>
+                          {s.semester} &middot; Parallel {s.parallel}
+                        </span>
+                        <span class:list={['badge', s.status === 'upcoming' ? 'badge-success' : 'badge-warning']}>
+                          {s.status === 'upcoming' ? 'Upcoming' : 'Pending evaluation'}
+                        </span>
+                      </li>
+                    )
+                  )}
+                </ul>
+              </details>
+            )}
+          </div>
+
+          {topics.length > 0 && (
+            <div class="flex flex-col gap-3 rounded-lg border border-primary/20 bg-primary/5 p-4">
+              <h3 class="flex items-center gap-2">
+                <span class="animate-bounce text-xl" aria-hidden="true">✨</span>
+                <span data-i18n="teaching.topics">Topics Covered</span>
+              </h3>
+              <div class="flex flex-wrap gap-2">
+                {topics.map((item, i) => (
+                  <span
+                    class:list={['rounded-full px-3 py-1.5 text-sm font-medium', topicColor(i)]}
+                    data-lang-en={item.en}
+                    data-lang-es={item.es}
+                  >
+                    {item.en}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {(instructionOutcomes.length > 0 || studentOutcomes.length > 0) && (
+            <div class="flex flex-col gap-4 border-t border-[var(--border)] pt-4">
+              {instructionOutcomes.length > 0 && (
+                <div class="flex flex-col gap-2">
+                  <h4 data-i18n="teaching.instructionOutcomes">Instruction Outcomes</h4>
+                  <ul class="flex flex-col gap-1.5">
+                    {instructionOutcomes.map((item) => (
+                      <li class="p-small flex gap-2 text-[var(--text-secondary)]">
+                        <span aria-hidden="true">&bull;</span>
+                        <span data-lang-en={item.en} data-lang-es={item.es}>{item.en}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {studentOutcomes.length > 0 && (
+                <div class="flex flex-col gap-2">
+                  <h4 data-i18n="teaching.studentOutcomes">Student Outcomes</h4>
+                  <ul class="flex flex-col gap-1.5">
+                    {studentOutcomes.map((item) => (
+                      <li class="p-small flex gap-2 text-[var(--text-secondary)]">
+                        <span aria-hidden="true">&bull;</span>
+                        <span data-lang-en={item.en} data-lang-es={item.es}>{item.en}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+
+          {(textbooks.length > 0 || supplemental.length > 0) && (
+            <div class="flex flex-col gap-4 border-t border-[var(--border)] pt-4">
+              <h3 data-i18n="teaching.bibliography">Bibliography</h3>
+              {textbooks.length > 0 && (
+                <div class="flex flex-col gap-2">
+                  <h4 data-i18n="teaching.textbooks">Textbooks</h4>
+                  <ul class="flex flex-col gap-1">
+                    {textbooks.map((item) => (
+                      <li class="p-small text-[var(--text-secondary)]">{item.en}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {supplemental.length > 0 && (
+                <div class="flex flex-col gap-2">
+                  <h4 data-i18n="teaching.supplementalMaterials">Supplemental Materials</h4>
+                  <ul class="flex flex-col gap-1">
+                    {supplemental.map((item) => (
+                      <li class="p-small text-[var(--text-secondary)]">{item.en}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </article>
+    ) : (
+      <div class="flex min-h-[50vh] flex-col items-center justify-center gap-4 px-4 text-center">
+        <h1>Course not found</h1>
+        <a href="/teaching" class="btn-primary">Back to Teaching</a>
+      </div>
+    )
+  }
+</BaseLayout>

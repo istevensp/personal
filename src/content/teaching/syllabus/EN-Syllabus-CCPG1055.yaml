@@ -1,0 +1,44 @@
+schema_version: 1
+language: "en"
+source:
+  file: "EN-Syllabus-CCPG1055.pdf"
+  pages: 2
+course:
+  code: "CCPG1055"
+  name: "DISTRIBUTED SYSTEMS AND CLOUD COMPUTING"
+  document_title: "DISTRIBUTED SYSTEMS AND CLOUD COMPUTING"
+  program: "Computer Science"
+  credits: 3
+  contact_hours: 4
+  credits_and_contact_hours_text: "3 credits and 4 contact hours"
+bibliography:
+  textbooks:
+    - "Maarten van Steen y Andrew S. Tanenbaum. Distributed Systems (3era)"
+  supplemental_materials:
+    - "Coulouris, George F. & Dollimore, Jean & Kindberg, Tim & Blair, Gordon. Distributed Systems: Concepts and Design (5th Edition) (Hardcover; 2011-05-07)"
+    - "Martin Kleppmann. Designing Data-Intensive Applications (Primera)"
+    - "Brendan Burns. Designing Distributed Systems: Patterns and Paradigms for Scalable, Reliable Services (Primera)"
+course_information:
+  description: "This course introduces the fundamental principles of distributed and parallel systems, with special emphasis on those used in cloud computing platforms and massive and scalable data processing. Concepts of communication and coordination between distributed processes are explored, emphasizing the concepts of atomicity and consensus. It is emphasized that it is essential to use parallelism to achieve performance improvements, and systems decomposition, design and architecture strategies are studied, including implementation strategies, performance analysis and improvements (tuning). The concept of fault tolerance is also studied, with an emphasis on the maintenance of replicated state, introducing concepts that provide a connection with the concepts already introduced in the computer networking course."
+  prerequisites:
+    - "SYSTEMS PROGRAMMING - CCPG1051"
+    - "DATA NETWORKS - TLMG1032"
+  corequisites: []
+  course_type: "Required"
+course_goals:
+  instruction_outcomes:
+    - "Understand the different concepts and technologies that constitute the basis of the design and implementation of distributed systems, through their theoretical-practical study."
+    - "Apply the knowledge acquired in distributed and parallel systems, for their use, design and implementation in cloud computing platforms."
+    - "Design a parallel algorithm by applying \"data parallelism\" or \"task-based decomposition\", to reduce its execution time."
+    - "Analyze the advantages and disadvantages of the different design decisions that arise during the implementation of a distributed system, improving performance, scalability, strong consistency, and / or fault tolerance."
+  student_outcomes:
+    - "2. Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program’s discipline."
+    - "6. Apply computer science theory and software development fundamentals to produce computing-based solutions."
+topics:
+  - "Evaluation activities"
+  - "Introduction to distributed systems and cloud computing."
+  - "Reliability, scalability and fault tolerance of distributed systems."
+  - "Parallel task decomposition models and data processing in the cloud."
+  - "Communications between distributed processes."
+  - "Design decisions and implementation of distributed systems."
+  - "Theory of distributed systems."

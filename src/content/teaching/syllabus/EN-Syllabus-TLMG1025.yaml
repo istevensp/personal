@@ -1,0 +1,37 @@
+schema_version: 1
+language: "en"
+source:
+  file: "EN-Syllabus-TLMG1025.pdf"
+  pages: 2
+course:
+  code: "TLMG1025"
+  name: "MULTIMEDIA NETWORKS AND QUALITY OF SERVICE"
+  document_title: "MULTIMEDIA NETWORKS AND QUALITY OF SERVICE"
+  program: "Telematics Engineering"
+  credits: 2
+  contact_hours: 3
+  credits_and_contact_hours_text: "2 credits and 3 contact hours"
+bibliography:
+  textbooks:
+    - "Barreiros M.; Lundqvist P.. QoSEnabled Networks (2)"
+  supplemental_materials: []
+course_information:
+  description: "This advanced-level theoretical and practical proffesional training course explains the architectures of data networks and applications oriented toward the transmission of multimedia content using network quality of service (QoS) parameters. Additionally, the concepts of performance in a multimedia network and traffic engineering for traffic optimization in different data networks are presented. Finally, the algorithms for traffic control in a data network and the protocols involved in multimedia applications are exposed."
+  prerequisites:
+    - "INTERNETWORKING - TLMG1030"
+  corequisites: []
+  course_type: "Required"
+course_goals:
+  instruction_outcomes:
+    - "Analyze the different performance metrics that define or affect a network's quality of service and/or the quality of experience that users perceive from the services they use."
+    - "Analyze the different existing quality of service models and architectures for traffic optimization in medium- and large-scale data networks."
+    - "Evaluate the different compression, traffic scheduling and queuing algorithms, and the IP network requirements for supporting multimedia applications and services on the Internet."
+  student_outcomes:
+    - "6. Ability to develop and conduct appropriate experimentation, analyze and interpret data, and use telematics engineering criteria to draw conclusions."
+    - "8. Design real telematics engineering solutions that propose unique value in response to specific needs considered from the point of view of those involved."
+topics:
+  - "Evaluation activities"
+  - "Introduction to multimedia networks"
+  - "Traffic engineering"
+  - "Compression and traffic control algorithms"
+  - "Multimedia applications on the Internet"

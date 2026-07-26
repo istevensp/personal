@@ -1,0 +1,41 @@
+schema_version: 1
+language: "es"
+source:
+  file: "SPA-Syllabus-CCPG1036.pdf"
+  pages: 2
+course:
+  code: "CCPG1036"
+  name: "ANÁLISIS DE ALGORITMOS"
+  document_title: "ANÁLISIS DE ALGORITMOS"
+  program: "Computación"
+  credits: 2
+  contact_hours: 3
+  credits_and_contact_hours_text: "2 créditos y 3 horas de docencia"
+bibliography:
+  textbooks:
+    - "Cormen, T., Leiserson, C., Rivest, R. and Clifford, S. Introduction to Algorithms (4th Edition)"
+  supplemental_materials:
+    - "Sedgewick, R. and Wayne, K. Algorithms (4th Edition)"
+    - "Kleinberg, J. and Tardos, E. Algorithm Design (1st Edition)"
+course_information:
+  description: "Este curso de formación profesional provee una introducción al análisis y diseño de algoritmos computacionales. Aborda técnicas formales para la determinación de la eficiencia de algoritmos y estrategias básicas de diseño de algoritmos que permiten enfrentarse de manera adecuada a nuevos problemas computacionales. Además, se abordan temas relacionados a la complejidad computacional y cómo convertir nuevos problemas a otros conocidos para ser resueltos de manera eficiente a través de algoritmos."
+  prerequisites:
+    - "ESTRUCTURAS DE DATOS - CCPG1034"
+  corequisites: []
+  course_type: "Obligatorio"
+course_goals:
+  instruction_outcomes:
+    - "Analizar el tiempo asintótico de ejecución de algoritmos a través del uso de notaciones formales o estudios empíricos que validen hipótesis sobre mediciones del tiempo de ejecución."
+    - "Generar soluciones algorítmicas a problemas reales a través del uso de estrategias de diseño adecuadas como alternativa a la aplicación de la estrategia de fuerza bruta."
+    - "Identificar algoritmos eficientes evaluando el nivel de complejidad de diversos problemas computacionales a través del conocimiento de su teoría y tipología de problemas."
+  student_outcomes:
+    - "1. Analizar un problema computacional complejo y aplicar principios de computación y otras disciplinas relevantes para identificar soluciones."
+    - "5. Funcionar efectivamente como miembro o líder de un equipo involucrado en actividades apropiadas para la disciplina del programa."
+topics:
+  - "Actividades de evaluación"
+  - "El rol de los algoritmos en la computación"
+  - "Análisis de algoritmos y notaciones"
+  - "Técnicas de análisis de algoritmos"
+  - "Algoritmos con estructuras de datos"
+  - "Diseño de algoritmos"
+  - "Complejidad computacional"

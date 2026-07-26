@@ -1,0 +1,37 @@
+schema_version: 1
+language: "es"
+source:
+  file: "SPA-Syllabus-TLMG1025.pdf"
+  pages: 2
+course:
+  code: "TLMG1025"
+  name: "CALIDAD DE SERVICIO Y REDES MULTIMEDIA"
+  document_title: "CALIDAD DE SERVICIO Y REDES MULTIMEDIA"
+  program: "Telemática"
+  credits: 2
+  contact_hours: 3
+  credits_and_contact_hours_text: "2 créditos y 3 horas de docencia"
+bibliography:
+  textbooks:
+    - "Barreiros M.; Lundqvist P.. QoSEnabled Networks (2)"
+  supplemental_materials: []
+course_information:
+  description: "En esta asignatura de formación profesional teórico-práctica de nivel avanzado se explica las arquitecturas de redes de datos y aplicaciones orientadas a la transmisión de contenidos multimedia usando parámetros de calidad de servicio (QoS) de red. También, se presenta los conceptos de rendimiento en una red multimedia y de ingeniería de tráfico para la optimización del tráfico en diferentes redes de datos. De igual manera, se expone los algoritmos de control de tráfico en una red de datos y los protocolos que intervienen en aplicaciones multimedia."
+  prerequisites:
+    - "INTERNETWORKING - TLMG1030"
+  corequisites: []
+  course_type: "Obligatorio"
+course_goals:
+  instruction_outcomes:
+    - "Analizar las diferentes métricas de desempeño que definen o afectan la calidad de servicio de una red y/o la calidad de experiencia que los usuarios perciben de los servicios que utilizan."
+    - "Analizar los diferentes modelos y arquitecturas de calidad de servicio existentes para la optimización del tráfico en redes de datos de mediana y gran escala."
+    - "Evaluar los diferentes algoritmos de compresión, planificación y encolamiento de tráfico, y los requerimientos de redes IP para el soporte de aplicaciones y servicios multimedia en Internet."
+  student_outcomes:
+    - "6. Habilidad para desarrollar y conducir experimentación apropiada, analizar e interpretar datos y usar criterio de ingeniería en telemática para establecer conclusiones."
+    - "8. Diseñar soluciones reales de ingeniería en telemática que proponen valor único como respuesta a necesidades específicas consideradas desde el punto de vista de los involucrados."
+topics:
+  - "Actividades de evaluación"
+  - "Introducción a redes multimedia"
+  - "Ingeniería de tráfico"
+  - "Compresión y algoritmos de control de tráfico"
+  - "Aplicaciones multimedia en internet"

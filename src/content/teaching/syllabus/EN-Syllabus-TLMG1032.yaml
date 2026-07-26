@@ -1,0 +1,43 @@
+schema_version: 1
+language: "en"
+source:
+  file: "EN-Syllabus-TLMG1032.pdf"
+  pages: 2
+course:
+  code: "TLMG1032"
+  name: "DATA NETWORKS"
+  document_title: "DATA NETWORKS"
+  program: "Telematics Engineering"
+  credits: 3
+  contact_hours: 4
+  credits_and_contact_hours_text: "3 credits and 4 contact hours"
+bibliography:
+  textbooks:
+    - "James F. Kurose, Keith W. Ross. Computer Networking: A Top-Down Approach (7ma)"
+  supplemental_materials:
+    - "Tanenbaum, A., Wetherall, D.. Computer Networks (5)"
+    - "Cisco Networking Academy. Switched Networks Companion Guide (Primera Edición)"
+    - "William Stallings. Data and Computer Communications (10th Edition) (10)"
+course_information:
+  description: "This initial level theoretical-practical professional training subject presents the fundamentals of data communication networks considering aspects such as the importance of current collaboration communications between people and companies, the requirements of convergent voice, data and video networks, communication protocols and architectures, as well as the advantages of reference models. Additionally, logical addressing based on IPv4 and IPv6, the importance and application of logical network segmentation, and route aggregation as an aspect of optimizing routing decisions are emphasized. Similarly, the concepts of switching and routing protocols, as well as reliable transmission, are analyzed. Finally, current trends in communication networks are presented."
+  prerequisites: []
+  corequisites: []
+  course_type: "Required"
+course_goals:
+  instruction_outcomes:
+    - "Identify the intermediate and final communication devices for the design of a data network topology."
+    - "Define planning, design, installation and operation tasks for the deployment of a data network."
+    - "Analyze a data network to identify problems that affect its operation."
+  student_outcomes:
+    - "To lead the development and deployment of projects related to Telematics Engineering that allow the generation of either employment or the innovation to satisfy necessities of the respective market, and contribute with responsibility to the productive sector of the society."
+    - "To obtain knowledges both technical and scientific through the professional practice or in graduate studies, that allow to improve their abilities in contemporary topics related to Telematics Engineering."
+    - "Systems and signal processing"
+    - "To have effective comunication abilities, that allow to be assertive in task groups, both interdisciplinary and multicultural."
+topics:
+  - "Evaluation activities"
+  - "Data networking fundamentals"
+  - "Data transmission on shared media"
+  - "Internet layer, addressing and routing"
+  - "Logical network segmentation and route aggregation"
+  - "Reliable data transmission"
+  - "Network applications and services"

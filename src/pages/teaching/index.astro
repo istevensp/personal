@@ -2,15 +2,24 @@
 import BaseLayout from '../../components/Layout/BaseLayout.astro';
 import CourseCard from '../../components/Cards/CourseCard.astro';
 import TimelineToggle from '../../components/Publications/PublicationsTimelineToggle.astro';
-import { getEntry } from 'astro:content';
+import { getEntry, getCollection } from 'astro:content';
 
 export const prerender = true;
 
 const coursesEntry = await getEntry('courses', 'data');
 const evaluacionesEntry = await getEntry('evaluaciones', 'data');
+const syllabusEntries = await getCollection('teachingSyllabus');
 
 const courses = coursesEntry.data.courses;
 const evaluations = evaluacionesEntry.data.evaluations;
+
+// Course codes with at least one syllabus file — used to show a "View
+// course details" link on the matching card(s). Drop new files into
+// src/content/teaching/syllabus/ and they show up here automatically.
+const codesWithSyllabus = new Set(syllabusEntries.map((s) => s.data.course.code));
+function syllabusHrefFor(code: string): string | undefined {
+  return codesWithSyllabus.has(code) ? `/teaching/${code.toLowerCase()}` : undefined;
+}
 
 // The SAAC export's `courseName` is ALL CAPS; the confirmed name mappings
 // below are written in normal case. Compare/lookup using a normalized
@@ -46,6 +55,44 @@ for (const course of courses) {
   for (const historicalName of course.historicalNames) {
     historicalNameToCourse.set(normalizeCourseName(historicalName), course);
   }
+}
+
+// A current course's own `code` field is often still `[PROPORCIONAR]`, but
+// if it's confirmed the same course as a historical one (via
+// `historicalNames`), it has a real SAAC course code too — resolve it so
+// the "View course details" link works from the Current Courses card as
+// well, not just the historical one.
+const courseIdToRealCode = new Map<string, string>();
+for (const evaluation of evaluations) {
+  const matched = historicalNameToCourse.get(normalizeCourseName(evaluation.courseName));
+  if (matched) courseIdToRealCode.set(matched.courseId, evaluation.courseCode);
+}
+
+function realCodeForCourse(course: (typeof courses)[number]): string | undefined {
+  return course.code && course.code !== '[PROPORCIONAR]' ? course.code : courseIdToRealCode.get(course.courseId);
+}
+
+function syllabusHrefForCourse(course: (typeof courses)[number]): string | undefined {
+  const code = realCodeForCourse(course);
+  return code ? syllabusHrefFor(code) : undefined;
+}
+
+// Historical semesters for a current course, so its Current Courses card
+// shows the full "years taught" range (e.g. 2024–2026), not just the 2026
+// semester(s) in `courses.yaml` — matching what its merged Historical
+// Teaching Record card already shows. `historicalByCode` is populated
+// further down the file, but since this function isn't called until the
+// Current Courses grid renders (after that point), it's already filled in.
+function historicalSemestersForCourse(course: (typeof courses)[number]) {
+  const code = realCodeForCourse(course);
+  const group = code ? historicalByCode.get(code) : undefined;
+  if (!group) return [];
+  return group.records.map((r) => ({
+    semester: `${r.year}-${r.academicPeriod}`,
+    parallel: r.parallel,
+    evaluationUrl: r.evaluationUrl,
+    status: 'completed' as const,
+  }));
 }
 
 function displayCourseName(rawName: string): string {
@@ -117,11 +164,28 @@ function areaFor(code: string) {
 const historicalCourses = Array.from(historicalByCode.values())
   .map((group) => {
     const records = group.records.sort((a, b) => b.year - a.year || b.term - a.term);
-    const distinctSemesters = new Set(records.map((r) => `${r.year}-${r.academicPeriod}`)).size;
-    const years = Array.from(new Set(records.map((r) => r.year))).sort((a, b) => b - a);
-    return { ...group, area: areaFor(group.courseCode), records, distinctSemesters, years };
+
+    // If this historical course is confirmed the same as a current one (via
+    // `historicalNames`), it's genuinely the same course — the "N parallels
+    // across M semesters" description, the "years" badge, and the
+    // evaluations accordion should all count the semester(s) it's being
+    // taught *right now* too, not just the ones with a completed SAAC
+    // evaluation on file. Otherwise the totals shown would undercount a
+    // course that's still being actively taught.
+    const matchedCourse = historicalNameToCourse.get(normalizeCourseName(group.courseName));
+    const currentSemesters = matchedCourse ? matchedCourse.semesters.filter((s) => s.status !== 'upcoming') : [];
+    const currentYears = currentSemesters.map((s) => parseInt(s.semester.split('-')[0], 10));
+
+    const totalParallelCount = records.length + currentSemesters.length;
+    const distinctSemesters = new Set([
+      ...records.map((r) => `${r.year}-${r.academicPeriod}`),
+      ...currentSemesters.map((s) => s.semester),
+    ]).size;
+    const years = Array.from(new Set([...records.map((r) => r.year), ...currentYears])).sort((a, b) => b - a);
+
+    return { ...group, area: areaFor(group.courseCode), records, totalParallelCount, distinctSemesters, years, currentSemesters };
   })
-  .sort((a, b) => b.records[0].year - a.records[0].year);
+  .sort((a, b) => b.years[0] - a.years[0]);
 
 const areas = ['All', ...Array.from(new Set(historicalCourses.map((g) => g.area))).sort()];
 const years = ['All', ...Array.from(new Set(historicalCourses.flatMap((g) => g.years))).sort((a, b) => b - a)];
@@ -233,8 +297,8 @@ const distinctCourseCount = distinctCourseNames.length;
 const timelineSummaryEn = `${distinctCourseCount} distinct course${distinctCourseCount === 1 ? '' : 's'} taught over ${teachingTimeline.length} semester${teachingTimeline.length === 1 ? '' : 's'} (${totalParallels} parallel${totalParallels === 1 ? '' : 's'} total)${timelineFirstYear ? ` since ${timelineFirstYear}` : ''}.`;
 const timelineSummaryEs = `${distinctCourseCount} materia${distinctCourseCount === 1 ? '' : 's'} distinta${distinctCourseCount === 1 ? '' : 's'} dictada${distinctCourseCount === 1 ? '' : 's'} en ${teachingTimeline.length} semestre${teachingTimeline.length === 1 ? '' : 's'} (${totalParallels} paralelo${totalParallels === 1 ? '' : 's'} en total)${timelineFirstYear ? ` desde ${timelineFirstYear}` : ''}.`;
 
-const historicalSummaryEn = `Derived from ${evaluations.length} SAAC evaluation reports (individual parallels/sections taught) across ${historicalCourses.length} course codes (2021–2025), sorted by most recent year.`;
-const historicalSummaryEs = `Basado en ${evaluations.length} reportes de evaluación del SAAC (paralelos/secciones individuales dictados) en ${historicalCourses.length} códigos de curso (2021–2025), ordenados por año más reciente.`;
+const historicalSummaryEn = `A quick look back at every course I've taught since 2021 — ${historicalCourses.length} courses, based on ${evaluations.length} official SAAC evaluations, newest first.`;
+const historicalSummaryEs = `Un vistazo a todas las materias que he dictado desde 2021 — ${historicalCourses.length} cursos, según ${evaluations.length} evaluaciones oficiales del SAAC, empezando por las más recientes.`;
 ---
 
 <BaseLayout title="Teaching" description="Courses taught and historical student evaluation records at ESPOL.">
@@ -305,12 +369,13 @@ const historicalSummaryEs = `Basado en ${evaluations.length} reportes de evaluac
               id={`course-${course.courseId}`}
               name={course.name}
               nameEs={courseNameToSpanish.get(course.name)}
-              code={course.code}
+              code={realCodeForCourse(course) ?? course.code}
               level={course.level}
               description={course.description}
               topics={course.topics}
               repositoryUrl={course.repositoryUrl}
-              semesters={course.semesters}
+              semesters={[...historicalSemestersForCourse(course), ...course.semesters]}
+              syllabusHref={syllabusHrefForCourse(course)}
             />
           ))}
         </div>
@@ -377,15 +442,19 @@ const historicalSummaryEs = `Basado en ${evaluations.length} reportes de evaluac
                 nameEs={courseNameToSpanish.get(group.displayName)}
                 code={group.courseCode}
                 level=""
-                description={`${group.records.length} parallel${group.records.length === 1 ? '' : 's'} taught across ${group.distinctSemesters} semester${group.distinctSemesters === 1 ? '' : 's'}.`}
-                descriptionEs={`${group.records.length} paralelo${group.records.length === 1 ? '' : 's'} dictado${group.records.length === 1 ? '' : 's'} en ${group.distinctSemesters} semestre${group.distinctSemesters === 1 ? '' : 's'}.`}
+                description={`${group.totalParallelCount} parallel${group.totalParallelCount === 1 ? '' : 's'} taught across ${group.distinctSemesters} semester${group.distinctSemesters === 1 ? '' : 's'}.`}
+                descriptionEs={`${group.totalParallelCount} paralelo${group.totalParallelCount === 1 ? '' : 's'} dictado${group.totalParallelCount === 1 ? '' : 's'} en ${group.distinctSemesters} semestre${group.distinctSemesters === 1 ? '' : 's'}.`}
                 topics={[]}
                 repositoryUrl=""
-                semesters={group.records.map((r) => ({
-                  semester: `${r.year}-${r.academicPeriod}`,
-                  parallel: r.parallel,
-                  evaluationUrl: r.evaluationUrl,
-                }))}
+                semesters={[
+                  ...group.records.map((r) => ({
+                    semester: `${r.year}-${r.academicPeriod}`,
+                    parallel: r.parallel,
+                    evaluationUrl: r.evaluationUrl,
+                  })),
+                  ...group.currentSemesters,
+                ]}
+                syllabusHref={syllabusHrefFor(group.courseCode)}
               />
             </div>
           ))}

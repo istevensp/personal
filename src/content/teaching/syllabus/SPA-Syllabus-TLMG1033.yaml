@@ -1,0 +1,40 @@
+schema_version: 1
+language: "es"
+source:
+  file: "SPA-Syllabus-TLMG1033.pdf"
+  pages: 2
+course:
+  code: "TLMG1033"
+  name: "REDES INALÁMBRICAS Y DE SENSORES"
+  document_title: "REDES INALÁMBRICAS Y DE SENSORES"
+  program: "Telemática"
+  credits: 2
+  contact_hours: 4
+  credits_and_contact_hours_text: "2 créditos y 4 horas de docencia"
+bibliography:
+  textbooks:
+    - "Gordon Colbach. Wireless Networking: Introduction to Bluetooth and WiFi (2017)"
+  supplemental_materials:
+    - "Perahia. E, Stacey R.. Next Generation Wireless LANs (2)"
+    - "Vijay K. Garg. Wireless Communications and Networking (1)"
+    - "Habib M. Ammari. The Art of Wireless Sensor Networks (1)"
+course_information:
+  description: "Esta asignatura de formación profesional teórico-práctica de nivel intermedio presenta fundamentos de comunicaciones inalámbricas, mediante la revisión de las características, funcionamiento y aplicación de las principales redes inalámbricas de la industria tales como WiFi. Bluetooth y Zigbee. Adicionalmente, se presenta los fundamentos de Internet móvil como un medio para facilitar la integración de diferentes tecnologías inalámbricas. Finalmente, se cubre los conocimientos de diseño, administración, gestión y aplicación de redes de sensores inalámbricos (WSN)."
+  prerequisites:
+    - "REDES DE DATOS - TLMG1032"
+  corequisites: []
+  course_type: "Obligatorio"
+course_goals:
+  instruction_outcomes:
+    - "Identificar conceptos básicos relacionados a redes inalámbricas y de sensores para el diseño e implementación de infraestructura de redes usadas en sistemas de monitoreo."
+    - "Analizar el comportamiento de diferentes algoritmos de enrutamiento ad hoc para su implementación en una red inalámbrica multisaltos y una red de sensores."
+    - "Analizar redes de sensores inalámbricas mediante el uso de diferentes herramientas de simulación."
+  student_outcomes:
+    - "1. Habilidad para identificar, formular y resolver problemas complejos de ingeniería en telemática mediante la aplicación de principios de ingeniería, ciencia y matemática."
+    - "6. Habilidad para desarrollar y conducir experimentación apropiada, analizar e interpretar datos y usar criterio de ingeniería en telemática para establecer conclusiones."
+topics:
+  - "Actividades de evaluación"
+  - "Fundamentos de comunicaciones inalámbricas"
+  - "Red inalámbrica de área personal (WPAN)"
+  - "Red inalámbrica de área local (WLAN)"
+  - "Redes de sensores inalámbricos (WSN)"

@@ -209,6 +209,47 @@ const courses = defineCollection({
   }),
 });
 
+// Full syllabus data extracted from official course PDFs, one file per
+// course per language (e.g. `EN-Syllabus-CCPG1034.yaml` /
+// `SPA-Syllabus-CCPG1034.yaml`). Drop new files straight into this folder —
+// no code changes needed, `src/pages/teaching/[code].astro` picks up any
+// course code with at least one matching file automatically.
+const teachingSyllabus = defineCollection({
+  loader: glob({ pattern: '*.yaml', base: 'src/content/teaching/syllabus' }),
+  schema: z.object({
+    schema_version: z.number(),
+    language: z.enum(['en', 'es']),
+    source: z.object({
+      file: z.string(),
+      pages: z.number(),
+    }),
+    course: z.object({
+      code: z.string(),
+      name: z.string(),
+      document_title: z.string(),
+      program: z.string(),
+      credits: z.number(),
+      contact_hours: z.number(),
+      credits_and_contact_hours_text: z.string(),
+    }),
+    bibliography: z.object({
+      textbooks: z.array(z.string()),
+      supplemental_materials: z.array(z.string()),
+    }),
+    course_information: z.object({
+      description: z.string(),
+      prerequisites: z.array(z.string()),
+      corequisites: z.array(z.string()),
+      course_type: z.string(),
+    }),
+    course_goals: z.object({
+      instruction_outcomes: z.array(z.string()),
+      student_outcomes: z.array(z.string()),
+    }),
+    topics: z.array(z.string()),
+  }),
+});
+
 const evaluaciones = defineCollection({
   loader: singleFile('src/content/maps/evaluaciones.yaml'),
   schema: z.object({
@@ -389,6 +430,7 @@ export const collections = {
   professionalExperience,
   thesisAdvisory,
   courses,
+  teachingSyllabus,
   evaluaciones,
   publicationsPublished,
   publicationsAccepted,

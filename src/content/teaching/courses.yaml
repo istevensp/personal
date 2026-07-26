@@ -17,7 +17,7 @@ courses:
     status: in-progress
 - courseId: algorithms
   name: Algorithm Analysis
-  code: '[PROPORCIONAR]'
+  code: CCPG1036
   nameEs: Análisis de Algoritmos
   institution: ESPOL
   level: '[PROPORCIONAR]'
@@ -27,7 +27,7 @@ courses:
   materialsLink: '[PROPORCIONAR]'
   semesters:
   - semester: 2026-2S
-    parallel: '[PROPORCIONAR]'
+    parallel: '1'
     evaluationUrl: null
     status: upcoming
 - courseId: data-structures

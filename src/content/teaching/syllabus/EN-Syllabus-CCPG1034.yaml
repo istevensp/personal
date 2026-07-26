@@ -1,0 +1,43 @@
+schema_version: 1
+language: "en"
+source:
+  file: "EN-Syllabus-CCPG1034.pdf"
+  pages: 2
+course:
+  code: "CCPG1034"
+  name: "DATA STRUCTURES"
+  document_title: "DATA STRUCTURES"
+  program: "Computer Science"
+  credits: 3
+  contact_hours: 4
+  credits_and_contact_hours_text: "3 credits and 4 contact hours"
+bibliography:
+  textbooks:
+    - "Weiss, Mark A.. Data Structures and Algorithm Analysis in Java (3)"
+  supplemental_materials:
+    - "Goodrich, M.T., Tamassia, R., Goldwasser, M.H.. Data Structures and Algorithms in Java (6th Edition)"
+    - "Aguilar, L.J., Martínez, I.Z., Zahonero, I.. ESTRUCTURA DE DATOS EN JAVA (Primera Edición)"
+course_information:
+  description: "This professional training course introduces the fundamentals of analysis, design, and implementation of elementary data structures used in computer science. The course studies algorithms for manipulating and organizing data into structures, with particular emphasis on computational efficiency and appropriate coding styles. Likewise, it poses real problems of medium complexity so that students design and implement solutions using appropriate data structures."
+  prerequisites:
+    - "OBJECT ORIENTED PROGRAMMING - CCPG1052"
+  corequisites:
+    - "DISCRETE MATHEMATICS - MATG1051"
+  course_type: "Required"
+course_goals:
+  instruction_outcomes:
+    - "Implement the states and behaviors of abstract data types by using a programming language."
+    - "Analyze the performance of algorithms that use abstract data types by using asymptotic notation."
+    - "Implement algorithms that use abstract data types to solve problems with specific needs by using a programming language."
+  student_outcomes:
+    - "1. Analyze a complex computing problem and apply principles of computing and other relevant disciplines to identify solutions."
+    - "6. Apply computer science theory and software development fundamentals to produce computing-based solutions."
+topics:
+  - "Evaluation activities"
+  - "Data types"
+  - "Lists"
+  - "Stacks"
+  - "Queues"
+  - "Sets and Maps"
+  - "Trees"
+  - "Graphs"

@@ -1,0 +1,42 @@
+schema_version: 1
+language: "en"
+source:
+  file: "EN-Syllabus-CCPG1043.pdf"
+  pages: 2
+course:
+  code: "CCPG1043"
+  name: "PROGRAMMING FUNDAMENTALS"
+  document_title: "PROGRAMMING FUNDAMENTALS"
+  program: "Computer Science"
+  credits: 3
+  contact_hours: 4
+  credits_and_contact_hours_text: "3 credits and 4 contact hours"
+bibliography:
+  textbooks:
+    - "van Rossum, Guido. El Tutorial de Python (3.6.4)"
+  supplemental_materials: []
+course_information:
+  description: "The course presents students with strategies to solve common problems in various professional fields through the design and implementation of solutions based on the use of a programming language. It covers the basic principles so that the student can read and write programs; emphasizing the design and analysis of algorithms. In addition, it introduces students to the use of development and debugging tools."
+  prerequisites: []
+  corequisites: []
+  course_type: "Required"
+course_goals:
+  instruction_outcomes:
+    - "Apply computational methods to solve problems in their field of study using a programming language"
+    - "Use computational tools to model and understand data"
+    - "Apply recipe algorithms in problem solving"
+    - "Use a development environment to write and debug programs"
+    - "Use modularization to simplify the structure of a program"
+  student_outcomes:
+    - "5. Function effectively as a member or leader of a team engaged in activities appropriate to the program’s discipline."
+    - "2. Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program’s discipline."
+topics:
+  - "Evaluation activities"
+  - "Introduction to programming"
+  - "Variables and data types (strings and lists)"
+  - "Functions"
+  - "Control structures"
+  - "Data collections"
+  - "N-dimensional arrays"
+  - "Files: Input/Output"
+  - "Data processing"

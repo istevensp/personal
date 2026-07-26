@@ -1,0 +1,38 @@
+schema_version: 1
+language: "es"
+source:
+  file: "SPA-Syllabus-TLMG1030.pdf"
+  pages: 2
+course:
+  code: "TLMG1030"
+  name: "INTERNETWORKING"
+  document_title: "INTERNETWORKING"
+  program: "Telemática"
+  credits: 2
+  contact_hours: 4
+  credits_and_contact_hours_text: "2 créditos y 4 horas de docencia"
+bibliography:
+  textbooks:
+    - "Medhi D., Ramasamy K.. Network Routing : Algorithms, Protocols, and Architectures (Segunda)"
+  supplemental_materials:
+    - "Szarkowicz K., Monge A.. MPLS in the SDN Era: Interoperable Scenarios to Make Networks Scale to New Services (Primera edición)"
+course_information:
+  description: "This is an initial level course about local area networks (LAN) switching, advanced routing and wide are networks (WAN) technologies. There are also studied the concepts of virtual local area network (LAN), trunk links, inter VLAN routing and spanning tree protocol (STP). In the network layer, both the distance-vector and link-state routing protocols are analyzed. Furthermore, the most up-to-date protocolos used in WAN are also presented. Finally, there is a review about the implementation of protocols in intermediate devices for service providers interconnections using the Border Gateway Protocol (BGP)."
+  prerequisites:
+    - "REDES DE DATOS - TLMG1032"
+  corequisites: []
+  course_type: "Obligatorio"
+course_goals:
+  instruction_outcomes:
+    - "Diseñar redes de transmisión de datos usando simuladores para el cumplimiento de especificaciones técnicas y comerciales."
+    - "Utilizar los protocolos de conmutación y enrutamiento para la interconexión de sitios remotos sobre Internet."
+    - "Identificar los elementos principales de una red de área amplia para la gestión y operación de los servicios de transporte de datos."
+  student_outcomes:
+    - "1. Habilidad para identificar, formular y resolver problemas complejos de ingeniería en telemática mediante la aplicación de principios de ingeniería, ciencia y matemática."
+    - "6. Habilidad para desarrollar y conducir experimentación apropiada, analizar e interpretar datos y usar criterio de ingeniería en telemática para establecer conclusiones."
+topics:
+  - "Actividades de evaluación"
+  - "Conmutación en redes de área local"
+  - "Enrutamiento dentro de un SA y en Internet"
+  - "Tecnologías de red WAN"
+  - "Redes con recursos limitados"
