@@ -58,7 +58,9 @@ personal/
 │   ├── icon.png                   # 1826x1826 master icon — used as default OG/social image and largest manifest icon
 │   ├── site.webmanifest
 │   ├── robots.txt
-│   └── images/                    # Put profile.jpg here (see §9)
+│   └── images/
+│       ├── ORCID_iD.svg           # Official ORCID brand mark (256x256), used in Header/Footer/Hero
+│       └── profile.jpg            # (see §9)
 ├── src/
 │   ├── content/
 │   │   ├── config.ts              # Content Collections schemas — see §3
@@ -73,6 +75,7 @@ personal/
 │   ├── components/
 │   │   ├── Layout/                # BaseLayout, Header, Navigation, Footer
 │   │   ├── Home/                  # Hero + featured-content sections for index.astro, incl. PublicationsTimeline
+│   │   ├── Publications/          # PublicationsTimelineRow/Toggle — shared by Home and /publications
 │   │   ├── Cards/                 # Reusable card presentational components
 │   │   └── Common/                # React islands: ThemeToggle, LanguageSwitcher, SearchBar, NewsFilter
 │   ├── lib/publications.ts        # Shared helpers: formatMonthYear(), primaryExternalLink()
@@ -182,27 +185,78 @@ All of these are pure data edits — no component code changes required.
 
 ### 4.1 Why "Current Courses" and "Historical Teaching Record" are two separate sections
 
-`src/pages/teaching/index.astro` intentionally does **not** try to merge
-`courses.yaml`'s 3 curated courses with the 55 records in
-`evaluaciones.yaml`. Their `courseId`/`code` fields don't reliably match
-(e.g. "Algorithms" in `courses.yaml` has no corresponding SAAC course code in
-the evaluations export — it may map to "Fundamentos de Programación"
-(CCPG1043) or may not be in the export at all; this was never confirmed).
-Rather than guess, the page shows:
+`src/pages/teaching/index.astro` shows two grids rather than one merged list,
+because `courses.yaml`'s curated entries and the 55 raw records in
+`evaluaciones.yaml` are two different data shapes with no reliable automatic
+match (SAAC course codes vs. a hand-curated course list):
 
 1. **Current Courses** — cards driven by `courses.yaml`, showing whatever
-   `semesters` you've filled in there (empty by default).
+   `semesters` you've filled in there.
 2. **Historical Teaching Record** — cards derived directly from
    `evaluaciones.yaml`, grouped by `courseCode`, sorted by most recent year,
    filterable by area (`CCPG*` → "Computer Science", `TLMG*` → "Telematics &
-   Networks" — see the `areaLabels` map at the top of the page file). This
-   surfaces all 55 real evaluation links without fabricating a mapping.
+   Networks" — see the `areaLabels` map at the top of the page file).
 
-If you later confirm the real `courseId ↔ courseCode` mapping, you can
-populate `courses.yaml`'s `semesters` arrays directly and the "Current
-Courses" cards will pick it up automatically (`CourseCard.astro` already
-renders an accordion of semesters with evaluation links whenever the array is
-non-empty).
+Two of the three current courses **are** confirmed to be the same course as
+one of the historical SAAC records — "Data Structures" = "Estructuras de
+Datos" (CCPG1034) and "Distributed Systems and Cloud Computing" = "Sistemas
+Distribuidos y Computación en la Nube" (CCPG1055) — recorded via each
+course's `historicalNames: string[]` field in `courses.yaml`. This mapping is
+used by the **Teaching Timeline** (§4.2) to merge the two into a single
+entry (same color, same "jump to card" anchor), but it does **not** merge
+the two grids themselves — they stay visually separate, each still showing
+its own card for the same real-world course. "Algorithms" has no
+`historicalNames` (it's a genuinely new course, never taught before), so it
+only ever appears in Current Courses.
+
+If you confirm a mapping for another course later, add its Spanish name(s)
+to that course's `historicalNames` array in `courses.yaml` — everything that
+reads it (Teaching Timeline merge/anchor logic, the `courseNameToSpanish`
+EN/ES map) picks it up automatically, no other code changes needed.
+
+### 4.2 Teaching Timeline
+
+Below the page intro and above "Current Courses", a collapsed-by-default
+block (`src/pages/teaching/index.astro`) shows:
+
+- A one-line summary: distinct courses, semesters, total parallels, and
+  starting year (e.g. "9 distinct courses taught over 9 semesters (58
+  parallels total) since 2021") — reuses `TimelineToggle` from
+  `src/components/Publications/PublicationsTimelineToggle.astro` (a
+  publications-named but fully generic show/hide component; see §5).
+- A **legend** (grid of colored dots + course name + total parallel count)
+  — one consistent color per distinct course, assigned alphabetically from a
+  12-color palette (`COURSE_COLORS`/`COURSE_DOT_COLORS` in the page file) so
+  colors don't reshuffle when new semesters are added.
+- A **vertical timeline** (newest semester first, stops at the current
+  semester — any `courses.yaml` semester with `status: 'upcoming'` is
+  excluded) with a line + dot per semester and that semester's courses as
+  colored chips, each showing `×N` when more than one parallel of that
+  course ran that semester.
+
+Every course name (legend entries and timeline chips) is a link to that
+course's card — `#course-{courseId}` for current courses, `#course-{code}`
+for historical-only ones — via `courseAnchorMap`, built alongside the
+timeline data. `CourseCard.astro` accepts an `id` prop for this (see §5).
+
+**Parallel vs. semester counts — a real bug that got fixed once already:**
+the legend's `×N` must be a count of individual parallels/sections
+(`courseParallelTotals`, built from a `Map<courseName, count>` per semester,
+not a plain array), not a count of distinct semesters. The two numbers
+easily look similar during a quick read but diverge fast for
+multi-parallel courses (e.g. "Data Networks" was taught in 5 different
+semesters, but 20 total parallels across them) — if a future edit
+accidentally goes back to counting semesters, the legend's numbers will stop
+summing to the top-line "N parallels total", which is the tell.
+
+**English/Spanish course names**: unlike the rest of the site (§7), course
+names on this page respond to the EN/ES toggle. This uses a page-local
+`SPANISH_NAMES: Record<string, string>` dictionary (confirmed by the site
+owner, not derived automatically — a course's SAAC record can already be in
+English while its real Spanish name differs, e.g. "Internetworking" is
+really "Conmutación y Enrutamiento") applied via a new, generic
+`data-lang-en`/`data-lang-es` attribute pair (see §7) rather than the global
+chrome-only i18n dictionary.
 
 ---
 
@@ -247,11 +301,36 @@ status-colored dot, date + status label, `line-clamp-2` title, and
 an `overflow-x-auto` container for mobile. Status-dot colors: `Published` →
 `bg-success`, `Accepted` → `bg-warning`, `Under Review` → `bg-gray-400`. Uses
 the shared `formatMonthYear()`/sorting helpers pattern also used by
-`src/lib/publications.ts`.
+`src/lib/publications.ts`. The "Publications Timeline" heading is itself a
+link to `/publications`, in addition to the separate "View all publications"
+link next to it. A `PublicationsTimelineToggle` (see below) lets the visitor
+collapse/expand the row; on Home it's expanded by default.
 
 `HeroSection.astro` also renders the profile photo box (see §9) and the
 social-links row (email, GitHub, Google Scholar, LinkedIn, ResearchGate,
-ORCID) directly under the bio.
+ORCID) directly under the bio. The ORCID link uses the real brand icon
+(`public/images/ORCID_iD.svg`), like the Footer.
+
+### Publications (`src/components/Publications/`)
+Shared between Home's `PublicationsTimeline` and the collapsible timeline
+block on `/publications` (`src/pages/publications/index.astro`):
+- **PublicationsTimelineRow.astro** — pure rendering of the dot+line
+  timeline row, given a `timeline` array of `{href, title, venue, dateLabel,
+  status}` and an optional `id`/`hidden`. No data fetching of its own.
+- **PublicationsTimelineToggle.astro** — a show/hide `<button>` with an
+  animated chevron icon, `aria-expanded`, and its own small inline `<script>`
+  (delegated via `[data-timeline-toggle]`, so multiple instances on one page
+  work correctly). Despite living in `Publications/` and being named for
+  that use case, it's fully generic (`targetId`/`defaultExpanded` props,
+  toggles `.hidden` + swaps a `common.showTimeline`/`common.hideTimeline`
+  `data-i18n` label) — it's also reused, as-is, by the Teaching Timeline
+  (§4.2), imported directly from this folder.
+
+On `/publications`, the timeline block sits above the status filter buttons,
+inside a `bg-primary/5 border-primary/20` card with a bouncing 📊 emoji and
+the prompt "Prefer a quick timeline view?" — **collapsed** by default (unlike
+Home's, which defaults to expanded) and shows **all** publications, not just
+the 6 most recent.
 
 ### Cards (`src/components/Cards/`)
 Pure presentational `.astro` components, each taking plain props (no direct
@@ -259,6 +338,11 @@ content-collection access) so they can be reused across Home, index pages, and
 detail pages: `ProjectCard`, `PublicationCard`, `NewsCard`, `ExperienceCard`,
 `CourseCard` (the only one with built-in interactivity — a native
 `<details>/<summary>` accordion for semester evaluation links, no JS needed).
+`CourseCard` also accepts an optional `id` (anchor target, used by the
+Teaching Timeline's "jump to card" links — the card root gets `scroll-mt-24`
+so it doesn't land under the sticky header) and `nameEs` (renders the title
+as `data-lang-en`/`data-lang-es`, see §7, instead of a plain string, when
+provided).
 
 ### Common (`src/components/Common/`) — React islands
 - **ThemeToggle.jsx** — reads/writes `localStorage.theme`, toggles the
@@ -295,7 +379,7 @@ toggling CSS classes.
 | `/projects` | `src/pages/projects/index.astro` | Research + Community grids |
 | `/projects/research/[slug]` | `.../research/[slug].astro` | `slug` = MDX frontmatter `projectId` |
 | `/projects/community/[slug]` | `.../community/[slug].astro` | same |
-| `/publications` | `src/pages/publications/index.astro` | Client-side status filter |
+| `/publications` | `src/pages/publications/index.astro` | Client-side status filter; collapsible full timeline (§5) |
 | `/publications/[slug]` | `.../publications/[slug].astro` | `slug` = YAML `id`; ScholarlyArticle JSON-LD |
 | `/experience` | `src/pages/experience/index.astro` | Academic/Professional tabs |
 | `/experience/academic` | `.../academic.astro` | + Thesis Advisory |
@@ -332,6 +416,18 @@ that exists only in English in the source YAML/MDX. If full content
 translation is ever wanted, it needs either per-language content files or a
 translation field per entry plus schema changes in `config.ts` — that is a
 content/schema project, not a quick code change.
+
+**One confirmed exception: course names on `/teaching`.** The same
+`applyTranslations()` function in `BaseLayout.astro` also handles a second,
+more generic attribute pair: any element with `data-lang-en="…"
+data-lang-es="…"` gets its `textContent` swapped to whichever matches the
+active language, independent of the global `strings.ts` dictionary. This
+exists specifically so course names (Teaching Timeline chips/legend,
+`CourseCard`'s `nameEs` prop) can be bilingual without cluttering the
+chrome-level dictionary with dozens of one-off content strings. Don't reuse
+`data-i18n` for this kind of thing — `data-i18n` always looks up a *key* in
+`strings.ts`; `data-lang-en`/`data-lang-es` carry the literal text for both
+languages directly on the element.
 
 ---
 
@@ -393,6 +489,12 @@ fabricated content:
   (`abstract`, `doi`, author lists, resource links). These render as literal
   `[PROPORCIONAR]` text on the live site until filled in — grep for it before
   going live: `grep -rn "PROPORCIONAR" src/content`.
+- **`under-review.yaml`'s `links.repository`** was intentionally removed
+  (not just left as a placeholder) for the paper "How are HPC, Edge and
+  Serverless Architectures built in the Cloud Continuum?..." — the site
+  owner asked for it to stay hidden until the paper is actually accepted,
+  as a precaution while it's still under review. Don't re-add a repository
+  link there without checking the paper's status first.
 - **`src/content/news/*.mdx`** — only two seed entries exist, both
   `draft: true`, built from facts already confirmed elsewhere in the content
   (a paper acceptance and a paper publication) purely to exercise the news
