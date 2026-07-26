@@ -55,7 +55,7 @@ personal/
 │   ├── .assetsignore              # Excludes _worker.js from being uploaded as a public asset — see §10
 │   ├── favicon-16x16.png, favicon-32x32.png, favicon-48x48.png, favicon-64x64.png, favicon-128x128.png
 │   ├── apple-touch-icon.png       # 180x180
-│   ├── icon.png                   # 1826x1826 master icon — used as default OG/social image and largest manifest icon
+│   ├── favicon-1826x1826.png      # master icon — used as default OG/social image and largest manifest icon
 │   ├── site.webmanifest
 │   ├── robots.txt
 │   └── images/
@@ -461,17 +461,23 @@ fabricated content:
 - **Favicon set**: `public/` now has a full PNG icon set —
   `favicon-16x16.png`, `favicon-32x32.png`, `favicon-48x48.png`,
   `favicon-64x64.png`, `favicon-128x128.png`, `apple-touch-icon.png`
-  (180×180), and `icon.png` (a 1826×1826 master image used as the default
+  (180×180), and `favicon-1826x1826.png` (a master image used as the default
   Open Graph/social-share image and as the largest `site.webmanifest` icon).
   `BaseLayout.astro`'s `<head>` block declares each PNG icon with an explicit
   `sizes` attribute (verified against each file's real PNG `IHDR` dimensions,
-  not just its filename). This set went through two prior states worth
-  knowing about if a future `git blame` looks confusing: it started as a
-  larger set (`favicon.svg`, `favicon-16x16.png`, `favicon-32x32.png`,
-  `apple-touch-icon.png`, `android-chrome-192x192.png`), was reduced to just
+  not just its filename — this matters: a prior update to this set silently
+  shrank `icon.png` from 1826×1826 down to 128×128 while `BaseLayout.astro`
+  and `site.webmanifest` still declared it as 1826×1826; the file was
+  renamed to `favicon-1826x1826.png` when re-added, and the old, now-wrong
+  `icon.png` was removed rather than left in as a trap for the next edit).
+  This set went through three prior states worth knowing about if a future
+  `git blame` looks confusing: it started as a larger set (`favicon.svg`,
+  `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png`,
+  `android-chrome-192x192.png`), was reduced to just
   `favicon.ico`/`favicon.png`/`android-chrome-512x512.png` (which briefly
-  broke the site because the code still referenced the old files), and was
-  then replaced with the current PNG-only set described above — there is no
+  broke the site because the code still referenced the old files), was
+  replaced with a PNG-only set using `icon.png` as the 1826×1826 master, and
+  was finally re-exported into the current file names above. There is no
   `favicon.ico` anymore, which is fine since every browser that matters
   supports PNG `<link rel="icon">` with explicit sizes.
 - **Profile photo**: drop a file at `public/images/profile.jpg`. The Hero
