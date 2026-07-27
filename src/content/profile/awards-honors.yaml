@@ -6,6 +6,7 @@ awards:
   type: Scholarship
   description: Scholarship awarded through the Organization of American States.
   amount: null
+  hidden: true
 - id: funiber-scholar
   name: FUNIBER Scholar
   issuer: Iberoamerican University Foundation (FUNIBER)
@@ -20,17 +21,29 @@ awards:
   type: Honor
   description: Top graduate of the 33rd Telematics Engineering cohort.
   amount: null
+  links:
+    badge: https://www.credly.com/badges/6a794dad-341f-431c-9fc6-1f2c24a48343/public_url
 - id: philanthropic-medal
-  name: Philanthropic Medal
-  issuer: '[PROPORCIONAR]'
-  year: null
+  name: Philanthropic Medal — Academic Excellence Award
+  nameEs: Medalla de la Filantrópica — Premio a la Excelencia Académica
+  issuer: Benemérita Sociedad Filantrópica del Guayas
+  year: 2021
   type: Award
-  description: Recognition for outstanding academic performance.
+  description: Academic distinction awarded by the Benemérita Sociedad Filantrópica del Guayas in recognition
+    of outstanding academic performance, dedication, and excellence throughout the recipient's university
+    studies.
+  descriptionEs: Distinción otorgada por la Benemérita Sociedad Filantrópica del Guayas en reconocimiento al
+    desempeño sobresaliente, la dedicación y la excelencia académica demostrada durante los estudios
+    universitarios.
   amount: null
+  links:
+    certificate: https://github.com/istevensp/personal/raw/main/docs/awards/philanthropic-medal-certificate.pdf
 - id: niot-espol-founder-secretary
-  name: Founder and Former Secretary of the NIoT-ESPOL Technology Club
+  name: Student Founder and Former Secretary of the NIoT-ESPOL Technology Club
   issuer: NIoT-ESPOL Technology Club
   year: null
   type: Recognition
   description: Founding and leadership contribution to the NIoT-ESPOL technology community.
   amount: null
+  links:
+    linkedin: https://www.linkedin.com/in/club-niot-595726208/

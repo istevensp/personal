@@ -1,45 +1,244 @@
 researchInterests:
-- Cloud Computing
-- Distributed Systems
-- Artificial Intelligence
-- Machine Learning
-- Internet of Things
-- Cloud Architecture Education
-- Infrastructure and Cybersecurity
-- High-Performance Computing (HPC)
-- Edge Computing
-- Serverless Architecture
-technicalSkills:
-  cloud:
-  - AWS
-  - Azure
-  - GCP
+- category: Cloud and Distributed Computing
+  categoryEs: Computación en la Nube y Sistemas Distribuidos
+  topics:
+  - Cloud Computing
+  - Distributed Systems
   - Serverless Computing
-  - AWS Lambda
+  - Cloud-Native Architectures
+  - Edge–Cloud Continuum
+  - High-Performance Computing
+  - Performance Optimization
+  topicsEs:
+  - Computación en la Nube
+  - Sistemas Distribuidos
+  - Computación Serverless
+  - Arquitecturas Cloud-Native
+  - Continuo Edge-Cloud
+  - Computación de Alto Rendimiento
+  - Optimización de Rendimiento
+- category: IoT and Cyber-Physical Systems
+  categoryEs: IoT y Sistemas Ciberfísicos
+  topics:
+  - Internet of Things
+  - Cyber-Physical Systems
+  - Edge Computing
+  - Sensor Networks
+  - Telemetry Systems
+  - Smart Buildings
+  - IoT Data Interoperability
+  topicsEs:
+  - Internet de las Cosas
+  - Sistemas Ciberfísicos
+  - Computación en el Borde
+  - Redes de Sensores
+  - Sistemas de Telemetría
+  - Edificios Inteligentes
+  - Interoperabilidad de Datos IoT
+- category: Cybersecurity and Resilient Infrastructure
+  categoryEs: Ciberseguridad e Infraestructura Resiliente
+  topics:
+  - Cloud Security
+  - Secure Cloud Architectures
+  - Identity and Access Management
+  - Infrastructure Security
+  - Security Assessment
+  - Cyber Resilience
+  - IoT Security
+  topicsEs:
+  - Seguridad en la Nube
+  - Arquitecturas Seguras en la Nube
+  - Gestión de Identidad y Acceso
+  - Seguridad de Infraestructura
+  - Evaluación de Seguridad
+  - Ciberresiliencia
+  - Seguridad IoT
+- category: AI and Data-Driven Systems
+  categoryEs: IA y Sistemas Basados en Datos
+  topics:
+  - Machine Learning for Systems
+  - Anomaly Detection
+  - Time-Series Analysis
+  - Predictive Analytics
+  - Energy Analytics
+  - Intelligent IoT Systems
+  - Applied Artificial Intelligence
+  topicsEs:
+  - Aprendizaje Automático para Sistemas
+  - Detección de Anomalías
+  - Análisis de Series Temporales
+  - Analítica Predictiva
+  - Analítica Energética
+  - Sistemas IoT Inteligentes
+  - Inteligencia Artificial Aplicada
+- category: Computing Education
+  categoryEs: Educación en Computación
+  topics:
+  - Cloud Computing Education
+  - Active Learning
+  - Unplugged Computing
+  - Experiential Learning
+  - Curriculum Development
+  - Technology-Enhanced Learning
+  topicsEs:
+  - Educación en Computación en la Nube
+  - Aprendizaje Activo
+  - Computación Desconectada
+  - Aprendizaje Experiencial
+  - Desarrollo Curricular
+  - Aprendizaje Potenciado por Tecnología
+technicalSkills:
+- category: Cloud Platforms and Architecture
+  categoryEs: Plataformas y Arquitectura en la Nube
+  items:
+  - AWS
+  - Microsoft Azure
+  - Google Cloud Platform
+  - Cloud Architecture
+  - Serverless Computing
+  - Cloud-Native Applications
   - IaaS
   - PaaS
   - SaaS
-  cloudSecurityAndGRC:
-  - Identity and Access Management (IAM)
+  - Edge Computing
+  itemsEs:
+  - AWS
+  - Microsoft Azure
+  - Google Cloud Platform
+  - Arquitectura en la Nube
+  - Computación Serverless
+  - Aplicaciones Cloud-Native
+  - IaaS
+  - PaaS
+  - SaaS
+  - Computación en el Borde
+- category: Cloud Security and GRC
+  categoryEs: Seguridad en la Nube y GRC
+  items:
+  - Cloud Security
+  - Identity and Access Management
+  - Cloud Security Posture Management
+  - Vulnerability Assessment
+  - AWS WAF
   - AWS CloudTrail
   - AWS Config
-  - AWS Shield
   - ISO 27001
   - ISO 20000
-  infrastructureAndNetworking:
+  - ScoutSuite
+  - CloudSploit
+  - Pacu
+  - Burp Suite
+  itemsEs:
+  - Seguridad en la Nube
+  - Gestión de Identidad y Acceso
+  - Gestión de la Postura de Seguridad en la Nube
+  - Evaluación de Vulnerabilidades
+  - AWS WAF
+  - AWS CloudTrail
+  - AWS Config
+  - ISO 27001
+  - ISO 20000
+  - ScoutSuite
+  - CloudSploit
+  - Pacu
+  - Burp Suite
+- category: Infrastructure, Networking and Systems
+  categoryEs: Infraestructura, Redes y Sistemas
+  items:
   - Linux
+  - Bash
   - Virtualization
   - Docker
+  - Kubernetes
+  - TCP/IP
   - Routing and Switching
-  - Software-Defined Networking (SDN)
+  - Software-Defined Networking
+  - Wireless Networks
+  - Sensor Networks
   - LPWAN
-  developmentDataAndIoT:
+  itemsEs:
+  - Linux
+  - Bash
+  - Virtualización
+  - Docker
+  - Kubernetes
+  - TCP/IP
+  - Enrutamiento y Conmutación
+  - Redes Definidas por Software
+  - Redes Inalámbricas
+  - Redes de Sensores
+  - LPWAN
+- category: Software Development
+  categoryEs: Desarrollo de Software
+  items:
   - Python
   - Java
   - C
   - C++
   - JavaScript
   - SQL
-  - Internet of Things
+  - REST APIs
+  - Flask
+  - Django
+  - Flutter
+  - Git
+  - GitHub
+  itemsEs:
+  - Python
+  - Java
+  - C
+  - C++
+  - JavaScript
+  - SQL
+  - APIs REST
+  - Flask
+  - Django
+  - Flutter
+  - Git
+  - GitHub
+- category: Data Science and Machine Learning
+  categoryEs: Ciencia de Datos y Aprendizaje Automático
+  items:
+  - Data Analysis
+  - Machine Learning
+  - Classification
+  - Anomaly Detection
+  - Time-Series Analysis
   - TensorFlow
   - PyTorch
+  - XGBoost
+  - LightGBM
+  itemsEs:
+  - Análisis de Datos
+  - Aprendizaje Automático
+  - Clasificación
+  - Detección de Anomalías
+  - Análisis de Series Temporales
+  - TensorFlow
+  - PyTorch
+  - XGBoost
+  - LightGBM
+- category: IoT and Distributed Systems
+  categoryEs: IoT y Sistemas Distribuidos
+  items:
+  - Internet of Things
+  - Distributed Systems
+  - Cyber-Physical Systems
+  - Telemetry
+  - ESP32
+  - Raspberry Pi
+  - MQTT
+  - Node-RED
+  - Real-Time Monitoring
+  - Edge Computing
+  itemsEs:
+  - Internet de las Cosas
+  - Sistemas Distribuidos
+  - Sistemas Ciberfísicos
+  - Telemetría
+  - ESP32
+  - Raspberry Pi
+  - MQTT
+  - Node-RED
+  - Monitoreo en Tiempo Real
+  - Computación en el Borde

@@ -6,7 +6,11 @@ const interestsEntry = await getEntry('interests', 'data');
 const academicEntry = await getEntry('academicExperience', 'data');
 
 const personal = personalEntry.data;
-const topInterests = interestsEntry.data.researchInterests.slice(0, 6);
+const featuredCategories = ['IoT and Cyber-Physical Systems', 'Cloud and Distributed Computing', 'AI and Data-Driven Systems'];
+const topInterests = featuredCategories
+  .map((name) => interestsEntry.data.researchInterests.find((group) => group.category === name))
+  .filter((group): group is NonNullable<typeof group> => Boolean(group))
+  .map((group) => ({ en: group.category, es: group.categoryEs }));
 const currentRole = academicEntry.data.academicExperience.find((exp) => exp.current);
 
 const [emailUser, emailDomain] = personal.email.institutional.split('@');
@@ -29,11 +33,19 @@ const heroName = `${personal.firstName} ${personal.lastName}`;
         )
       }
 
-      <p class="max-w-2xl text-[var(--text-secondary)]">{personal.summary}</p>
+      <p
+        class="max-w-2xl text-[var(--text-secondary)]"
+        data-lang-en={personal.summaryEs ? personal.summary : undefined}
+        data-lang-es={personal.summaryEs}
+      >
+        {personal.summary}
+      </p>
 
       <div class="flex flex-wrap gap-2">
-        {topInterests.map((interest: string) => (
-          <span class="badge">{interest}</span>
+        {topInterests.map((interest) => (
+          <span class="badge" data-lang-en={interest.es ? interest.en : undefined} data-lang-es={interest.es}>
+            {interest.en}
+          </span>
         ))}
       </div>
 

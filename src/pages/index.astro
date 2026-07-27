@@ -3,9 +3,7 @@ import BaseLayout from '../components/Layout/BaseLayout.astro';
 import HeroSection from '../components/Home/HeroSection.astro';
 import PublicationsTimeline from '../components/Home/PublicationsTimeline.astro';
 import FeaturedProjects from '../components/Home/FeaturedProjects.astro';
-import FeaturedAwards from '../components/Home/FeaturedAwards.astro';
 import RecentNews from '../components/Home/RecentNews.astro';
-import ContactCTA from '../components/Home/ContactCTA.astro';
 import { getEntry } from 'astro:content';
 
 export const prerender = true;
@@ -28,7 +26,5 @@ const jsonLd = {
   <HeroSection />
   <PublicationsTimeline />
   <FeaturedProjects />
-  <FeaturedAwards />
   <RecentNews />
-  <ContactCTA />
 </BaseLayout>

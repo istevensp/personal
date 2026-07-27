@@ -2,11 +2,10 @@
 import { getCollection } from 'astro:content';
 import ProjectCard from '../Cards/ProjectCard.astro';
 
-const research = await getCollection('projectsResearch', ({ data }) => !data.draft);
-const community = await getCollection('projectsCommunity', ({ data }) => !data.draft);
+const research = await getCollection('projectsResearch', ({ data }) => !data.draft && data.current);
 
-const all = [
-  ...research.map((p) => ({
+const topProjects = research
+  .map((p) => ({
     href: `/projects/research/${p.data.projectId}`,
     name: p.data.name,
     year: p.data.year,
@@ -15,28 +14,18 @@ const all = [
     type: 'research' as const,
     current: p.data.current,
     featured: p.data.featured,
-  })),
-  ...community.map((p) => ({
-    href: `/projects/community/${p.data.projectId}`,
-    name: p.data.name,
-    year: p.data.year,
-    myRole: p.data.myRole,
-    excerpt: p.data.description,
-    type: 'community' as const,
-    current: p.data.current,
-    featured: p.data.featured,
-  })),
-];
-
-const featured = all.filter((p) => p.featured).sort((a, b) => b.year - a.year);
-const rest = all.filter((p) => !p.featured).sort((a, b) => b.year - a.year);
-const topProjects = [...featured, ...rest].slice(0, 3);
+  }))
+  .sort((a, b) => b.year - a.year);
 ---
 
 <section class="px-4 py-2xl md:px-6 lg:px-12">
   <div class="mx-auto flex max-w-container flex-col gap-6">
     <div class="flex items-center justify-between gap-4">
-      <h2>Featured Projects</h2>
+      <h2>
+        <a href="/projects" class="transition-colors hover:text-primary" data-i18n="home.currentResearchProjects">
+          Current Research Projects
+        </a>
+      </h2>
       <a href="/projects" class="link inline-flex min-h-[44px] items-center text-sm" data-i18n="common.viewAllProjects">View all projects</a>
     </div>
 
@@ -48,7 +37,7 @@ const topProjects = [...featured, ...rest].slice(0, 3);
           ))}
         </div>
       ) : (
-        <p class="p-small text-[var(--text-secondary)]">No projects published yet.</p>
+        <p class="p-small text-[var(--text-secondary)]" data-i18n="home.noProjectsYet">No projects published yet.</p>
       )
     }
   </div>

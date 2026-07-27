@@ -1,7 +1,9 @@
 degrees:
 - id: phd-applied-computational-sciences
   level: PhD Candidate
+  levelEs: Candidato a Doctorado
   field: Applied Computational Sciences
+  fieldEs: Ciencias Computacionales Aplicadas
   institution: Escuela Superior Politécnica del Litoral (ESPOL)
   location: Guayaquil, Ecuador
   startDate: 2024-01
@@ -10,37 +12,58 @@ degrees:
   advisor: Cristina L. Abad
   description: Doctoral research in applied computational sciences, with emphasis on cloud architecture
     analysis, reproducibility, and synthetic generation.
+  descriptionEs: Investigación doctoral en ciencias computacionales aplicadas, con énfasis en análisis de
+    arquitecturas en la nube, reproducibilidad y generación sintética de datos.
+  hidden: true
 - id: msc-artificial-intelligence
   level: Master of Science
+  levelEs: Maestría en Ciencias
   field: Artificial Intelligence
+  fieldEs: Inteligencia Artificial
   institution: Università degli Studi Guglielmo Marconi
   location: Italy
   startDate: 2025-01
-  endDate: 2026-12
+  endDate: 2026-01
   current: false
   status: Degree registration in progress
-  description: Focus on artificial intelligence, machine learning, deep learning, and reinforcement learning.
+  description: Focus on applied artificial intelligence, data analysis and visualization, supervised and
+    unsupervised machine learning, deep learning, and research-driven AI solutions.
+  descriptionEs: Enfoque en inteligencia artificial aplicada, análisis y visualización de datos, aprendizaje
+    automático supervisado y no supervisado, aprendizaje profundo, y soluciones de IA orientadas a la
+    investigación.
 - id: msc-strategic-telecommunications-management
   level: Master of Science
+  levelEs: Maestría en Ciencias
   field: Strategic Telecommunications Management
+  fieldEs: Gestión Estratégica de Telecomunicaciones
   institution: Universidad Internacional Iberoamericana
   location: Mexico
   startDate: 2022-01
   endDate: 2024-12
   current: false
-  description: Focus on strategic management, planning, telecommunications, and IT.
+  description: Focus on strategic telecommunications planning, network and service management, ICT project
+    leadership, network security, regulation, and business intelligence.
+  descriptionEs: Enfoque en planificación estratégica de telecomunicaciones, gestión de redes y servicios,
+    liderazgo de proyectos de TIC, seguridad de redes, regulación e inteligencia de negocios.
 - id: msc-cybersecurity-management
   level: Master of Science
+  levelEs: Maestría en Ciencias
   field: Cybersecurity Management
+  fieldEs: Gestión de Ciberseguridad
   institution: Università degli Studi Guglielmo Marconi
   location: Italy
   startDate: 2022-01
   endDate: 2023-12
   current: false
-  description: Focus on cybersecurity leadership, cloud security, and risk management.
+  description: Focus on cybersecurity governance, risk management, network defense, incident response, and
+    cloud security across AWS, Azure, and Google Cloud.
+  descriptionEs: Enfoque en gobernanza de ciberseguridad, gestión de riesgos, defensa de redes, respuesta a
+    incidentes, y seguridad en la nube en AWS, Azure y Google Cloud.
 - id: beng-telematics-engineering
   level: Bachelor of Engineering
+  levelEs: Ingeniería
   field: Telematics Engineering
+  fieldEs: Telemática
   institution: Escuela Superior Politécnica del Litoral (ESPOL)
   location: Guayaquil, Ecuador
   startDate: 2015-01
@@ -48,3 +71,5 @@ degrees:
   current: false
   description: Focus on networks, systems, software, and telecommunications. Graduated as the top student
     of the 33rd cohort.
+  descriptionEs: Enfoque en redes, sistemas, software y telecomunicaciones. Se graduó como el mejor estudiante
+    de la 33ª promoción.

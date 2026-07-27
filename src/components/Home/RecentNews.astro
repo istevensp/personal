@@ -9,7 +9,9 @@ const recent = items.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf(
 <section class="bg-[var(--bg-secondary)] px-4 py-2xl md:px-6 lg:px-12">
   <div class="mx-auto flex max-w-container flex-col gap-6">
     <div class="flex items-center justify-between gap-4">
-      <h2>Recent News</h2>
+      <h2>
+        <a href="/news" class="transition-colors hover:text-primary" data-i18n="home.recentNews">Recent News</a>
+      </h2>
       <a href="/news" class="link inline-flex min-h-[44px] items-center text-sm" data-i18n="common.viewAllNews">View all news</a>
     </div>
 
@@ -27,7 +29,7 @@ const recent = items.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf(
           ))}
         </div>
       ) : (
-        <p class="p-small text-[var(--text-secondary)]">No news published yet.</p>
+        <p class="p-small text-[var(--text-secondary)]" data-i18n="news.noNewsYet">No news published yet.</p>
       )
     }
   </div>

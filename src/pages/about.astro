@@ -11,16 +11,27 @@ const certificationsEntry = await getEntry('certifications', 'data');
 const awardsEntry = await getEntry('awardsHonors', 'data');
 
 const personal = personalEntry.data;
-const degrees = educationEntry.data.degrees;
+const degrees = educationEntry.data.degrees.filter((d) => !d.hidden);
 const { researchInterests, technicalSkills } = interestsEntry.data;
 const certifications = certificationsEntry.data.certifications;
-const awards = awardsEntry.data.awards;
+const awards = awardsEntry.data.awards.filter((a) => !a.hidden);
 
 function formatMonth(value: string | null) {
   if (!value) return 'Present';
   const [year, month] = value.split('-').map(Number);
   return new Date(year, (month ?? 1) - 1).toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
 }
+
+// One accent color + emoji per research-interest category, calm hues only
+// (no red/orange/amber — reads as alarmist, per the palette used elsewhere
+// on the site for course/year badges).
+const CATEGORY_STYLES = [
+  { border: 'border-l-sky-400', icon: '☁️' },
+  { border: 'border-l-emerald-400', icon: '📡' },
+  { border: 'border-l-violet-400', icon: '🔒' },
+  { border: 'border-l-fuchsia-400', icon: '🤖' },
+  { border: 'border-l-teal-400', icon: '🎓' },
+];
 ---
 
 <BaseLayout title="About Me" description={personal.summary}>
@@ -28,7 +39,13 @@ function formatMonth(value: string | null) {
     <div class="mx-auto flex max-w-container flex-col gap-3xl">
       <div class="flex flex-col gap-4">
         <h1 data-i18n="nav.about">About Me</h1>
-        <p class="max-w-3xl text-lg text-[var(--text-secondary)]">{personal.summary}</p>
+        <p
+          class="max-w-3xl text-lg text-[var(--text-secondary)]"
+          data-lang-en={personal.summaryEs ? personal.summary : undefined}
+          data-lang-es={personal.summaryEs}
+        >
+          {personal.summary}
+        </p>
         <ul class="flex flex-col gap-2">
           {personal.profile.map((line: string) => (
             <li class="p-small flex gap-2 text-[var(--text-secondary)]">
@@ -90,7 +107,13 @@ function formatMonth(value: string | null) {
         {degrees.map((d) => (
           <div class="card flex flex-col gap-1">
             <div class="flex flex-wrap items-center justify-between gap-2">
-              <h4 class="text-xl font-semibold text-[var(--text-primary)]">{d.level} · {d.field}</h4>
+              <h4
+                class="text-xl font-semibold text-[var(--text-primary)]"
+                data-lang-en={`${d.level} · ${d.field}`}
+                data-lang-es={`${d.levelEs ?? d.level} · ${d.fieldEs ?? d.field}`}
+              >
+                {d.level} · {d.field}
+              </h4>
               {d.current && <span class="badge badge-warning">In progress</span>}
             </div>
             <p class="p-small font-medium text-[var(--text-secondary)]">{d.institution}</p>
@@ -99,31 +122,70 @@ function formatMonth(value: string | null) {
             </p>
             {d.advisor && <p class="p-tiny text-[var(--text-secondary)]">Advisor: {d.advisor}</p>}
             {d.status && <p class="p-tiny text-[var(--text-secondary)]">{d.status}</p>}
-            <p class="p-small text-[var(--text-secondary)]">{d.description}</p>
+            <p
+              class="p-small text-[var(--text-secondary)]"
+              data-lang-en={d.descriptionEs ? d.description : undefined}
+              data-lang-es={d.descriptionEs}
+            >
+              {d.description}
+            </p>
           </div>
         ))}
       </div>
 
-      <div id="panel-research" role="tabpanel" aria-labelledby="tab-research" class="hidden flex-col gap-6">
-        <div class="flex flex-wrap gap-2">
-          {researchInterests.map((interest: string) => (
-            <span class="badge">{interest}</span>
-          ))}
+      <div id="panel-research" role="tabpanel" aria-labelledby="tab-research" class="hidden flex-col gap-8">
+        <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
+          {researchInterests.map((group, i) => {
+            const style = CATEGORY_STYLES[i % CATEGORY_STYLES.length];
+            return (
+              <div class:list={['card animate-fade-in flex flex-col gap-3 border-l-4', style.border]}>
+                <h4
+                  class="flex items-center gap-2 text-lg font-semibold text-[var(--text-primary)]"
+                  data-lang-en={group.categoryEs ? group.category : undefined}
+                  data-lang-es={group.categoryEs}
+                >
+                  <span aria-hidden="true">{style.icon}</span> {group.category}
+                </h4>
+                <div class="flex flex-wrap gap-2">
+                  {group.topics.map((topic, j) => (
+                    <span
+                      class="badge"
+                      data-lang-en={group.topicsEs?.[j] ? topic : undefined}
+                      data-lang-es={group.topicsEs?.[j]}
+                    >
+                      {topic}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
         </div>
 
-        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {Object.entries(technicalSkills).map(([group, skills]) => (
-            <div class="card">
-              <h4 class="mb-2 text-lg font-semibold capitalize text-[var(--text-primary)]">
-                {group.replace(/([a-z])([A-Z])/g, '$1 $2')}
-              </h4>
-              <div class="flex flex-wrap gap-2">
-                {(skills as string[]).map((skill) => (
-                  <span class="badge">{skill}</span>
-                ))}
+        <div class="flex flex-col gap-4">
+          <h3 class="text-lg font-semibold text-[var(--text-primary)]" data-i18n="about.technicalSkills">
+            Technical Skills
+          </h3>
+          <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {technicalSkills.map((group) => (
+              <div class="card">
+                <h4
+                  class="mb-2 text-lg font-semibold text-[var(--text-primary)]"
+                  data-lang-en={group.categoryEs ? group.category : undefined}
+                  data-lang-es={group.categoryEs}
+                >
+                  {group.category}
+                </h4>
+                <div class="flex flex-wrap gap-2">
+                  {group.items.map((item, j) => (
+                    <span class="badge" data-lang-en={group.itemsEs?.[j] ? item : undefined} data-lang-es={group.itemsEs?.[j]}>
+                      {item}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
@@ -142,9 +204,37 @@ function formatMonth(value: string | null) {
         {awards.map((award) => (
           <div class="card flex flex-col gap-1">
             <span class="badge w-fit">{award.type}</span>
-            <h4 class="text-lg font-semibold text-[var(--text-primary)]">{award.name}</h4>
+            <h4
+              class="text-lg font-semibold text-[var(--text-primary)]"
+              data-lang-en={award.nameEs ? award.name : undefined}
+              data-lang-es={award.nameEs}
+            >
+              {award.name}
+            </h4>
             <p class="p-small text-[var(--text-secondary)]">{award.issuer}</p>
-            <p class="p-small text-[var(--text-secondary)]">{award.description}</p>
+            <p
+              class="p-small text-[var(--text-secondary)]"
+              data-lang-en={award.descriptionEs ? award.description : undefined}
+              data-lang-es={award.descriptionEs}
+            >
+              {award.description}
+            </p>
+
+            {award.links && Object.keys(award.links).length > 0 && (
+              <div class="mt-1 flex flex-wrap gap-3">
+                {Object.entries(award.links).map(([label, url]) =>
+                  label === 'certificate' ? (
+                    <a href={url} download={`${award.name}.pdf`} class="link inline-flex min-h-[44px] items-center text-sm capitalize">
+                      {label}
+                    </a>
+                  ) : (
+                    <a href={url} target="_blank" rel="noopener noreferrer" class="link inline-flex min-h-[44px] items-center text-sm capitalize">
+                      {label}
+                    </a>
+                  )
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>

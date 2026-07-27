@@ -41,7 +41,11 @@ const timeline = all.slice(0, 6);
 <section class="px-4 py-2xl md:px-6 lg:px-12">
   <div class="mx-auto flex max-w-container flex-col gap-6">
     <div class="flex items-center justify-between gap-4">
-      <h2><a href="/publications" class="transition-colors hover:text-primary">Publications Timeline</a></h2>
+      <h2>
+        <a href="/publications" class="transition-colors hover:text-primary" data-i18n="home.publicationsTimeline">
+          Current Year Publications Timeline
+        </a>
+      </h2>
       <div class="flex items-center gap-2">
         <a href="/publications" class="link inline-flex min-h-[44px] items-center text-sm" data-i18n="common.viewAllPublications">View all publications</a>
         {timeline.length > 0 && <PublicationsTimelineToggle defaultExpanded={true} />}

@@ -17,8 +17,10 @@ socials:
   googleScholar: https://scholar.google.com/citations?hl=es&user=WL9l7jgAAAAJ&view_op=list_works
   researchGate: https://www.researchgate.net/profile/Steven-Santillan-Padilla?ev=hdr_xprf
 website: https://stevensantillan.com
-summary: University lecturer, researcher, and technology professional specializing in distributed systems,
-  cloud computing, applied machine learning, IoT, infrastructure, and cybersecurity.
+summary: University Professor, researcher, and technology professional specializing in IoT-sensors,
+  applied machine learning, cloud computing, infrastructure, and cybersecurity.
+summaryEs: Profesor universitario, investigador y profesional de la tecnología especializado en sensores IoT,
+  aprendizaje automático aplicado, computación en la nube, infraestructura y ciberseguridad.
 profile:
 - Research-oriented engineer with experience designing data-driven solutions for IoT and real-time environments
   under resource and latency constraints.

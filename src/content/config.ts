@@ -41,6 +41,7 @@ const personal = defineCollection({
     }),
     website: z.string(),
     summary: z.string(),
+    summaryEs: z.string().optional(),
     profile: z.array(z.string()),
   }),
 });
@@ -52,7 +53,9 @@ const education = defineCollection({
       z.object({
         id: z.string(),
         level: z.string(),
+        levelEs: z.string().optional(),
         field: z.string(),
+        fieldEs: z.string().optional(),
         institution: z.string(),
         location: z.string(),
         startDate: z.string(),
@@ -61,6 +64,8 @@ const education = defineCollection({
         advisor: z.string().optional(),
         status: z.string().optional(),
         description: z.string(),
+        descriptionEs: z.string().optional(),
+        hidden: z.boolean().optional(),
       })
     ),
   }),
@@ -87,8 +92,22 @@ const certifications = defineCollection({
 const interests = defineCollection({
   loader: singleFile('src/content/profile/interests.yaml'),
   schema: z.object({
-    researchInterests: z.array(z.string()),
-    technicalSkills: z.record(z.string(), z.array(z.string())),
+    researchInterests: z.array(
+      z.object({
+        category: z.string(),
+        categoryEs: z.string().optional(),
+        topics: z.array(z.string()),
+        topicsEs: z.array(z.string()).optional(),
+      })
+    ),
+    technicalSkills: z.array(
+      z.object({
+        category: z.string(),
+        categoryEs: z.string().optional(),
+        items: z.array(z.string()),
+        itemsEs: z.array(z.string()).optional(),
+      })
+    ),
   }),
 });
 
@@ -99,11 +118,15 @@ const awardsHonors = defineCollection({
       z.object({
         id: z.string(),
         name: z.string(),
+        nameEs: z.string().optional(),
         issuer: z.string(),
         year: z.number().nullable(),
         type: z.string(),
         description: z.string(),
+        descriptionEs: z.string().optional(),
         amount: z.union([z.string(), z.number()]).nullable(),
+        links: z.record(z.string(), z.string()).optional(),
+        hidden: z.boolean().optional(),
       })
     ),
   }),

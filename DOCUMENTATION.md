@@ -161,12 +161,16 @@ a content-validation error if they drift, which is the intended safety net).
 
 All of these are pure data edits — no component code changes required.
 
-- **New research or community project**: add a new `.mdx` file under
-  `src/content/projects/research/` or `.../community/`, following the
-  frontmatter shape of an existing file in that folder. Set `featured: true`
-  to have it show up in the Home page's "Featured Projects" (top 3, sorted by
-  year, non-featured items backfill remaining slots — see
-  `src/components/Home/FeaturedProjects.astro`).
+- **New research project**: add a new `.mdx` file under
+  `src/content/projects/research/`, following the frontmatter shape of an
+  existing file. To have it show up in Home's "Current Research Projects"
+  section, set `current: true` — that section only shows ongoing research
+  projects now, regardless of `featured` (see §5's Home section and 4.4).
+- **New community project**: add a new `.mdx` file under
+  `src/content/projects/community/`. Set `program`/`programEs` if the
+  project is one instance of a larger multi-year initiative (see 4.4) —
+  every current community project has one; it's optional in the schema
+  only so older/unmigrated entries don't fail validation.
 - **New publication**: add an entry to the `published` / `accepted` /
   `under-review` array in the matching file under `src/content/publications/`.
   `featured: true` works the same way as projects for `published`/`accepted`
@@ -187,6 +191,18 @@ All of these are pure data edits — no component code changes required.
   than to a job/position entry.
 - **Profile/education/certifications/awards**: edit the corresponding YAML
   file directly under `src/content/profile/` or `src/content/experience/`.
+  `education` and `awardsHonors` entries both support `hidden: true` (same
+  convention as `draft` for projects/news — keep the entry in the file,
+  just don't render it) for content the owner wants recorded but not
+  publicly listed right now (e.g. an in-progress PhD entry, a scholarship
+  entry with no public write-up yet). `awardsHonors` entries also support
+  an optional `links: Record<string, string>` (rendered as plain external
+  links, `target="_blank"`) — with one special case: a link whose key is
+  exactly `"certificate"` renders with a `download` attribute instead
+  (filename derived from the award's `name`), so clicking it downloads the
+  file rather than opening it in the browser's PDF viewer. Certificate PDFs
+  live under `docs/awards/` (same public-repo convention as the CV PDFs in
+  §9), referenced via a `github.com/.../raw/main/docs/awards/...` URL.
 
 ### 4.1 Why "Current Courses" and "Historical Teaching Record" are two separate sections
 
@@ -332,6 +348,73 @@ that specific field. The same fix (`pick()` helper, preferring non-empty
 over merely non-null) applies to single-string fields like `description`,
 since `??` doesn't fall through on `""`.
 
+### 4.4 Community Engagement's program→project hierarchy, and About Me's tabs
+
+**A project belongs to a program.** When the site owner sent real data for
+Community Engagement, it revealed that 5 of the 6 existing project MDX
+files had it backwards: the file's `name` field (rendered as the card's
+big title) actually held the name of the multi-year *program* the project
+belonged to (e.g. "Integrated Coastal Management in Manglaralto Parish"),
+while the project's own specific title was sitting, shortened, in
+`description`. The schema now has a distinct, optional `program`/
+`programEs` field (rendered as an italic subtitle under the real title, on
+both the card and the detail page — see `ProjectCard`/`community/
+[slug].astro` in §5) precisely so a real program spanning several years can
+have multiple distinct project entries (different `startDate`/`endDate`,
+different `myRole`) without collapsing them into one card or duplicating
+the program name as if it were the project's own title. `program` is
+optional rather than required specifically so the two pre-existing
+projects this restructuring didn't touch (`schooling-platform-
+sustainability`, and the draft `_drafts/la-union-connectivity.mdx`) don't
+need fabricated program data just to satisfy the schema.
+
+**A project can span more than one calendar year.** Both Research and
+Community Engagement now compute `yearsSpanned(startDate, endDate)` (an
+inline array of every year touched, using `new Date().getFullYear()` in
+place of an open `endDate`) rather than trusting the frontmatter's single
+`year` number for filtering or the badge label. This mirrors the multi-year
+`years` array already used by Teaching's historical courses (§4.1) for the
+same reason: a project that ran 2024–2025 needs to show up under *both*
+year filter buttons, and its badge should read "2024–2025", not just
+"2024". The year-filter buttons and grids on `/projects` are wired by a
+small `wireYearFilter(groupId, gridId)` helper called once for Research and
+once for Community — deliberately not shared with Teaching's own filter
+wiring script, since the two pages' DOM ids and filter axes (Teaching also
+filters by area) differ enough that a shared abstraction would need as
+many parameters as it saves.
+
+**About Me's four subsections are now tabs**, not stacked page sections —
+same `role="tablist"`/`data-tab` + a small vanilla `<script>` pattern
+already used by `/experience` (Academic/Industry) and now also used by
+`about.astro` for Education/Research Interests/Certifications/Honors &
+Awards, with Education open by default. Within the Research Interests tab,
+`researchInterests` and `technicalSkills` both went from flat/loosely-typed
+data (a plain string array; a `Record<string, string[]>` keyed by camelCase
+group names like `cloudSecurityAndGRC`) to the same shape: an array of
+`{ category, categoryEs?, topics|items, topicsEs|itemsEs? }`. Each research
+category renders as its own card with a fixed accent color + emoji
+(`CATEGORY_STYLES` in `about.astro`, indexed by array position — calm hues
+only, same red/orange/amber exclusion as `YEAR_COLORS`), while technical
+skill categories render as plain (uncolored) cards underneath, under their
+own "Technical Skills" heading — the color treatment is deliberately
+reserved for Research Interests so the two groups stay visually distinct
+rather than competing for attention.
+
+**A schema shape change can strand the dev server, even when the code is
+correct.** Changing `researchInterests` from `string[]` to an array of
+category objects (and `technicalSkills` from a `Record` to an array)
+briefly left `astro dev` serving a blank page titled "TypeError" — a stale
+in-memory content-layer cache from before the schema change, not an actual
+bug (`npm run build` succeeded throughout). Restarting the dev server
+process resolved it. Worth remembering the next time a content collection's
+field *shape* (not just its values) changes: if the dev server starts
+misbehaving right after, restart it before assuming the new code is wrong.
+This same class of schema change is also why `Home/HeroSection.astro`
+briefly rendered `[object Object]` in its hero badges — it was still doing
+`researchInterests.slice(0, 6)` and rendering each item directly, unaware
+the array now held category objects instead of strings; fixed by
+flattening `group.topics` across categories before slicing.
+
 ---
 
 ## 5. Components reference
@@ -363,8 +446,23 @@ since `??` doesn't fall through on `""`.
 ### Home (`src/components/Home/`)
 Each is a self-contained `<section>` used only by `src/pages/index.astro`, in
 this order: `HeroSection` → `PublicationsTimeline` → `FeaturedProjects` →
-`FeaturedAwards` → `RecentNews` → `ContactCTA`. All fetch their own content via
-`astro:content` — no props passed from the page.
+`RecentNews`. All fetch their own content via `astro:content` — no props
+passed from the page. `FeaturedAwards.astro` and `ContactCTA.astro` used to
+sit at the end of this list ("Awards & Honors" and "Get in touch" sections)
+but were both removed (not just hidden) at the site owner's request —
+the CTA was judged redundant with `/contact`, and Awards & Honors with
+`/about`'s own Honors & Awards tab. If either is ever wanted back, they'd
+need to be rebuilt from scratch (or recovered from git history) rather than
+un-hidden, since the component files themselves were deleted.
+
+`FeaturedProjects.astro` (the "Current Research Projects" section) only
+queries `projectsResearch` (not `projectsCommunity`) and filters to
+`data.current === true` — it used to merge both collections and take the
+top 3 by year (falling back through `featured: true` first), but since no
+project currently has `featured: true`, that heading ("Featured Projects")
+was showing plain recent projects under a misleading label. The section
+title is now literally accurate: it shows whichever research projects are
+actually ongoing right now, and doubles as a link to `/projects` (see 7.4).
 
 `PublicationsTimeline.astro` replaced an earlier `FeaturedPublications.astro`
 (now deleted) after 3 rounds of design iteration. It renders a horizontal,
@@ -422,9 +520,28 @@ mean warning/error/"In Progress"/"Upcoming" elsewhere on the same card, so
 using them for a plain year would read as alarming for no reason.
 
 `ExperienceCard` accepts an optional `highlightsEs?: string[]`, paired by
-index with `highlights` (same `data-lang-en`/`data-lang-es` pattern) — so
-far only populated for the current academic position
-(`academic.yaml`'s `espol-lecturer-researcher` entry).
+index with `highlights` (same `data-lang-en`/`data-lang-es` pattern),
+`department`/`departmentEs`/`program`/`programEs` (rendered as an italic
+subtitle when either is present — only populated for the current position
+and the Lecturer/Project Director/Lab Head entry, the two where a specific
+degree program applies), and `courses`/`coursesEs` rendered as colored,
+clickable labels under a "Courses Taught" heading (color + `/teaching`
+anchor resolved via `getCourseColorMap()` in `src/lib/teaching.ts` — see
+§4.2 for the color-assignment logic).
+
+`ProjectCard` grew several optional bilingual props beyond its original
+`href`/`name`/`year`/`myRole`/`excerpt`/`type`/`current`/`featured`:
+`nameEs`, `program`/`programEs` (italic subtitle, Community Engagement
+only — Research projects don't have this concept), `myRoleEs`, `excerptEs`
+— all following the same `data-lang-en`/`data-lang-es` pattern. `myRole`
+renders as its own colored badge (`bg-violet-100`/`text-violet-800`),
+visually distinct from the type badge (Research=`badge-success`,
+Community=plain) and the year badge. **`year` is typed `number | string`**
+— pages now often pass a computed range label (`"2024–2025"`) rather than
+a bare year, via a small `yearRangeLabel(startDate, endDate)` helper
+duplicated in `projects/index.astro` and both `[slug].astro` detail pages
+(kept as three small copies rather than a shared import, since each needs
+slightly different inputs and it's a two-line pure function).
 
 ### Common (`src/components/Common/`) — React islands
 - **ThemeToggle.jsx** — reads/writes `localStorage.theme`, toggles the
@@ -484,33 +601,115 @@ project-level `output: 'server'` setting. Unmatched slugs are handled inside
 
 ## 7. i18n — what is and isn't translated
 
-`src/i18n/strings.ts` holds an EN/ES dictionary for **chrome-level UI text
-only**: nav labels, a handful of button/label strings (see the file for the
-full key list). Elements carrying that text are tagged `data-i18n="key"`.
+The site started with a narrow i18n scope (nav labels + a handful of
+buttons) and has since grown, page by page, into covering almost every
+piece of chrome text on the site, plus a growing set of bilingual content
+fields. There are now three distinct mechanisms in play — know which one
+applies before adding a new translatable string.
+
+### 7.1 `data-i18n` — the global chrome dictionary
+
+`src/i18n/strings.ts` holds an EN/ES dictionary keyed by dotted names
+(`nav.*`, `common.*`, `experience.*`, `projects.*`, `publications.*`,
+`news.*`, `about.*`, `contact.*`, `teaching.*`, `home.*`). Elements carrying
+that text are tagged `data-i18n="key"`. This now covers, across the whole
+site: nav labels; page `<h1>`s; section `<h2>`/`<h3>` headings (many of
+which are also `<a>` links to the section's full page — see 7.4); status/
+type/role badges (`Research`/`Community`, `Published`/`Accepted`/`Under
+Review`, `Ongoing`, `Featured`, `Current`); "Back to X" links and 404/empty
+states; filter button labels. `strings.ts`'s own file comment still says
+"chrome-level UI text only" — that's accurate in spirit (it never holds a
+whole paragraph of real content), but the surface area under it is now much
+larger than the original nav-only scope.
 
 A `<script>` in `BaseLayout.astro` (not React — needs to run on every full
 page load, including SSR navigations) reads `localStorage.lang` on load and
 whenever `LanguageSwitcher` fires `languagechange`, then walks
 `document.querySelectorAll('[data-i18n]')` and swaps `textContent`.
 
-**This does not translate any data-driven content** — bios, course
-descriptions, publication abstracts, project write-ups, news bodies. All of
-that exists only in English in the source YAML/MDX. If full content
-translation is ever wanted, it needs either per-language content files or a
-translation field per entry plus schema changes in `config.ts` — that is a
-content/schema project, not a quick code change.
+A key can be reused across unrelated pages when the literal string is
+identical in both languages (e.g. `common.featured` is shared by `NewsCard`
+and `ProjectCard`'s "Featured" badge) — don't create a per-page duplicate
+key just because the two usages live in different files.
 
-**One confirmed exception: course names on `/teaching`.** The same
-`applyTranslations()` function in `BaseLayout.astro` also handles a second,
-more generic attribute pair: any element with `data-lang-en="…"
-data-lang-es="…"` gets its `textContent` swapped to whichever matches the
-active language, independent of the global `strings.ts` dictionary. This
-exists specifically so course names (Teaching Timeline chips/legend,
-`CourseCard`'s `nameEs` prop) can be bilingual without cluttering the
-chrome-level dictionary with dozens of one-off content strings. Don't reuse
-`data-i18n` for this kind of thing — `data-i18n` always looks up a *key* in
-`strings.ts`; `data-lang-en`/`data-lang-es` carry the literal text for both
-languages directly on the element.
+### 7.2 `data-lang-en`/`data-lang-es` — per-entry bilingual content
+
+The same `applyTranslations()` function in `BaseLayout.astro` also handles
+a second, more generic attribute pair: any element with
+`data-lang-en="…" data-lang-es="…"` gets its `textContent` swapped to
+whichever matches the active language, independent of the global
+`strings.ts` dictionary. This is how **content-collection data** — not
+chrome — becomes bilingual, one field at a time, via an optional `*Es`
+sibling field in the schema (`nameEs`, `descriptionEs`, `titleEs`,
+`programEs`, `myRoleEs`, `categoryEs`, `topicsEs`/`itemsEs`,
+`degreeProgramsEs`, `levelEs`, `fieldEs`, `summaryEs`, `highlightsEs`,
+`coursesEs`, …). The pattern at the call site is always the same:
+
+```astro
+<span data-lang-en={fooEs ? foo : undefined} data-lang-es={fooEs}>{foo}</span>
+```
+
+(the `data-lang-en` side is only set when a translation actually exists —
+otherwise the element is left untagged and just shows the English text in
+both languages, which is the correct fallback for content nobody has
+translated yet, rather than showing nothing).
+
+This now covers real content across most of the site: Teaching (course
+names), Experience (title, organization, department/program subtitle,
+description, highlights, courses-taught labels), Projects/Community
+Engagement (title, program subtitle, role, excerpt, degree-program badges),
+About Me (education degree title/description, research-interest/technical-
+skill categories and items, award name/description), and the Home hero
+summary. **Publications and Research-type projects are the deliberate
+exception** — their content (paper titles/abstracts, research project
+write-ups) stays English-only by design (see 7.3), since real academic
+output shouldn't be paraphrased into a second language.
+
+Don't reuse `data-i18n` for this kind of thing — `data-i18n` always looks
+up a *key* in `strings.ts`; `data-lang-en`/`data-lang-es` carry the literal
+text for both languages directly on the element.
+
+### 7.3 What still doesn't translate, on purpose
+
+Publication metadata (title, authors, venue, abstract, keywords) and
+Research-type project write-ups (`problem`, `myContribution`,
+`methodology`, results, and the MDX body) are English-only — that's a
+scope decision, not a gap: the site owner explicitly asked for it ("los
+papers no [se traducen] porque son todos en inglés"), since academic
+publications and research narratives are real citable text that shouldn't
+be re-worded into a second language just for the toggle. Community
+Engagement projects and About Me *are* translated, since that content is
+the site owner's own descriptive framing rather than a citation.
+
+### 7.4 Section headings that double as links
+
+Several `<h2>` section headings on Home (Publications Timeline, Current
+Research Projects, Recent News) wrap an `<a>` pointing at that section's
+full page, in addition to a separate, more explicit "View all …" link next
+to them. When adding a new Home section, prefer this pattern over a plain
+`<h2>` — it gives a second, more discoverable way to reach the full page
+without relying on the visitor noticing the smaller link.
+
+### 7.5 The one React-island exception: `NewsFilter.jsx`
+
+Every i18n mechanism above assumes a global `<script>` can walk the DOM
+after the fact and swap `textContent`. That breaks for a React island that
+re-renders its own JSX from state (a click handler, a re-render) *after*
+`applyTranslations()` already ran once — the next render would overwrite
+the translated text with the original English prop/literal, since React
+has no idea `data-i18n` attributes exist. `NewsFilter.jsx` (the category
+filter buttons on `/news`) hit exactly this: its button labels are plain
+JS strings (`ALL_CATEGORIES`), not `data-i18n`-tagged DOM the global script
+can safely own. The fix was to make the component itself language-aware:
+it keeps its own `lang` state (initialized from `localStorage.getItem
+('lang')`, updated by listening for the same `languagechange`
+`CustomEvent` every other i18n path relies on), and looks up
+`strings[lang]['news.category.' + category]` directly from the imported
+`strings` dictionary when rendering each button label. Any *other* React
+island that renders translatable text from its own state (not a static
+prop passed in from server-rendered Astro) needs the same treatment — copy
+this pattern rather than tagging its JSX with `data-i18n`, which won't
+survive a re-render.
 
 ---
 
@@ -573,6 +772,20 @@ fabricated content:
 - **`src/content/experience/thesis-advisory.yaml`** — empty array, schema
   ready (`studentName`, `thesisTitle`, `year`, `institution`,
   `role: Advisor|Co-Advisor`, `status: completed|in-progress`).
+- **`hidden: true` entries** — real data kept in the source YAML but not
+  rendered, per the same convention as `draft` for projects/news (§4). As
+  of this writing: the "PhD Candidate" entry in `education.yaml` (the site
+  owner asked it not be shown for now) and the "OAS Scholar" entry in
+  `awards-honors.yaml`. Both `about.astro`'s `degrees`/`awards` filter
+  these out with `.filter((x) => !x.hidden)` — if either should go public
+  again, just remove the flag; the rest of the data is already real and
+  complete.
+- **One community project deleted outright, not hidden**:
+  `schooling-platform-sustainability.mdx` had no real content (every field
+  was still a placeholder) and the site owner asked for it to be removed
+  entirely rather than marked `draft`/`hidden` — unlike the other
+  "incomplete content" cases in this section, there was nothing worth
+  keeping a record of.
 - **Every `[PROPORCIONAR]` string** inside the project MDX files
   (`problem`, `myContribution`, `methodology`, etc.) and publication YAML
   (`abstract`, `doi`, author lists, resource links). These render as literal
