@@ -733,6 +733,20 @@ trips up a future refactor).
 The GitHub Actions workflow (`.github/workflows/deploy.yml`) always runs both
 steps before deploying, so production search works as long as CI runs.
 
+### 8.1 Sitemap
+
+`public/robots.txt` has declared `Sitemap: https://stevensantillan.com/
+sitemap-index.xml` since the very first commit, but nothing ever generated
+that file — `@astrojs/sitemap` was never added to `astro.config.mjs`'s
+`integrations` array, so the URL 404'd in production (confirmed with
+`curl` against the live site). Fixed by installing the package and adding
+`sitemap()` to the integrations list; `npm run build` now emits
+`dist/sitemap-index.xml` (an index pointing at `dist/sitemap-0.xml`, which
+lists every prerendered route under `https://stevensantillan.com/`). No
+further config needed — the integration reads `site` from `astro.config
+.mjs` and walks the build output automatically. See `docs/DECISIONS.md`
+for the reasoning (why this was worth fixing, not just leaving as-is).
+
 ---
 
 ## 9. Known placeholders / things the site owner still needs to provide

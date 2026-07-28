@@ -3,6 +3,7 @@ import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 import cloudflare from '@astrojs/cloudflare';
 import react from '@astrojs/react';
+import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://stevensantillan.com',
@@ -12,6 +13,7 @@ export default defineConfig({
     tailwind({ applyBaseStyles: false }),
     mdx(),
     react(),
+    sitemap(),
   ],
   vite: {
     resolve: {
