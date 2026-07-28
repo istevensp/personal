@@ -19,6 +19,13 @@ const jsonLd = {
   url: personal.website,
   email: personal.email.institutional,
   affiliation: { '@type': 'Organization', name: 'ESPOL' },
+  sameAs: [
+    personal.socials.linkedin,
+    `https://orcid.org/${personal.socials.orcid}`,
+    personal.socials.googleScholar,
+    personal.socials.researchGate,
+    personal.socials.github,
+  ],
 };
 ---
 
