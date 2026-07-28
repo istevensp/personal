@@ -1,5 +1,7 @@
 ---
 import { getEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import profileImage from '../../assets/images/profile.jpg';
 
 const personalEntry = await getEntry('personal', 'data');
 const interestsEntry = await getEntry('interests', 'data');
@@ -128,11 +130,14 @@ const heroName = `${personal.firstName} ${personal.lastName}`;
       <span class="absolute inset-0 flex items-center justify-center text-6xl font-semibold text-white">
         {initials}
       </span>
-      <img
-        src="/images/profile.jpg"
+      <Image
+        src={profileImage}
         alt={personal.fullName}
+        width={256}
+        height={256}
+        loading="eager"
+        fetchpriority="high"
         class="absolute inset-0 h-full w-full object-cover"
-        onerror="this.style.display='none'"
       />
     </div>
   </div>
