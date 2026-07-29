@@ -96,7 +96,7 @@ const subtitleEs = [programEs || program, departmentEs || department].filter(Boo
           {courses.map((c, i) => (
             <a
               href={courseHrefs?.[i]}
-              class:list={['badge transition-opacity hover:opacity-75', courseBadgeClasses?.[i]]}
+              class:list={['inline-flex min-h-[44px] items-center rounded-full px-4 py-2 text-xs font-medium transition-opacity hover:opacity-75', courseBadgeClasses?.[i]]}
               data-lang-en={coursesEs?.[i] ? c : undefined}
               data-lang-es={coursesEs?.[i]}
             >

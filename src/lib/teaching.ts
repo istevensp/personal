@@ -66,18 +66,18 @@ export async function getSemestersForCode(code: string): Promise<CourseSemester[
 // — kept as a separate literal rather than a shared import so a change to
 // one doesn't silently reflow the other's already-live color assignment.
 const COURSE_COLORS = [
-  'bg-rose-100 text-rose-800',
-  'bg-orange-100 text-orange-800',
-  'bg-amber-100 text-amber-800',
-  'bg-lime-100 text-lime-800',
-  'bg-emerald-100 text-emerald-800',
-  'bg-teal-100 text-teal-800',
-  'bg-cyan-100 text-cyan-800',
-  'bg-sky-100 text-sky-800',
-  'bg-violet-100 text-violet-800',
-  'bg-fuchsia-100 text-fuchsia-800',
-  'bg-pink-100 text-pink-800',
-  'bg-indigo-100 text-indigo-800',
+  'bg-rose-100 text-rose-800 dark:bg-rose-900/40 dark:text-rose-300',
+  'bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-300',
+  'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
+  'bg-lime-100 text-lime-800 dark:bg-lime-900/40 dark:text-lime-300',
+  'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
+  'bg-teal-100 text-teal-800 dark:bg-teal-900/40 dark:text-teal-300',
+  'bg-cyan-100 text-cyan-800 dark:bg-cyan-900/40 dark:text-cyan-300',
+  'bg-sky-100 text-sky-800 dark:bg-sky-900/40 dark:text-sky-300',
+  'bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-300',
+  'bg-fuchsia-100 text-fuchsia-800 dark:bg-fuchsia-900/40 dark:text-fuchsia-300',
+  'bg-pink-100 text-pink-800 dark:bg-pink-900/40 dark:text-pink-300',
+  'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-300',
 ];
 
 // Official English translations for historical SAAC course names — mirrors
