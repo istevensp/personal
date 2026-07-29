@@ -195,14 +195,20 @@ All of these are pure data edits — no component code changes required.
   convention as `draft` for projects/news — keep the entry in the file,
   just don't render it) for content the owner wants recorded but not
   publicly listed right now (e.g. an in-progress PhD entry, a scholarship
-  entry with no public write-up yet). `awardsHonors` entries also support
-  an optional `links: Record<string, string>` (rendered as plain external
-  links, `target="_blank"`) — with one special case: a link whose key is
-  exactly `"certificate"` renders with a `download` attribute instead
-  (filename derived from the award's `name`), so clicking it downloads the
-  file rather than opening it in the browser's PDF viewer. Certificate PDFs
-  live under `docs/awards/` (same public-repo convention as the CV PDFs in
-  §9), referenced via a `github.com/.../raw/main/docs/awards/...` URL.
+  entry with no public write-up yet). Both `education` and `awardsHonors`
+  entries also support an optional `links: Record<string, string>`
+  (rendered as plain external links, `target="_blank"`, key used verbatim
+  as the visible label via a `capitalize` CSS class — write multi-word
+  keys like `'official photo by ESPOL'` if you want each word's first
+  letter capitalized) — with one special case in `awardsHonors` only: a
+  link whose key is exactly `"certificate"` renders with a `download`
+  attribute instead (filename derived from the award's `name`), so
+  clicking it downloads the file rather than opening it in the browser's
+  PDF viewer. `education`'s `links` has no such special case (used so far
+  for a third-party evidence photo hosted externally, not a downloadable
+  file). Certificate PDFs live under `docs/awards/` (same public-repo
+  convention as the CV PDFs in §9), referenced via a
+  `github.com/.../raw/main/docs/awards/...` URL.
 
 ### 4.1 Why "Current Courses" and "Historical Teaching Record" are two separate sections
 
@@ -482,6 +488,22 @@ collapse/expand the row; on Home it's expanded by default.
 social-links row (email, GitHub, Google Scholar, LinkedIn, ResearchGate,
 ORCID) directly under the bio. The ORCID link uses the real brand icon
 (`public/images/ORCID_iD.svg`), like the Footer.
+
+`personal.yaml` has two distinct bio fields, not one: `tagline`/
+`taglineEs` (short, 2 sentences — used only on Home, wrapped in a full
+`<a href="/about">` link since Home is meant to hook and redirect, not
+duplicate) and `summary`/`summaryEs` (longer — used on `/about`'s intro
+and as that page's meta description; Home's meta description uses
+`tagline` instead, since it's a better length for search-result
+snippets). `profile`/`profileEs` (the 4 bullet points under the summary
+on `/about`) are a separate array, bilingual since a 2026-07-29 pass —
+`profileEs` didn't exist before that. `currentRole.title` (from
+`academicExperience`, rendered next to the photo) needs its own
+`data-lang-en`/`data-lang-es` wiring using `currentRole.titleEs` — this
+was missing for a while (the title just never translated) until it was
+noticed and fixed; if you add a new field to `HeroSection.astro` that
+pulls from a bilingual YAML entry, remember it needs this wiring
+explicitly, it's not automatic.
 
 ### Publications (`src/components/Publications/`)
 Shared between Home's `PublicationsTimeline` and the collapsible timeline
