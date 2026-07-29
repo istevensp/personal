@@ -42,7 +42,10 @@ const personal = defineCollection({
     website: z.string(),
     summary: z.string(),
     summaryEs: z.string().optional(),
+    tagline: z.string(),
+    taglineEs: z.string().optional(),
     profile: z.array(z.string()),
+    profileEs: z.array(z.string()).optional(),
   }),
 });
 
@@ -65,6 +68,7 @@ const education = defineCollection({
         status: z.string().optional(),
         description: z.string(),
         descriptionEs: z.string().optional(),
+        links: z.record(z.string(), z.string()).optional(),
         hidden: z.boolean().optional(),
       })
     ),

@@ -47,10 +47,15 @@ const CATEGORY_STYLES = [
           {personal.summary}
         </p>
         <ul class="flex flex-col gap-2">
-          {personal.profile.map((line: string) => (
+          {personal.profile.map((line: string, i: number) => (
             <li class="p-small flex gap-2 text-[var(--text-secondary)]">
               <span class="text-primary" aria-hidden="true">•</span>
-              {line}
+              <span
+                data-lang-en={personal.profileEs?.[i] ? line : undefined}
+                data-lang-es={personal.profileEs?.[i]}
+              >
+                {line}
+              </span>
             </li>
           ))}
         </ul>
@@ -129,6 +134,16 @@ const CATEGORY_STYLES = [
             >
               {d.description}
             </p>
+
+            {d.links && Object.keys(d.links).length > 0 && (
+              <div class="mt-1 flex flex-wrap gap-3">
+                {Object.entries(d.links).map(([label, url]) => (
+                  <a href={url} target="_blank" rel="noopener noreferrer" class="link inline-flex min-h-[44px] items-center text-sm capitalize">
+                    {label}
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>

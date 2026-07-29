@@ -28,20 +28,27 @@ const heroName = `${personal.firstName} ${personal.lastName}`;
       {
         currentRole && (
           <p class="text-lg font-medium text-[var(--text-primary)]">
-            {currentRole.title}
+            <span
+              data-lang-en={currentRole.titleEs ? currentRole.title : undefined}
+              data-lang-es={currentRole.titleEs}
+            >
+              {currentRole.title}
+            </span>
             <br />
             {currentRole.institution}
           </p>
         )
       }
 
-      <p
-        class="max-w-2xl text-[var(--text-secondary)]"
-        data-lang-en={personal.summaryEs ? personal.summary : undefined}
-        data-lang-es={personal.summaryEs}
-      >
-        {personal.summary}
-      </p>
+      <a href="/about" class="group block max-w-2xl">
+        <p
+          class="text-[var(--text-secondary)] transition-colors group-hover:text-primary"
+          data-lang-en={personal.taglineEs ? personal.tagline : undefined}
+          data-lang-es={personal.taglineEs}
+        >
+          {personal.tagline}
+        </p>
+      </a>
 
       <div class="flex flex-wrap gap-2">
         {topInterests.map((interest) => (

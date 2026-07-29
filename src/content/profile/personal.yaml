@@ -17,14 +17,40 @@ socials:
   googleScholar: https://scholar.google.com/citations?hl=es&user=WL9l7jgAAAAJ&view_op=list_works
   researchGate: https://www.researchgate.net/profile/Steven-Santillan-Padilla?ev=hdr_xprf
 website: https://stevensantillan.com
-summary: University Professor, researcher, and technology professional specializing in IoT-sensors,
-  applied machine learning, cloud computing, infrastructure, and cybersecurity.
-summaryEs: Profesor universitario, investigador y profesional de la tecnología especializado en sensores IoT,
-  aprendizaje automático aplicado, computación en la nube, infraestructura y ciberseguridad.
+summary: I'm a lecturer and researcher at ESPOL working on IoT, cloud computing, and cybersecurity, with
+  publications at IEEE conferences and experience as an infrastructure and cybersecurity consultant across
+  academia and industry.
+summaryEs: Soy profesor e investigador en ESPOL, y trabajo en temas de IoT, computación en la nube y
+  ciberseguridad, con publicaciones en conferencias IEEE y experiencia como consultor de infraestructura y
+  ciberseguridad entre la academia y la industria.
+tagline: I'm a lecturer and researcher at ESPOL working on IoT and cloud computing, with publications at IEEE
+  conferences including SAS, PES, and IPDPS. I also help companies migrate and improve their technology systems,
+  bridging academia and industry.
+taglineEs: Soy profesor e investigador en ESPOL y trabajo en IoT y computación en la nube, con publicaciones en
+  conferencias IEEE como SAS, PES e IPDPS. También ayudo a empresas a migrar y mejorar sus sistemas tecnológicos,
+  conectando la academia con la industria.
 profile:
-- Research-oriented engineer with experience designing data-driven solutions for IoT and real-time environments
-  under resource and latency constraints.
-- Hands-on experience with AWS, Azure, GCP, networks, scalable infrastructure, time-series analysis, anomaly
-  detection, and real-world machine learning deployment.
-- Lecturer at ESPOL with more than five years of higher-education experience, teaching Distributed Systems,
-  Algorithms, and Data Structures.
+- I design data-driven solutions for IoT and real-time systems under resource and latency constraints, with
+  publications at IEEE venues on IoT, cloud architectures, and applied machine learning.
+- I've worked hands-on with AWS, Azure, and GCP on cloud architecture and cybersecurity governance, applying
+  machine learning techniques like anomaly detection and time-series forecasting during real infrastructure
+  migrations.
+- I've led technology infrastructure modernization and migration initiatives across both public and private
+  sector organizations — including national government IT operations and enterprise digital transformation
+  projects.
+- I'm a university lecturer at ESPOL with 5+ years of higher-education teaching experience — currently
+  teaching Distributed Systems and Cloud Computing, Algorithm Analysis, and Data Structures — alongside active
+  industry consulting in IT infrastructure and cybersecurity.
+profileEs:
+- Diseño soluciones basadas en datos para sistemas IoT y en tiempo real bajo restricciones de recursos y
+  latencia, con publicaciones en conferencias IEEE sobre IoT, arquitecturas en la nube e inteligencia artificial
+  aplicada.
+- He trabajado de forma práctica con AWS, Azure y GCP en arquitectura en la nube y gobierno de ciberseguridad,
+  aplicando técnicas de aprendizaje automático como detección de anomalías y pronóstico de series temporales
+  durante migraciones de infraestructura reales.
+- He dirigido iniciativas de modernización y migración de infraestructura tecnológica en organizaciones tanto
+  públicas como privadas — incluyendo operaciones de TI a nivel de gobierno nacional y proyectos de
+  transformación digital empresarial.
+- Soy profesor universitario en ESPOL con más de 5 años de experiencia en docencia de educación superior —
+  actualmente imparto Sistemas Distribuidos y Computación en la Nube, Análisis de Algoritmos y Estructuras de
+  Datos — junto con consultoría activa en infraestructura de TI y ciberseguridad para la industria.
