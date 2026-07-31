@@ -776,32 +776,42 @@ for the reasoning (why this was worth fixing, not just leaving as-is).
 None of these were invented — they're left as explicit gaps rather than
 fabricated content:
 
-- **Favicon set**: `public/` now has a full PNG icon set —
+- **Favicon set**: `public/` has a full PNG icon set —
   `favicon-16x16.png`, `favicon-32x32.png`, `favicon-48x48.png`,
   `favicon-64x64.png`, `favicon-128x128.png`, `apple-touch-icon.png`
-  (180×180), and `favicon-1826x1826.png` (a master image used as the default
-  Open Graph/social-share image and as the largest `site.webmanifest` icon).
-  `BaseLayout.astro`'s `<head>` block declares each PNG icon with an explicit
-  `sizes` attribute (verified against each file's real PNG `IHDR` dimensions,
-  not just its filename — this matters: a prior update to this set silently
-  shrank `icon.png` from 1826×1826 down to 128×128 while `BaseLayout.astro`
-  and `site.webmanifest` still declared it as 1826×1826; the file was
-  renamed to `favicon-1826x1826.png` when re-added, and the old, now-wrong
-  `icon.png` was removed rather than left in as a trap for the next edit).
-  This set went through three prior states worth knowing about if a future
-  `git blame` looks confusing: it started as a larger set (`favicon.svg`,
-  `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png`,
-  `android-chrome-192x192.png`), was reduced to just
-  `favicon.ico`/`favicon.png`/`android-chrome-512x512.png` (which briefly
-  broke the site because the code still referenced the old files), was
-  replaced with a PNG-only set using `icon.png` as the 1826×1826 master, and
-  was finally re-exported into the current file names above. There is no
-  `favicon.ico` anymore, which is fine since every browser that matters
-  supports PNG `<link rel="icon">` with explicit sizes.
-- **Profile photo**: drop a file at `public/images/profile.jpg`. The Hero
-  photo box (`HeroSection.astro`) already points at that path; if it 404s,
-  an `onerror` handler hides the broken `<img>` and reveals a gradient +
-  initials placeholder underneath — so an empty state never looks broken.
+  (180×180), and `favicon-1826x1826.png` (a master image, referenced as
+  the largest `site.webmanifest` icon — **not** the OG/social-share image
+  default anymore, see the profile-photo note below). `BaseLayout.astro`'s
+  `<head>` block declares each PNG icon with an explicit `sizes` attribute
+  (verified against each file's real PNG `IHDR` dimensions, not just its
+  filename). The current artwork (as of 2026-07-30) is a solid "S" initial
+  in a circle with the `--color-primary`→`--color-secondary` gradient,
+  generated from an SVG source via `sharp` — replacing an earlier
+  geometric multi-shape mark that read as an indistinguishable blob at the
+  ~16px size browsers/Google actually render favicons at (see
+  `docs/DECISIONS.md` DEC-025; there's no SVG source file checked into the
+  repo, only the rendered PNGs, so regenerating a variant means re-creating
+  that source). This set went through several prior states worth knowing
+  about if a `git blame` looks confusing: it started as a larger set
+  (`favicon.svg`, `favicon-16x16.png`, `favicon-32x32.png`,
+  `apple-touch-icon.png`, `android-chrome-192x192.png`), was reduced to
+  just `favicon.ico`/`favicon.png`/`android-chrome-512x512.png` (which
+  briefly broke the site because the code still referenced the old files),
+  was replaced with a PNG-only set using `icon.png` as the 1826×1826
+  master (later renamed `favicon-1826x1826.png` after a dimension mismatch
+  bug), and was finally re-exported into the current file names — then the
+  artwork itself was redesigned on 2026-07-30. There is no `favicon.ico`
+  anymore, which is fine since every browser that matters supports PNG
+  `<link rel="icon">` with explicit sizes.
+- ~~**Profile photo**~~ — resolved (was a real gap when this section was
+  first written, no longer one). `profile.jpg` lives at
+  `src/assets/images/profile.jpg` (moved there from `public/images/` so
+  Astro can process it — see DEC-018) and is rendered via the `<Image>`
+  component from `astro:assets` in `HeroSection.astro` and `contact.astro`
+  (`loading="eager"` + `fetchpriority="high"` on both, since it's
+  above-the-fold on each page — the component's lazy-load default would
+  otherwise delay it). It's also `BaseLayout.astro`'s default `image` prop
+  now, i.e. the Open Graph/Twitter Card image, instead of the favicon.
 - **CV PDFs**: `docs/cv-industry.pdf` and `docs/cv-academic.pdf` (see
   `docs/README.md`). The "CV & Resume" section on `/contact` already links to
   their GitHub raw URLs.
