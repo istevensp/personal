@@ -14,6 +14,20 @@ const titleByTopicId = new Map(
   docs.filter((d) => d.data.topic).map((d) => [`${d.data.parcial}p/${d.data.topic}`, d.data.title])
 );
 
+const topicOrder = [
+  'genericos',
+  'recursividad',
+  'big-o',
+  'listas',
+  'iteradores',
+  'comparadores',
+  'pilas-colas',
+  'conjuntos',
+  'mapas',
+  'arboles',
+  'grafos',
+];
+
 function topicsForParcial(parcial: 1 | 2) {
   return materials
     .filter((m) => m.data.parcial === parcial)
@@ -22,7 +36,7 @@ function topicsForParcial(parcial: 1 | 2) {
       title: titleByTopicId.get(`${parcial}p/${m.data.topic}`) ?? m.data.title,
       count: m.data.items.length,
     }))
-    .sort((a, b) => a.title.localeCompare(b.title));
+    .sort((a, b) => topicOrder.indexOf(a.topic) - topicOrder.indexOf(b.topic));
 }
 
 const firstTerm = topicsForParcial(1);
