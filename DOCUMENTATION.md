@@ -598,6 +598,8 @@ toggling CSS classes.
 | `/about` | `src/pages/about.astro` | Education, interests, certifications, awards |
 | `/teaching` | `src/pages/teaching/index.astro` | See §4.1 |
 | `/teaching/[code]` | `.../teaching/[code].astro` | Course syllabus detail — see §4.3; only exists for codes with a syllabus file |
+| `/teaching/data-structures` | `.../teaching/data-structures/index.astro` | Data Structures course materials hub — see §12 |
+| `/teaching/data-structures/[parcial]/[topico]` | `.../data-structures/[parcial]/[topico].astro` | Topic detail (downloads, Java source, external links) — see §12 |
 | `/projects` | `src/pages/projects/index.astro` | Research + Community grids + Thesis Advisory |
 | `/projects/research/[slug]` | `.../research/[slug].astro` | `slug` = MDX frontmatter `projectId` |
 | `/projects/community/[slug]` | `.../community/[slug].astro` | same |
@@ -963,8 +965,13 @@ Node 20 LTS+ is expected (developed against Node v24.18.0 / npm 11.16.0).
 ### Troubleshooting
 
 - **"Cloudflare does not support sharp at runtime" warning on build** — 
-  informational only; no images currently go through Astro's image
-  optimization pipeline, so this doesn't affect anything today.
+  informational only. `profile.jpg` does go through the `<Image>`
+  component from `astro:assets` (see §9), but that optimization happens
+  at **build time** (in CI/Node, generating a static WebP baked into
+  `dist/`), not at request time — Cloudflare Workers never runs `sharp`
+  itself. The warning would only matter if a page used on-demand image
+  transforms at request time, which nothing here does (every route is
+  prerendered, see §10).
 - **"Enabling sessions with Cloudflare KV" / "Invalid binding SESSION"
   warning** — `@astrojs/cloudflare` auto-enables its session helper; this
   project doesn't currently use Astro sessions, so the warning is
@@ -975,3 +982,177 @@ Node 20 LTS+ is expected (developed against Node v24.18.0 / npm 11.16.0).
   matching schema in `src/content/config.ts` too; Zod validation is strict by
   default (unknown extra fields are fine, but a schema expecting a field that
   isn't present, or a wrong type, throws at content-sync time).
+- **`@mdx-js/rollup` build error inside any `.mdx` file under
+  `external/data-structures/`** — that repo's MDX files must use
+  `{/* comment */}`, never `<!-- HTML comment -->` (invalid MDX syntax,
+  breaks the build). See §12.4.
+
+---
+
+## 12. Data Structures course materials (`/teaching/data-structures`)
+
+Renders the CCPG1034 Estructuras de Datos course — slides, guides, Java
+source, and downloads — sourced from a **separate public repo**,
+`istevensp/data-structures`, not copied into this repo's git history. See
+`docs/DECISIONS.md` DEC-026 through DEC-030 for the reasoning; this
+section is the technical reference for how it fits together.
+
+### 12.1 Sync mechanism
+
+`scripts/sync-data-structures.mjs` runs via npm's `predev`/`prebuild`
+lifecycle hooks (before `astro dev` / `astro build`) and populates
+`external/data-structures/` (gitignored — never committed to `personal`):
+
+- **Local dev/build**: if `../data-structures` exists (the two repos are
+  siblings under the same `Github/` folder), it's copied in directly (fast,
+  no network). Otherwise the script does a shallow `git clone` of
+  `https://github.com/istevensp/data-structures.git`.
+- **CI**: `.github/workflows/deploy.yml` has a second `actions/checkout`
+  step that checks out `istevensp/data-structures` directly at
+  `external/data-structures` *before* `npm run build` runs. The sync
+  script detects `CI`/`GITHUB_ACTIONS` and skips cloning/pulling — it
+  just verifies the directory is already there.
+- The same script also copies `external/data-structures/files/` into
+  `public/teaching/data-structures/files/` (also gitignored) so downloads
+  are served from this site's own origin instead of linking out to GitHub.
+
+Run it manually with `node scripts/sync-data-structures.mjs` if you need
+to force a re-sync locally (e.g. after pushing new content to the sibling
+repo) — it always overwrites `external/data-structures/` and the copied
+`files/` from scratch.
+
+### 12.2 Content collections
+
+Two collections in `src/content/config.ts`, both using `glob()` loaders
+pointed **outside** `src/content` (Astro's Content Layer API supports
+this):
+
+```ts
+const dsDocs = defineCollection({
+  loader: glob({ pattern: '**/*.mdx', base: './external/data-structures/content/docs' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    sidebar: z.object({ order: z.number() }).optional(),
+    parcial: z.union([z.literal(1), z.literal(2)]).optional(), // absent on the 3 index docs
+    topic: z.string().optional(),                               // absent on the 3 index docs
+  }),
+});
+
+const dsMaterials = defineCollection({
+  loader: glob({ pattern: '**/*.yaml', base: './external/data-structures/content/materials' }),
+  schema: z.object({
+    topic: z.string(),
+    parcial: z.union([z.literal(1), z.literal(2)]),
+    title: z.string(),
+    source: z.string(),
+    generated: z.string(),
+    items: z.array(dsMaterialItem), // file/code/url mutually exclusive, see below
+  }),
+});
+```
+
+Resulting entry IDs: `dsDocs` glob-derives nested folder paths (`1p/big-o`,
+`2p/grafos`, plus the 3 non-topic index docs `index`, `1p/index`,
+`2p/index`); `dsMaterials` derives flat filenames (`1p-big-o`, `2p-grafos`).
+The topic detail page (§12.3) cross-references a `dsDocs` entry and a
+`dsMaterials` entry for the same topic using these ID shapes.
+
+Each `dsMaterials` item is one of three mutually-exclusive kinds — a
+downloadable `file`, an embedded `code` source, or an external `url` —
+never more than one per item:
+
+| Field | Notes |
+|---|---|
+| `file` | e.g. `/files/1p/big-o/x.pdf` — absolute path, root is `content/materials`'s sibling `files/` dir in the source repo |
+| `code` | e.g. `1p/iteradores/Foo.java` — relative path under `code/` in the source repo |
+| `url` | external link (Google Drive); paired with `access` (currently always `"institucional"`) |
+| `size` / `bytes` | present for `file` items, absent for `code`/`url` |
+| `pages` / `slides` / `entries` | type-specific metadata for PDF/PPTX/ZIP `file` items |
+| `lines` / `package` / `class` | metadata for `code` items only |
+
+### 12.3 Routes and rendering
+
+- **`/teaching/data-structures`** (`index.astro`) — builds its own view of
+  the two "parciales" by reading `dsMaterials` (grouped by `parcial`) and
+  `dsDocs` (for the real topic titles, filtering to entries that have a
+  `topic` field so the 3 index docs are excluded). Deliberately does
+  **not** render the 3 index MDX bodies — those exist for a student
+  browsing the raw repo on GitHub, not for this hub page, which is fully
+  data-driven so its topic counts can never drift from reality.
+- **`/teaching/data-structures/[parcial]/[topico]`** — `getStaticPaths()`
+  iterates `dsMaterials` (11 entries → 11 static pages). Each page:
+  1. Renders the matching `dsDocs` entry's MDX body via `render()` (empty
+     today except for a placeholder comment — see §12.4 — but the
+     component doesn't assume it's non-empty).
+  2. Splits `items` into three groups (`file`/`code`/`url`) and renders a
+     section per group, only if that group is non-empty.
+  3. For `file` items: a card with type badge, size, and type-specific
+     metadata (pages/slides/entries); `href` is
+     `` `/teaching/data-structures${item.file}` `` (the YAML's `file` is
+     already an absolute path starting with `/files/...`, so this just
+     prefixes the route segment — see §12.5 for where the actual files
+     live).
+  4. For `code` items: source text comes from a static registry built at
+     module scope with `import.meta.glob('/external/data-structures/code/**/*.java', { query: '?raw', import: 'default', eager: true })`,
+     rendered via `<Code />` from `astro:components`. This is a Vite
+     build-time mechanism — no filesystem read happens at request time,
+     which matters because Cloudflare Workers has no filesystem access at
+     all once deployed.
+  5. For `url` items: a plain `target="_blank" rel="noopener noreferrer"`
+     link, **never an iframe** (these are Google Drive resources gated by
+     ESPOL institutional login; an iframe would show a confusing login
+     wall inside the page) — labeled with the bilingual
+     "Requires institutional account" string when `access` is set.
+
+### 12.4 Known gotcha: MDX doesn't allow HTML comments
+
+The 11 topic `.mdx` files originally used `<!-- TODO: contenido docente -->`
+as a placeholder for body text not yet written. That's invalid MDX — the
+`<!--` sequence is parsed as JSX and breaks the build with an
+`@mdx-js/rollup` error the first time anything tries to compile it. Fixed
+in the source repo by switching to `{/* TODO: contenido docente */}`.
+**Anyone editing an `.mdx` file in `istevensp/data-structures` needs to use
+this comment syntax, not HTML comments.**
+
+### 12.5 Downloads and the `/files` prefix
+
+The source repo's `files/` directory (~23MB, 51 items) is copied by the
+sync script into `public/teaching/data-structures/files/` (gitignored —
+regenerated on every build/dev start, never committed). Astro copies
+`public/` verbatim into `dist/`, so at build time these end up at
+`dist/teaching/data-structures/files/...` and are served by the
+`[assets]` binding in `wrangler.toml`, same as every other static file —
+no R2 bucket or separate storage needed for the current ~23MB size.
+
+### 12.6 Bilingual chrome, Spanish-only content
+
+Per an explicit decision (mirroring the rest of the site's convention):
+the course **content itself** — material titles, filenames, MDX prose —
+stays Spanish-only, matching how the course is actually taught. The
+**chrome** around it (section headings "Downloads"/"Descargas", "First
+Term"/"Primer Parcial", the institutional-account notice, etc.) follows
+the same `data-i18n` pattern as the rest of the site — new keys live
+under the `teaching.ds.*` namespace in `src/i18n/strings.ts` (see §7.1
+for how the dictionary mechanism works).
+
+### 12.7 `courses.yaml` wiring
+
+The `data-structures` entry in `src/content/teaching/courses.yaml` now has
+real values for `code` (`CCPG1034` — confirmed by the site owner, same
+course as the existing `CCPG1034` syllabus files, see §4.3), `repositoryUrl`
+(`https://github.com/istevensp/data-structures`), and `materialsLink`
+(`https://stevensantillan.com/teaching/data-structures`). `materialsLink`
+existed in the schema before this integration but was never rendered
+anywhere — `CourseCard.astro` didn't accept it as a prop. It now renders a
+"Course materials" link next to the pre-existing "Course repository" one,
+following the exact same `hasX && <a>...` pattern already used for
+`repositoryUrl`/`code`.
+
+### 12.8 Not yet built: Phase 3 (auto-sync) and Phase 4 (deploy checklist)
+
+A push to `istevensp/data-structures` does **not** currently trigger a
+rebuild of this site — the sync only happens when `personal` itself
+builds. The planned mechanism (not implemented) is a `repository_dispatch`
+workflow in the content repo that pings `personal`'s Actions on push. See
+`docs/PROJECT-STATUS.md` for current priority ordering.
