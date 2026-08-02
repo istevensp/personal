@@ -26,6 +26,10 @@ yarn-error.log*
 # wrangler
 .wrangler/
 
+# synced from istevensp/data-structures at build time (see scripts/sync-data-structures.mjs)
+external/
+public/teaching/data-structures/files/
+
 # internal working docs (not meant for the public repo)
 PROJECT-CONTEXT-HANDOFF.md
 docs/PROJECT-STATUS.md

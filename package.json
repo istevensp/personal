@@ -4,7 +4,9 @@
   "description": "Personal website - Steven Santillan Padilla",
   "type": "module",
   "scripts": {
+    "predev": "node scripts/sync-data-structures.mjs",
     "dev": "astro dev",
+    "prebuild": "node scripts/sync-data-structures.mjs",
     "build": "astro build",
     "deploy": "npm run build && wrangler deploy",
     "search:build": "pagefind --site dist",

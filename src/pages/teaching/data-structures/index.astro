@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../../../components/Layout/BaseLayout.astro';
+import { getCollection, getEntry } from 'astro:content';
+
+export const prerender = true;
+
+const materials = await getCollection('dsMaterials');
+const docs = await getCollection('dsDocs');
+const coursesEntry = await getEntry('courses', 'data');
+const course = coursesEntry.data.courses.find((c) => c.courseId === 'data-structures');
+
+// Topic docs only (the 3 index docs — root, 1p, 2p — have no `topic` field).
+const titleByTopicId = new Map(
+  docs.filter((d) => d.data.topic).map((d) => [`${d.data.parcial}p/${d.data.topic}`, d.data.title])
+);
+
+function topicsForParcial(parcial: 1 | 2) {
+  return materials
+    .filter((m) => m.data.parcial === parcial)
+    .map((m) => ({
+      topic: m.data.topic,
+      title: titleByTopicId.get(`${parcial}p/${m.data.topic}`) ?? m.data.title,
+      count: m.data.items.length,
+    }))
+    .sort((a, b) => a.title.localeCompare(b.title));
+}
+
+const firstTerm = topicsForParcial(1);
+const secondTerm = topicsForParcial(2);
+
+function materialsLabel(count: number) {
+  return {
+    en: count === 1 ? '1 material' : `${count} materials`,
+    es: count === 1 ? '1 material' : `${count} materiales`,
+  };
+}
+---
+
+<BaseLayout title="Data Structures — Course Materials" description="Slides, guides, exercises, and downloadable resources for CCPG1034 Data Structures.">
+  <article class="px-4 py-2xl md:px-6 lg:px-12">
+    <div class="mx-auto flex max-w-3xl flex-col gap-8">
+      <a href="/teaching" class="link inline-flex min-h-[44px] w-fit items-center text-sm">&larr; Back to Teaching</a>
+
+      <div class="animate-fade-in flex flex-col gap-4 rounded-xl bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 p-xl md:p-2xl">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="badge">CCPG1034</span>
+        </div>
+        <h1 data-i18n="teaching.ds.hubTitle">Course Materials</h1>
+        <p class="text-[var(--text-secondary)]" data-i18n="teaching.ds.hubIntro">
+          Slides, guides, exercises, and downloadable resources for CCPG1034, organized by term and topic.
+        </p>
+        {
+          course && course.repositoryUrl !== '[PROPORCIONAR]' && (
+            <a href={course.repositoryUrl} target="_blank" rel="noopener noreferrer" class="link inline-flex min-h-[44px] w-fit items-center text-sm">
+              <span data-i18n="teaching.ds.viewOnGithub">View source repository</span>
+            </a>
+          )
+        }
+      </div>
+
+      {
+        [
+          { key: 'firstTerm', i18n: 'teaching.ds.firstTerm', label: 'First Term', topics: firstTerm },
+          { key: 'secondTerm', i18n: 'teaching.ds.secondTerm', label: 'Second Term', topics: secondTerm },
+        ].map(
+          (term) =>
+            term.topics.length > 0 && (
+              <div class="flex flex-col gap-4">
+                <h2 data-i18n={term.i18n}>{term.label}</h2>
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  {term.topics.map((t) => {
+                    const label = materialsLabel(t.count);
+                    const parcial = term.key === 'firstTerm' ? '1p' : '2p';
+                    return (
+                      <a href={`/teaching/data-structures/${parcial}/${t.topic}`} class="card flex flex-col gap-1">
+                        <span class="font-semibold text-[var(--text-primary)]">{t.title}</span>
+                        <span class="p-tiny text-[var(--text-secondary)]" data-lang-en={label.en} data-lang-es={label.es}>
+                          {label.en}
+                        </span>
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+            )
+        )
+      }
+    </div>
+  </article>
+</BaseLayout>

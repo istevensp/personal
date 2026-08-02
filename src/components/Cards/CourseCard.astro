@@ -16,14 +16,16 @@ export interface Props {
   descriptionEs?: string;
   topics: string[];
   repositoryUrl: string;
+  materialsLink?: string;
   semesters: Semester[];
   syllabusHref?: string;
 }
 
-const { id, name, nameEs, code, level, description, descriptionEs, topics, repositoryUrl, semesters, syllabusHref } = Astro.props;
+const { id, name, nameEs, code, level, description, descriptionEs, topics, repositoryUrl, materialsLink, semesters, syllabusHref } = Astro.props;
 const hasCode = code && code !== '[PROPORCIONAR]';
 const hasLevel = level && level !== '[PROPORCIONAR]';
 const hasRepo = repositoryUrl && repositoryUrl !== '[PROPORCIONAR]';
+const hasMaterialsLink = materialsLink && materialsLink !== '[PROPORCIONAR]';
 
 const hasInProgress = semesters.some((s) => s.status === 'in-progress');
 const hasUpcoming = semesters.some((s) => s.status === 'upcoming');
@@ -90,6 +92,13 @@ function yearColor(year: number): string {
       syllabusHref && (
         <a href={syllabusHref} class="link inline-flex min-h-[44px] w-fit items-center text-sm">
           <span data-i18n="teaching.viewCourseDetails">View course details</span>
+        </a>
+      )
+    }
+    {
+      hasMaterialsLink && (
+        <a href={materialsLink} class="link inline-flex min-h-[44px] w-fit items-center text-sm">
+          Course materials
         </a>
       )
     }

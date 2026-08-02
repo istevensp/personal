@@ -450,6 +450,56 @@ const projectsCommunity = defineCollection({
 });
 
 // ---------------------------------------------------------------------------
+// Data Structures course materials (synced from istevensp/data-structures —
+// see scripts/sync-data-structures.mjs and docs/DECISIONS.md for the sync
+// setup; this repo is the single source of truth, not copied into src/content)
+// ---------------------------------------------------------------------------
+
+const dsDocs = defineCollection({
+  loader: glob({ pattern: '**/*.mdx', base: './external/data-structures/content/docs' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    sidebar: z.object({ order: z.number() }).optional(),
+    // Absent on the 3 index docs (root, 1p, 2p) — only real topic docs have these.
+    parcial: z.union([z.literal(1), z.literal(2)]).optional(),
+    topic: z.string().optional(),
+  }),
+});
+
+const dsMaterialItem = z.object({
+  title: z.string(),
+  original: z.string(),
+  type: z.string(),
+  // Mutually exclusive: exactly one of file/code/url is set per item.
+  file: z.string().optional(),
+  code: z.string().optional(),
+  url: z.string().optional(),
+  access: z.string().optional(),
+  size: z.string().optional(),
+  bytes: z.number().optional(),
+  pages: z.number().nullable().optional(),
+  slides: z.number().nullable().optional(),
+  entries: z.number().nullable().optional(),
+  contents: z.array(z.string()).optional(),
+  package: z.string().nullable().optional(),
+  class: z.string().nullable().optional(),
+  lines: z.number().optional(),
+});
+
+const dsMaterials = defineCollection({
+  loader: glob({ pattern: '**/*.yaml', base: './external/data-structures/content/materials' }),
+  schema: z.object({
+    topic: z.string(),
+    parcial: z.union([z.literal(1), z.literal(2)]),
+    title: z.string(),
+    source: z.string(),
+    generated: z.string(),
+    items: z.array(dsMaterialItem),
+  }),
+});
+
+// ---------------------------------------------------------------------------
 // News (MDX)
 // ---------------------------------------------------------------------------
 
@@ -490,4 +540,6 @@ export const collections = {
   projectsResearch,
   projectsCommunity,
   news,
+  dsDocs,
+  dsMaterials,
 };

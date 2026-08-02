@@ -12,6 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Checkout course materials (istevensp/data-structures)
+        uses: actions/checkout@v4
+        with:
+          repository: istevensp/data-structures
+          path: external/data-structures
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:

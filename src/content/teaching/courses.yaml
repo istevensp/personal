@@ -32,15 +32,15 @@ courses:
     status: upcoming
 - courseId: data-structures
   name: Data Structures
-  code: '[PROPORCIONAR]'
+  code: CCPG1034
   historicalNames:
   - Estructuras de Datos
   institution: ESPOL
   level: '[PROPORCIONAR]'
   description: Course focused on data organization, implementation, and computational thinking.
   topics: []
-  repositoryUrl: '[PROPORCIONAR]'
-  materialsLink: '[PROPORCIONAR]'
+  repositoryUrl: https://github.com/istevensp/data-structures
+  materialsLink: https://stevensantillan.com/teaching/data-structures
   semesters:
   - semester: 2026-1S
     parallel: '1'

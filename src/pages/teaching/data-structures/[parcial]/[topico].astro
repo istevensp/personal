@@ -1,0 +1,161 @@
+---
+import BaseLayout from '../../../../components/Layout/BaseLayout.astro';
+import { getCollection, getEntry, render } from 'astro:content';
+import { Code } from 'astro:components';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const materials = await getCollection('dsMaterials');
+  return materials.map((m) => ({
+    params: { parcial: `${m.data.parcial}p`, topico: m.data.topic },
+    props: { materialsId: m.id },
+  }));
+}
+
+const { parcial, topico } = Astro.params;
+const { materialsId } = Astro.props;
+
+const materialsEntry = await getEntry('dsMaterials', materialsId);
+const docEntry = await getEntry('dsDocs', `${parcial}/${topico}`);
+const { Content } = docEntry ? await render(docEntry) : { Content: null };
+
+const title = docEntry?.data.title ?? materialsEntry!.data.title;
+const description = docEntry?.data.description ?? `Materiales del tópico ${title}.`;
+const items = materialsEntry!.data.items;
+
+const fileItems = items.filter((i) => i.file);
+const codeItems = items.filter((i) => i.code);
+const linkItems = items.filter((i) => i.url);
+
+// Java sources are bundled at build time (eager + ?raw) so each topic page
+// can show the real source text without a runtime file read — Cloudflare
+// Workers have no filesystem access at request time.
+const javaSources = import.meta.glob('/external/data-structures/code/**/*.java', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>;
+
+function sourceFor(codePath: string): string {
+  return javaSources[`/external/data-structures/code/${codePath}`] ?? '';
+}
+
+const termLabel = parcial === '1p' ? { i18n: 'teaching.ds.firstTerm', text: 'First Term' } : { i18n: 'teaching.ds.secondTerm', text: 'Second Term' };
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="px-4 py-2xl md:px-6 lg:px-12">
+    <div class="mx-auto flex max-w-3xl flex-col gap-8">
+      <a href="/teaching/data-structures" class="link inline-flex min-h-[44px] w-fit items-center text-sm">
+        <span data-i18n="teaching.ds.backToHub">&larr; Back to Course Materials</span>
+      </a>
+
+      <div class="flex flex-col gap-3">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="badge">CCPG1034</span>
+          <span class="badge" data-i18n={termLabel.i18n}>{termLabel.text}</span>
+        </div>
+        <h1>{title}</h1>
+        <div class="prose-content flex flex-col gap-4">{Content && <Content />}</div>
+      </div>
+
+      {
+        items.length === 0 && (
+          <p class="p-tiny text-[var(--text-secondary)]" data-i18n="teaching.ds.noMaterialsYet">
+            No materials published for this topic yet.
+          </p>
+        )
+      }
+
+      {
+        fileItems.length > 0 && (
+          <div class="flex flex-col gap-4">
+            <h2 data-i18n="teaching.ds.downloads">Downloads</h2>
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {fileItems.map((item) => (
+                <a href={`/teaching/data-structures${item.file}`} class="card flex flex-col gap-2">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="badge">{item.type.toUpperCase()}</span>
+                    {item.size && <span class="p-tiny text-[var(--text-secondary)]">{item.size}</span>}
+                  </div>
+                  <span class="font-semibold text-[var(--text-primary)]">{item.title}</span>
+                  <span class="p-tiny text-[var(--text-secondary)]">
+                    {item.pages != null && (
+                      <>
+                        {item.pages}
+                        {' '}
+                        <span data-i18n="teaching.ds.pages">pages</span>
+                      </>
+                    )}
+                    {item.slides != null && (
+                      <>
+                        {item.slides}
+                        {' '}
+                        <span data-i18n="teaching.ds.slides">slides</span>
+                      </>
+                    )}
+                    {item.entries != null && (
+                      <>
+                        {item.entries}
+                        {' '}
+                        <span data-i18n="teaching.ds.files">files</span>
+                      </>
+                    )}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )
+      }
+
+      {
+        codeItems.length > 0 && (
+          <div class="flex flex-col gap-4">
+            <h2 data-i18n="teaching.ds.javaSource">Java Source Code</h2>
+            <div class="flex flex-col gap-6">
+              {codeItems.map((item) => (
+                <div class="flex flex-col gap-2">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="font-semibold text-[var(--text-primary)]">{item.title}</span>
+                    {item.lines != null && (
+                      <span class="p-tiny text-[var(--text-secondary)]">
+                        {item.lines}
+                        {' '}
+                        <span data-i18n="teaching.ds.lines">lines</span>
+                      </span>
+                    )}
+                  </div>
+                  <div class="overflow-x-auto rounded-lg border border-[var(--border)]">
+                    <Code code={sourceFor(item.code!)} lang="java" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )
+      }
+
+      {
+        linkItems.length > 0 && (
+          <div class="flex flex-col gap-4">
+            <h2 data-i18n="teaching.ds.externalResources">External Resources</h2>
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {linkItems.map((item) => (
+                <a href={item.url} target="_blank" rel="noopener noreferrer" class="card flex flex-col gap-2">
+                  <span class="font-semibold text-[var(--text-primary)]">{item.title}</span>
+                  {item.access && (
+                    <span class="badge badge-warning w-fit" data-i18n="teaching.ds.institutionalAccountRequired">
+                      Requires institutional account
+                    </span>
+                  )}
+                </a>
+              ))}
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </article>
+</BaseLayout>
