@@ -25,6 +25,7 @@ const topicOrder = [
   'conjuntos',
   'mapas',
   'arboles',
+  'arboles-avanzado',
   'grafos',
 ];
 
@@ -85,13 +86,23 @@ function materialsLabel(count: number) {
                   {term.topics.map((t) => {
                     const label = materialsLabel(t.count);
                     const parcial = term.key === 'firstTerm' ? '1p' : '2p';
+                    const href = `/teaching/data-structures/${parcial}/${t.topic}`;
                     return (
-                      <a href={`/teaching/data-structures/${parcial}/${t.topic}`} class="card flex flex-col gap-1">
-                        <span class="font-semibold text-[var(--text-primary)]">{t.title}</span>
-                        <span class="p-tiny text-[var(--text-secondary)]" data-lang-en={label.en} data-lang-es={label.es}>
-                          {label.en}
-                        </span>
-                      </a>
+                      <div class="card flex flex-col gap-1">
+                        <a href={href} class="flex flex-col gap-1">
+                          <span class="font-semibold text-[var(--text-primary)]">{t.title}</span>
+                          <span class="p-tiny text-[var(--text-secondary)]" data-lang-en={label.en} data-lang-es={label.es}>
+                            {label.en}
+                          </span>
+                        </a>
+                        {
+                          t.topic === 'arboles' && (
+                            <a href={`${href}#recorridos-de-árboles`} class="link p-tiny w-fit" data-i18n="teaching.ds.traversalsRotations">
+                              Traversals & rotations →
+                            </a>
+                          )
+                        }
+                      </div>
                     );
                   })}
                 </div>

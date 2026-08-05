@@ -57,6 +57,13 @@ const termLabel = parcial === '1p' ? { i18n: 'teaching.ds.firstTerm', text: 'Fir
           <span class="badge" data-i18n={termLabel.i18n}>{termLabel.text}</span>
         </div>
         <h1>{title}</h1>
+        {
+          topico === 'arboles' && (
+            <a href="#recorridos-de-árboles" class="link p-tiny w-fit" data-i18n="teaching.ds.traversalsRotations">
+              Traversals & rotations →
+            </a>
+          )
+        }
         <div class="prose-content flex flex-col gap-4">{Content && <Content />}</div>
       </div>
 
