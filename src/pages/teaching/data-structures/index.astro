@@ -25,13 +25,16 @@ const topicOrder = [
   'conjuntos',
   'mapas',
   'arboles',
-  'arboles-avanzado',
   'grafos',
 ];
 
+// 'arboles-avanzado' is a sub-page of 'arboles' (linked from within that
+// topic's content), not an independent entry in this hub grid.
+const HIDDEN_FROM_HUB = new Set(['arboles-avanzado']);
+
 function topicsForParcial(parcial: 1 | 2) {
   return materials
-    .filter((m) => m.data.parcial === parcial)
+    .filter((m) => m.data.parcial === parcial && !HIDDEN_FROM_HUB.has(m.data.topic))
     .map((m) => ({
       topic: m.data.topic,
       title: titleByTopicId.get(`${parcial}p/${m.data.topic}`) ?? m.data.title,
