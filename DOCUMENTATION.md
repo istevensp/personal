@@ -1082,9 +1082,12 @@ never more than one per item:
   data-driven so its topic counts can never drift from reality.
 - **`/teaching/data-structures/[parcial]/[topico]`** — `getStaticPaths()`
   iterates `dsMaterials` (11 entries → 11 static pages). Each page:
-  1. Renders the matching `dsDocs` entry's MDX body via `render()` (empty
-     today except for a placeholder comment — see §12.4 — but the
-     component doesn't assume it's non-empty).
+  1. Renders the matching `dsDocs` entry's MDX body via `render()` — real
+     intro/summary content as of 2026-08-02 for 9 of the 11 original
+     topics (generic-but-accurate content for Conjuntos/Mapas, see
+     `docs/DECISIONS.md` DEC-029), but the component still doesn't assume
+     the body is non-empty (`{Content && <Content />}`), since a topic
+     could in principle exist with only downloads and no written prose.
   2. Splits `items` into three groups (`file`/`code`/`url`) and renders a
      section per group, only if that group is non-empty.
   3. For `file` items: a card with type badge, size, and type-specific
@@ -1156,3 +1159,28 @@ rebuild of this site — the sync only happens when `personal` itself
 builds. The planned mechanism (not implemented) is a `repository_dispatch`
 workflow in the content repo that pings `personal`'s Actions on push. See
 `docs/PROJECT-STATUS.md` for current priority ordering.
+
+### 12.9 Topic ordering and "sub-page" topics (the Árboles pattern)
+
+Two things worth knowing if you're adding or reordering a topic:
+
+- **Hub card order is explicit, not alphabetical.** `topicsForParcial()`
+  in `index.astro` sorts by `topicOrder.indexOf(topic)`, an array hardcoded
+  to match the order the owner actually teaches the course in. Adding a
+  new topic without adding it to `topicOrder` sorts it first (`indexOf`
+  returns `-1`) — there's no build-time check for this. See
+  `docs/DECISIONS.md` DEC-031.
+- **A topic doesn't have to be an independent hub card.** `arboles-avanzado`
+  is a real `dsDocs`/`dsMaterials` topic (own MDX, own route, own
+  `getStaticPaths()` entry) but is excluded from the hub grid via a
+  `HIDDEN_FROM_HUB` set in `index.astro` — it's reachable only through
+  cross-links from within `arboles.mdx`'s prose (a "¿Quieres profundizar?"
+  section and an inline link inside the AVL rotations section). This
+  pattern exists because the owner's complementary content for Árboles
+  (terminology, red-black trees, Splay Tree, B-Tree/B+Tree, Segment/
+  Fenwick Tree, spatial trees) was too long for one page but the owner
+  didn't want a second card cluttering the hub. If you add another
+  "advanced" sub-topic, follow the same pattern: give it a `dsMaterials`
+  YAML with `items: []` if it has no downloads of its own, add it to
+  `topicOrder` (routing still needs it, even if hidden from the grid), and
+  add it to `HIDDEN_FROM_HUB`. See `docs/DECISIONS.md` DEC-032.
