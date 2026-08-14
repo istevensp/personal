@@ -170,6 +170,14 @@ npm run deploy             # Build + Deploy a Cloudflare Workers
 npm run lint               # ESLint check
 ```
 
+> `npm run dev` y `npm run build` disparan automáticamente
+> `scripts/sync-data-structures.mjs` (hooks `predev`/`prebuild`), que trae el
+> contenido de `istevensp/data-structures` a `external/data-structures/` —
+> del repo hermano `../data-structures` si existe localmente, o por `git
+> clone` si no. Para forzar una re-sincronización manual (por ejemplo tras
+> hacer push de contenido nuevo en el otro repo): `node
+> scripts/sync-data-structures.mjs`. Ver `DOCUMENTATION.md` §12.1.
+
 ---
 
 # 📁 ESTRUCTURA DEL PROYECTO
@@ -184,6 +192,8 @@ personal/
 ├── src/
 │   ├── content/
 │   │   ├── config.ts                     # Content Collections + Zod schemas
+│   │   │                                 # (incluye dsDocs/dsMaterials, que apuntan fuera de
+│   │   │                                 #  src/content a external/data-structures/content/)
 │   │   ├── profile/                      # Datos personales
 │   │   │   ├── personal.yaml
 │   │   │   ├── education.yaml
@@ -223,7 +233,12 @@ personal/
 │   ├── pages/                            # Rutas públicas
 │   │   ├── index.astro                   # Home
 │   │   ├── about.astro                   # About
-│   │   ├── teaching/index.astro          # Teaching
+│   │   ├── teaching/
+│   │   │   ├── index.astro               # Teaching (índice de cursos)
+│   │   │   ├── [code].astro              # Detalle de curso (por código, ej. CCPG1034)
+│   │   │   └── data-structures/          # Contenido de CCPG1034, ver scripts/ y "external/" abajo
+│   │   │       ├── index.astro           # Hub de tópicos (1P/2P)
+│   │   │       └── [parcial]/[topico].astro  # Página de cada tópico (docs + descargas)
 │   │   ├── projects/
 │   │   │   ├── index.astro
 │   │   │   ├── research/[slug].astro
@@ -269,10 +284,19 @@ personal/
 │   │
 │   ├── lib/
 │   │   └── publications.ts               # Helpers: formatMonthYear(), primaryExternalLink()
+│   ├── assets/images/
+│   │   └── profile.jpg                   # Foto de perfil (importada; Astro la optimiza a .webp en build)
 │   └── styles/
 │       ├── globals.css
 │       ├── components.css
 │       └── tailwind.css
+│
+├── scripts/
+│   └── sync-data-structures.mjs          # predev/prebuild: sincroniza istevensp/data-structures
+│                                          # dentro de external/ (ver docs/DOCUMENTATION.md §12.1)
+│
+├── external/                             # Generado por sync-data-structures.mjs — gitignored,
+│   └── data-structures/                  # nunca se commitea; se regenera en cada dev/build
 │
 ├── public/
 │   ├── .assetsignore                     # Excluye _worker.js del deploy de assets estáticos
@@ -280,8 +304,10 @@ personal/
 │   ├── favicon-16x16.png, favicon-32x32.png, favicon-48x48.png, favicon-64x64.png, favicon-128x128.png
 │   ├── apple-touch-icon.png, icon.png    # icon.png = imagen maestra 1826x1826 (OG/social)
 │   ├── site.webmanifest
-│   └── images/
-│       └── profile.jpg                   # (pendiente de subir)
+│   ├── images/                           # SVGs y otros assets estáticos servidos tal cual
+│   │   └── ORCID_iD.svg
+│   └── teaching/data-structures/files/   # Descargas (PDF/PPTX/ZIP) copiadas por el script de sync
+│                                          # — gitignored, nunca commiteadas (ver §12.5)
 │
 ├── docs/                                 # PDFs de CVs (estáticos, agregados manualmente — aún pendientes)
 │   ├── README.md

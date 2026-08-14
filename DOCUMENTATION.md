@@ -1081,13 +1081,23 @@ never more than one per item:
   browsing the raw repo on GitHub, not for this hub page, which is fully
   data-driven so its topic counts can never drift from reality.
 - **`/teaching/data-structures/[parcial]/[topico]`** — `getStaticPaths()`
-  iterates `dsMaterials` (11 entries → 11 static pages). Each page:
-  1. Renders the matching `dsDocs` entry's MDX body via `render()` — real
-     intro/summary content as of 2026-08-02 for 9 of the 11 original
-     topics (generic-but-accurate content for Conjuntos/Mapas, see
-     `docs/DECISIONS.md` DEC-029), but the component still doesn't assume
-     the body is non-empty (`{Content && <Content />}`), since a topic
-     could in principle exist with only downloads and no written prose.
+  iterates `dsMaterials` (12 entries → 12 static pages: the 11 original
+  topics plus `arboles-avanzado`, added 2026-08-05 and hidden from the hub
+  grid — see §12.9). Each page:
+  1. Renders the matching `dsDocs` entry's MDX body via `render()`. All 12
+     topics have real written content, but the depth varies: Conjuntos and
+     Mapas use generic-but-accurate Java reference material because the
+     only source files available were formats that couldn't be read (see
+     `docs/DECISIONS.md` DEC-029, still unresolved); Árboles,
+     Árboles — Contenido avanzado (both 2026-08-05, DEC-032/DEC-033) and
+     Grafos (rewritten 2026-08-11, same pattern as Árboles — a driving
+     example carried through the page, complete runnable Java classes,
+     comparison tables, common-mistakes and exercise sections) carry
+     substantially expanded lesson content; the remaining topics have
+     concise intro/summary prose from 2026-08-02. The component still
+     doesn't assume the body is non-empty (`{Content && <Content />}`),
+     since a topic could in principle exist with only downloads and no
+     written prose.
   2. Splits `items` into three groups (`file`/`code`/`url`) and renders a
      section per group, only if that group is non-empty.
   3. For `file` items: a card with type badge, size, and type-specific
