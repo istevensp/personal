@@ -1,0 +1,111 @@
+---
+import { getEntry } from 'astro:content';
+import CourseCard from '../Cards/CourseCard.astro';
+
+const coursesEntry = await getEntry('courses', 'data');
+const evaluacionesEntry = await getEntry('evaluaciones', 'data');
+
+const evaluations = evaluacionesEntry.data.evaluations;
+
+// "Current teaching" = actually being taught this semester, not merely
+// planned — a course whose only semesters are `upcoming` (e.g. Algorithm
+// Analysis, 2026-2S) doesn't belong here yet.
+const currentCourses = coursesEntry.data.courses.filter((course) => course.semesters.some((s) => s.status === 'in-progress'));
+
+// Same historical-name matching /teaching uses (src/pages/teaching/index.astro)
+// so a current course's real SAAC course code — and its full evaluation
+// history — resolves here too, instead of showing only the in-progress
+// semester(s) from courses.yaml as "pending evaluation".
+function normalizeCourseName(value: string): string {
+  return value.trim().toUpperCase();
+}
+
+const historicalNameToCourse = new Map<string, (typeof currentCourses)[number]>();
+for (const course of currentCourses) {
+  for (const historicalName of course.historicalNames) {
+    historicalNameToCourse.set(normalizeCourseName(historicalName), course);
+  }
+}
+
+const courseIdToRealCode = new Map<string, string>();
+for (const evaluation of evaluations) {
+  const matched = historicalNameToCourse.get(normalizeCourseName(evaluation.courseName));
+  if (matched) courseIdToRealCode.set(matched.courseId, evaluation.courseCode);
+}
+
+function realCodeFor(course: (typeof currentCourses)[number]): string | undefined {
+  return course.code && course.code !== '[PROPORCIONAR]' ? course.code : courseIdToRealCode.get(course.courseId);
+}
+
+function historicalSemestersFor(course: (typeof currentCourses)[number]) {
+  const code = realCodeFor(course);
+  if (!code) return [];
+  return evaluations
+    .filter((e) => e.courseCode === code)
+    .sort((a, b) => b.year - a.year || b.term - a.term)
+    .map((r) => ({
+      semester: `${r.year}-${r.academicPeriod}`,
+      parallel: r.parallel,
+      evaluationUrl: r.evaluationUrl,
+      status: 'completed' as const,
+    }));
+}
+---
+
+<section class="px-4 py-2xl md:px-6 lg:px-12">
+  <div class="mx-auto flex max-w-container flex-col gap-6">
+    <div class="flex items-center justify-between gap-4">
+      <h2>
+        <a href="/teaching" class="transition-colors hover:text-primary" data-i18n="home.currentTeaching">
+          Current Teaching
+        </a>
+      </h2>
+      <a href="/teaching" class="btn-ghost group min-h-[44px] text-sm">
+        <span data-i18n="common.viewAllCourses">View all courses</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          class="transition-transform duration-fast group-hover:translate-x-0.5"
+        >
+          <path d="M5 12h14" />
+          <path d="m12 5 7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+
+    {
+      currentCourses.length > 0 ? (
+        <div class="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2 [mask-image:linear-gradient(to_right,black_calc(100%-3rem),transparent)] [-webkit-mask-image:linear-gradient(to_right,black_calc(100%-3rem),transparent)]">
+          {currentCourses.map((course) => (
+            <div class="w-[300px] shrink-0 snap-start sm:w-[360px]">
+              <CourseCard
+                name={course.name}
+                nameEs={course.nameEs}
+                nameHref={`/teaching#course-${course.courseId}`}
+                code={realCodeFor(course) ?? course.code}
+                level={course.level}
+                description={course.description}
+                topics={course.topics}
+                repositoryUrl={course.repositoryUrl}
+                materialsLink={course.materialsLink}
+                semesters={[...historicalSemestersFor(course), ...course.semesters]}
+              />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p class="p-small text-[var(--text-secondary)]" data-i18n="home.noCoursesNow">
+          Not teaching any courses this semester.
+        </p>
+      )
+    }
+  </div>
+</section>

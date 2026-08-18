@@ -10,6 +10,7 @@ export interface Props {
   id?: string;
   name: string;
   nameEs?: string;
+  nameHref?: string;
   code: string;
   level: string;
   description: string;
@@ -21,7 +22,7 @@ export interface Props {
   syllabusHref?: string;
 }
 
-const { id, name, nameEs, code, level, description, descriptionEs, topics, repositoryUrl, materialsLink, semesters, syllabusHref } = Astro.props;
+const { id, name, nameEs, nameHref, code, level, description, descriptionEs, topics, repositoryUrl, materialsLink, semesters, syllabusHref } = Astro.props;
 const hasCode = code && code !== '[PROPORCIONAR]';
 const hasLevel = level && level !== '[PROPORCIONAR]';
 const hasRepo = repositoryUrl && repositoryUrl !== '[PROPORCIONAR]';
@@ -74,7 +75,15 @@ function yearColor(year: number): string {
     {!hasInProgress && hasUpcoming && <span class="badge badge-success">Upcoming</span>}
   </div>
 
-  <h4 class="text-xl font-semibold text-[var(--text-primary)]" data-lang-en={nameEs ? name : undefined} data-lang-es={nameEs}>{name}</h4>
+  <h4 class="text-xl font-semibold text-[var(--text-primary)]">
+    {nameHref ? (
+      <a href={nameHref} class="transition-colors hover:text-primary" data-lang-en={nameEs ? name : undefined} data-lang-es={nameEs}>
+        {name}
+      </a>
+    ) : (
+      <span data-lang-en={nameEs ? name : undefined} data-lang-es={nameEs}>{name}</span>
+    )}
+  </h4>
   <p class="p-small text-[var(--text-secondary)]" data-lang-en={descriptionEs ? description : undefined} data-lang-es={descriptionEs}>{description}</p>
 
   {

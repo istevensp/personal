@@ -26,14 +26,34 @@ const topProjects = research
           Current Research Projects
         </a>
       </h2>
-      <a href="/projects" class="link inline-flex min-h-[44px] items-center text-sm" data-i18n="common.viewAllProjects">View all projects</a>
+      <a href="/projects" class="btn-ghost group min-h-[44px] text-sm">
+        <span data-i18n="common.viewAllProjects">View all projects</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          class="transition-transform duration-fast group-hover:translate-x-0.5"
+        >
+          <path d="M5 12h14" />
+          <path d="m12 5 7 7-7 7" />
+        </svg>
+      </a>
     </div>
 
     {
       topProjects.length > 0 ? (
-        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div class="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2 [mask-image:linear-gradient(to_right,black_calc(100%-3rem),transparent)] [-webkit-mask-image:linear-gradient(to_right,black_calc(100%-3rem),transparent)]">
           {topProjects.map((p) => (
-            <ProjectCard {...p} />
+            <div class="w-[300px] shrink-0 snap-start sm:w-[360px]">
+              <ProjectCard {...p} />
+            </div>
           ))}
         </div>
       ) : (

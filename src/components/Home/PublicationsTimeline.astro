@@ -47,7 +47,25 @@ const timeline = all.slice(0, 6);
         </a>
       </h2>
       <div class="flex items-center gap-2">
-        <a href="/publications" class="link inline-flex min-h-[44px] items-center text-sm" data-i18n="common.viewAllPublications">View all publications</a>
+        <a href="/publications" class="btn-ghost group min-h-[44px] text-sm">
+          <span data-i18n="common.viewAllPublications">View all publications</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            class="transition-transform duration-fast group-hover:translate-x-0.5"
+          >
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </a>
         {timeline.length > 0 && <PublicationsTimelineToggle defaultExpanded={true} />}
       </div>
     </div>

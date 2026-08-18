@@ -3,6 +3,7 @@ import BaseLayout from '../components/Layout/BaseLayout.astro';
 import HeroSection from '../components/Home/HeroSection.astro';
 import PublicationsTimeline from '../components/Home/PublicationsTimeline.astro';
 import FeaturedProjects from '../components/Home/FeaturedProjects.astro';
+import CurrentTeaching from '../components/Home/CurrentTeaching.astro';
 import RecentNews from '../components/Home/RecentNews.astro';
 import { getEntry } from 'astro:content';
 
@@ -33,5 +34,6 @@ const jsonLd = {
   <HeroSection />
   <PublicationsTimeline />
   <FeaturedProjects />
+  <CurrentTeaching />
   <RecentNews />
 </BaseLayout>

@@ -29,7 +29,15 @@ const statusI18nKey: Record<string, string> = {
 
 {
   timeline.length > 0 && (
-    <div id={id} class:list={['flex items-start gap-0 overflow-x-auto pb-2', hidden && 'hidden']}>
+    <div
+      id={id}
+      class:list={[
+        'flex items-start gap-0 overflow-x-auto pb-2',
+        '[mask-image:linear-gradient(to_right,black_calc(100%-3rem),transparent)]',
+        '[-webkit-mask-image:linear-gradient(to_right,black_calc(100%-3rem),transparent)]',
+        hidden && 'hidden',
+      ]}
+    >
       {timeline.map((p, i) => (
         <>
           {i > 0 && <div class="mt-1.5 h-px w-6 shrink-0 bg-[var(--border)] sm:w-10" />}

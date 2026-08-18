@@ -12,20 +12,40 @@ const recent = items.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf(
       <h2>
         <a href="/news" class="transition-colors hover:text-primary" data-i18n="home.recentNews">Recent News</a>
       </h2>
-      <a href="/news" class="link inline-flex min-h-[44px] items-center text-sm" data-i18n="common.viewAllNews">View all news</a>
+      <a href="/news" class="btn-ghost group min-h-[44px] text-sm">
+        <span data-i18n="common.viewAllNews">View all news</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          class="transition-transform duration-fast group-hover:translate-x-0.5"
+        >
+          <path d="M5 12h14" />
+          <path d="m12 5 7 7-7 7" />
+        </svg>
+      </a>
     </div>
 
     {
       recent.length > 0 ? (
-        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div class="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2 [mask-image:linear-gradient(to_right,black_calc(100%-3rem),transparent)] [-webkit-mask-image:linear-gradient(to_right,black_calc(100%-3rem),transparent)]">
           {recent.map((item) => (
-            <NewsCard
-              href={`/news/${item.data.slug}`}
-              title={item.data.title}
-              date={item.data.date}
-              category={item.data.category}
-              featured={item.data.featured}
-            />
+            <div class="w-[240px] shrink-0 snap-start sm:w-[280px]">
+              <NewsCard
+                href={`/news/${item.data.slug}`}
+                title={item.data.title}
+                date={item.data.date}
+                category={item.data.category}
+                featured={item.data.featured}
+              />
+            </div>
           ))}
         </div>
       ) : (
