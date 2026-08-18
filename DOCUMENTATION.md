@@ -1088,16 +1088,25 @@ never more than one per item:
      topics have real written content, but the depth varies: Conjuntos and
      Mapas use generic-but-accurate Java reference material because the
      only source files available were formats that couldn't be read (see
-     `docs/DECISIONS.md` DEC-029, still unresolved); Árboles,
-     Árboles — Contenido avanzado (both 2026-08-05, DEC-032/DEC-033) and
-     Grafos (rewritten 2026-08-11, same pattern as Árboles — a driving
-     example carried through the page, complete runnable Java classes,
-     comparison tables, common-mistakes and exercise sections) carry
-     substantially expanded lesson content; the remaining topics have
-     concise intro/summary prose from 2026-08-02. The component still
-     doesn't assume the body is non-empty (`{Content && <Content />}`),
-     since a topic could in principle exist with only downloads and no
-     written prose.
+     `docs/DECISIONS.md` DEC-029, still unresolved); Árboles and
+     Árboles — Contenido avanzado (both 2026-08-05, DEC-032/DEC-033) carry
+     substantially expanded lesson content; the remaining topics (besides
+     Grafos) have concise intro/summary prose from 2026-08-02. **Grafos**
+     (2026-08-18, DEC-039) is the deepest page on the site: BFS, DFS (three
+     iterative marking strategies), cycle detection, Dijkstra, Bellman-Ford,
+     Floyd-Warshall, Prim, and Kruskal+Union-Find, each with pseudocode, a
+     hand-traceable worked example, a complete runnable Java class, real
+     compiler output, applications, and common mistakes — ~2,850 lines, 35
+     Java blocks. Every algorithm was independently cross-validated (see
+     DEC-039) before publishing, not just written once and trusted.
+  2. Renders a sidebar table of contents (desktop only, `lg:` breakpoint) built
+     from the `##` headings Astro's `render()` already extracts — no manual
+     parsing. Only shown when a topic has 3+ top-level headings, so short
+     topic pages stay full-width. Highlights the section currently in view
+     via `IntersectionObserver`. See `docs/DECISIONS.md` DEC-038.
+     The component still doesn't assume the body is non-empty
+     (`{Content && <Content />}`), since a topic could in principle exist
+     with only downloads and no written prose.
   2. Splits `items` into three groups (`file`/`code`/`url`) and renders a
      section per group, only if that group is non-empty.
   3. For `file` items: a card with type badge, size, and type-specific
