@@ -124,3 +124,23 @@ accepted:
   - Temperature Monitoring
   - Offline-First Architecture
   abstract: Artisanal fishing is a vital economic pillar in emerging economies like Ecuador, yet it suffers from a significant technological gap. Most vessels lack basic positioning and environmental monitoring systems, relying on manual logs that hinder regulatory compliance and operational safety. This paper presents the development of a low-cost IoT prototype designed to bridge this gap. The system integrates an ESP32 microcontroller with waterproof temperature sensors (DS18B20) and a mobile application developed in Android Studio. A key innovation is the "offline-first" architecture using Firebase Cloud Firestore, allowing data persistence during high-seas operations without cellular coverage, with automatic synchronization upon returning to port. Technical validation against professional-grade instruments (YSI Pro20 and GPS-73) yielded mean error rates below 1.43% for temperature and 0.67% for positioning. Furthermore, the system automates mandatory electronic logbooks, reducing administrative burdens and supporting sustainable fishing practices by monitoring Illegal, Unreported, and Unregulated (IUU) fishing. Beyond technical metrics, the project achieved a 94% user acceptance rate among local fishers. Economic analysis shows a Net Present Value (NPV) of US$ 81,316.21 and an Internal Rate of Return (IRR) of 50%, confirming its financial scalability. This solution demonstrates how accessible technology can empower coastal communities, enhance maritime domain awareness, and foster citizen-science participation in ocean observations.
+- id: workload-serverless-hpc-edge-analysis
+  title: How are HPC, Edge and Serverless Architectures built in the Cloud Continuum? An empirical analysis of cloud architectures in AWS
+  authors:
+  - Steven Santillan
+  - Cristina L. Abad
+  conference: International Journal of Networked and Distributed Computing
+  year: 2026
+  month: null
+  status: Accepted
+  doi: null
+  links:
+    paper: '[PROPORCIONAR]'
+    preprint: '[PROPORCIONAR]'
+  keywords:
+  - Cloud Architecture
+  - High-Performance Computing
+  - Edge Computing
+  - Serverless Computing
+  - Workload Analysis
+  abstract: '[PROPORCIONAR]'
