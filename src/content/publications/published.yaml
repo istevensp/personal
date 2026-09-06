@@ -1,4 +1,24 @@
 published:
+- id: workload-serverless-hpc-edge-analysis
+  title: How are HPC, Edge and Serverless Architectures built in the Cloud Continuum? An empirical analysis of cloud architectures in AWS
+  authors:
+  - Steven Santillan
+  - Cristina L. Abad
+  conference: International Journal of Networked and Distributed Computing
+  year: 2026
+  month: 9
+  status: Published
+  doi: https://doi.org/10.1007/s44227-026-00121-3
+  links:
+    doi: https://doi.org/10.1007/s44227-026-00121-3
+    paper: https://rdcu.be/rkXrFBSFXUxa
+  keywords:
+  - Cloud Architecture
+  - High-Performance Computing
+  - Edge Computing
+  - Serverless Computing
+  - Workload Analysis
+  abstract: We study a recently published dataset of 396 real-world cloud architectures on AWS from a wide range of industries. We focus on those architectures that contain HPC, edge or serverless components and investigate how they are built, which services they use, the types of storage used, quantify architectural complexity, assess the use of machine learning services, and distill insights regarding how cloud applications in these three domains are being built in the cloud continuum. Our data and analysis can be valuable for researchers and practitioners seeking to build and optimize cloud architectures and to help guide new research.
 - id: edupar-2026-unplugged-cloud-architecting
   title: A Collaborative Classroom Activity for Teaching Cloud Architecting
   authors:
